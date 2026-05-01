@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Verify Email | AerUla{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="auth-card auth-card-centered">
+            <p class="eyebrow">Check your email</p>
+            <h1>Verify your AerUla account.</h1>
+            <p class="auth-muted">We sent a verification link to your email address. Open that link to activate your account and continue into AerUla.</p>
+            {% if dev_verification_url %}
+                <div class="dev-verification-box">
+                    <strong>Local development verification link</strong>
+                    <a href="{{ dev_verification_url }}">{{ dev_verification_url }}</a>
+                </div>
+            {% endif %}
+            <a class="btn btn-dark" href="{% url 'accounts:login' %}">Back to login</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -16,12 +16,9 @@ class HomePageTests(TestCase):
 class PlaceholderRouteTests(TestCase):
     def test_placeholder_app_routes_render(self):
         routes = {
-            'accounts:index': 'AerUla accounts module is ready.',
             'bookings:index': 'AerUla bookings module is ready.',
-            'dashboard:index': 'AerUla dashboard module is ready.',
             'marketplace:index': 'AerUla marketplace module is ready.',
             'simulations:index': 'AerUla simulations module is ready.',
-            'village:index': 'AerUla virtual village module is ready.',
         }
 
         for route_name, expected_text in routes.items():
@@ -30,3 +27,8 @@ class PlaceholderRouteTests(TestCase):
 
                 self.assertEqual(response.status_code, 200)
                 self.assertContains(response, expected_text)
+
+    def test_accounts_index_redirects_to_login(self):
+        response = self.client.get(reverse('accounts:index'))
+
+        self.assertRedirects(response, reverse('accounts:login'))

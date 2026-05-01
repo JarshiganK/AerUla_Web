@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | AerUla{% endblock %}
+
+{% block content %}
+<section class="dashboard-hero">
+    <div class="container">
+        <div class="dashboard-heading">
+            <div>
+                <p class="eyebrow">Dashboard</p>
+                <h1>Welcome back, {{ user.first_name|default:user.username }}.</h1>
+                <p>Continue your AerUla journey from cultural discovery to badges, bookings, and marketplace connections.</p>
+            </div>
+            <a class="btn btn-dark" href="{% url 'village:index' %}">Enter Virtual Village</a>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <div class="container">
+        <div class="dashboard-grid">
+            <article class="summary-card">
+                <span class="summary-label">Passport progress</span>
+                <strong>0 / 5 huts</strong>
+                <p>Progress tracking will update here once hut completion is connected.</p>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Badges earned</span>
+                <strong>0</strong>
+                <p>Badges unlock after verified simulations and quizzes.</p>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Bookings</span>
+                <strong>0 active</strong>
+                <p>Your cultural experience reservations will appear here.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-section dashboard-section-light">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Next steps</p>
+            <h2>Pick up the journey.</h2>
+        </div>
+        <div class="row g-4">
+            {% for step in journey_steps %}
+                <div class="col-md-4">
+                    <article class="feature-card dashboard-action-card">
+                        <span class="feature-number">{{ step.label }}</span>
+                        <h3>{{ step.title }}</h3>
+                        <p>{{ step.description }}</p>
+                        <a class="btn btn-outline-dark btn-sm mt-3" href="{% url step.url_name %}">{{ step.action }}</a>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% if is_host or is_admin %}
+<section class="dashboard-section">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Management</p>
+            <h2>Role workspace.</h2>
+        </div>
+        <div class="dashboard-grid">
+            {% if is_host %}
+                <article class="summary-card">
+                    <span class="summary-label">Host tools</span>
+                    <strong>Listings</strong>
+                    <p>Experience listings, products, availability, and booking requests will live here.</p>
+                </article>
+            {% endif %}
+            {% if is_admin %}
+                <article class="summary-card">
+                    <span class="summary-label">Admin tools</span>
+                    <strong>Approvals</strong>
+                    <p>Host, hut, product, booking, and quiz approvals will be managed from this workspace.</p>
+                </article>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

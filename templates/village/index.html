@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Virtual Village Map | AerUla{% endblock %}
+
+{% block content %}
+<section class="village-map-hero">
+    <div class="container">
+        <div class="village-map-heading">
+            <div>
+                <p class="eyebrow">Virtual Village Map</p>
+                <h1>Choose a cultural hut and continue your journey.</h1>
+                <p>
+                    Start with the unlocked hut experiences, preview each activity, and build progress toward badges, passport entries, bookings, and marketplace recommendations.
+                </p>
+            </div>
+            <div class="village-progress-card" aria-label="Village progress summary">
+                <span>Progress</span>
+                <strong>0/{{ total_count }}</strong>
+                <p>{{ available_count }} huts ready for the MVP learning path.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="village-map-section">
+    <div class="container">
+        <div class="village-map-layout">
+            <div class="village-stage village-map-stage" aria-label="Interactive AerUla virtual village map">
+                <div class="stage-toolbar">
+                    <span>Jaffna village route</span>
+                    <span>Progress 0/{{ total_count }}</span>
+                </div>
+                <div class="village-preview village-map" data-village-map>
+                    <div class="map-water" aria-hidden="true"></div>
+                    <div class="map-field map-field-one" aria-hidden="true"></div>
+                    <div class="map-field map-field-two" aria-hidden="true"></div>
+                    <div class="map-path map-path-one" aria-hidden="true"></div>
+                    <div class="map-path map-path-two" aria-hidden="true"></div>
+                    {% for hut in huts %}
+                        <button
+                            class="hut village-map-hut {{ hut.position_class }}{% if forloop.first %} is-selected{% endif %}"
+                            type="button"
+                            data-hut-name="{{ hut.name }}"
+                            data-hut-summary="{{ hut.summary }}"
+                            data-hut-activity="{{ hut.activity }}"
+                            data-hut-badge="{{ hut.badge }}"
+                            data-status="{{ hut.status }}"
+                            aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+                        >
+                            <span>{{ hut.short_name }}</span>
+                            <small>{{ hut.status|title }}</small>
+                        </button>
+                    {% endfor %}
+                </div>
+                <div class="stage-footer">
+                    <span>Select a hut to preview the next activity</span>
+                    <span class="status-dot" aria-hidden="true"></span>
+                </div>
+            </div>
+
+            <aside class="hut-detail-panel" aria-live="polite">
+                <span class="summary-label">Selected hut</span>
+                <h2 data-hut-detail-name>{{ featured_hut.name }}</h2>
+                <p data-hut-detail-summary>{{ featured_hut.summary }}</p>
+
+                <dl class="hut-detail-list">
+                    <div>
+                        <dt>Mini simulation</dt>
+                        <dd data-hut-detail-activity>{{ featured_hut.activity }}</dd>
+                    </div>
+                    <div>
+                        <dt>Badge</dt>
+                        <dd data-hut-detail-badge>{{ featured_hut.badge }}</dd>
+                    </div>
+                </dl>
+
+                <div class="hut-detail-actions">
+                    <a class="btn btn-dark" href="{% url 'simulations:index' %}" data-hut-action>Start Preview</a>
+                    <a class="btn btn-outline-dark" href="{% url 'marketplace:index' %}">Related Products</a>
+                </div>
+                <p class="hut-lock-note" data-hut-lock-note hidden>
+                    This hut is planned for the next guided step. Preview the story now, then complete unlocked huts first.
+                </p>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<section class="village-hut-section">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Hut path</p>
+            <h2>Each stop connects learning, progress, and cultural commerce.</h2>
+        </div>
+        <div class="hut-card-grid">
+            {% for hut in huts %}
+                <article class="hut-card">
+                    <div class="hut-card-header">
+                        <span class="hut-status hut-status-{{ hut.status }}">{{ hut.status|title }}</span>
+                        <span>{{ forloop.counter|stringformat:"02d" }}</span>
+                    </div>
+                    <h3>{{ hut.name }}</h3>
+                    <p>{{ hut.summary }}</p>
+                    <strong>{{ hut.badge }}</strong>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

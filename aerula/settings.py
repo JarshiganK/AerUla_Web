@@ -131,4 +131,14 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'dashboard:index'
+LOGOUT_REDIRECT_URL = 'core:home'
+
+EMAIL_BACKEND = os.getenv(
+    'EMAIL_BACKEND',
+    'django.core.mail.backends.console.EmailBackend',
+)
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'AerUla <noreply@aerula.local>')
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

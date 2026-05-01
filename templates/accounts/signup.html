@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up | AerUla{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="auth-layout">
+            <div class="auth-copy">
+                <p class="eyebrow">Join AerUla</p>
+                <h1>Create your cultural passport.</h1>
+                <p>Sign up to explore village huts, complete learning activities, and unlock verified progress.</p>
+            </div>
+
+            <div class="auth-card">
+                <h2>Sign up</h2>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-help">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="form-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <button class="btn btn-dark w-100" type="submit">Create account</button>
+                </form>
+                <p class="auth-switch">Already have an account? <a href="{% url 'accounts:login' %}">Login</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

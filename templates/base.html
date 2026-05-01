@@ -23,13 +23,30 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'village:index' %}">Virtual Village</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'marketplace:index' %}">Marketplace</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:index' %}">Dashboard</a></li>
-                    <li class="nav-item ms-lg-2"><a class="btn btn-sm btn-dark nav-cta" href="{% url 'village:index' %}">Enter village</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item ms-lg-2">
+                            <form method="post" action="{% url 'accounts:logout' %}">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-dark nav-cta" type="submit">Log out</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
+                        <li class="nav-item ms-lg-2"><a class="btn btn-sm btn-dark nav-cta" href="{% url 'accounts:signup' %}">Sign up</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
     <main>
+        {% if messages %}
+            <div class="container message-stack">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'info' }} mb-0" role="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
 
