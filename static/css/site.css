@@ -1,0 +1,47 @@
+:root {
+    --aerula-green: #207a54;
+    --aerula-gold: #d8a84e;
+    --aerula-ink: #17221d;
+    --aerula-sky: #d9eef3;
+}
+
+body {
+    color: var(--aerula-ink);
+    background: #fbfaf6;
+}
+
+.hero {
+    background: linear-gradient(180deg, #ffffff 0%, #f1f7ef 100%);
+}
+
+.village-preview {
+    position: relative;
+    min-height: 320px;
+    border: 1px solid #d9e5dc;
+    border-radius: 8px;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(216, 168, 78, 0.18), transparent 18%),
+        linear-gradient(135deg, var(--aerula-sky), #f7efd8 62%, #d7ead8);
+    overflow: hidden;
+}
+
+.hut {
+    position: absolute;
+    width: 112px;
+    min-height: 64px;
+    display: grid;
+    place-items: center;
+    padding: 0.75rem;
+    border: 2px solid rgba(23, 34, 29, 0.18);
+    border-radius: 8px;
+    background: #fffdf7;
+    box-shadow: 0 10px 30px rgba(23, 34, 29, 0.12);
+    font-weight: 700;
+    text-align: center;
+}
+
+.hut-pottery { left: 12%; top: 16%; }
+.hut-palmyrah { right: 12%; top: 20%; }
+.hut-cooking { left: 36%; top: 42%; }
+.hut-fishing { left: 14%; bottom: 14%; }
+.hut-music { right: 14%; bottom: 12%; }

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}AerUla Virtual Village{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container py-5">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <p class="text-uppercase small fw-semibold text-success mb-2">Sri Lankan cultural simulation platform</p>
+                <h1 class="display-5 fw-bold">AerUla Virtual Village</h1>
+                <p class="lead text-secondary">
+                    Explore Jaffna-inspired cultural huts, complete mini simulations, earn badges, and connect the learning journey to bookings and traditional products.
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="btn btn-success btn-lg" href="{% url 'village:index' %}">Enter Virtual Village</a>
+                    <a class="btn btn-outline-secondary btn-lg" href="{% url 'marketplace:index' %}">Browse Marketplace</a>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="village-preview" aria-label="AerUla starter virtual village preview">
+                    <div class="hut hut-pottery">Pottery</div>
+                    <div class="hut hut-palmyrah">Palmyrah</div>
+                    <div class="hut hut-cooking">Cooking</div>
+                    <div class="hut hut-fishing">Fishing</div>
+                    <div class="hut hut-music">Music</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <h2 class="h5">Learn</h2>
+            <p class="text-secondary">Story-led cultural hut pages with media, quizzes, and progress tracking.</p>
+        </div>
+        <div class="col-md-4">
+            <h2 class="h5">Simulate</h2>
+            <p class="text-secondary">Lightweight JavaScript activities using cards, tiles, SVG, and Canvas.</p>
+        </div>
+        <div class="col-md-4">
+            <h2 class="h5">Convert</h2>
+            <p class="text-secondary">Connect completed huts to bookings, host products, badges, and the cultural passport.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
