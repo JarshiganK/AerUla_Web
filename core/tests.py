@@ -3,6 +3,9 @@ from unittest.mock import patch
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
+from marketplace.cart import CART_SESSION_KEY
+from marketplace.models import Product
+
 from .services import answer_guide_question
 
 
@@ -83,6 +86,42 @@ class GuidePageTests(TestCase):
         self.assertEqual(data['sources'][0]['title'], 'Pottery Workshop Visit')
         self.assertEqual(data['sources'][0]['source_label'], 'Bookable experience')
         self.assertNotIn('Folk Song Booklet', data['answer'])
+
+    @override_settings(GEMINI_API_KEY='')
+    def test_guide_chat_api_adds_clear_product_to_cart(self):
+        product = Product.objects.get(slug='clay-serving-bowl')
+        response = self.client.post(reverse('core:guide_chat_api'), {'message': 'add Clay Serving Bowl to cart'})
+
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn('I added Clay Serving Bowl to your cart', data['answer'])
+        self.assertEqual(data['sources'][0]['title'], 'Clay Serving Bowl')
+        self.assertEqual(data['actions'][0]['url'], reverse('marketplace:checkout'))
+        self.assertEqual(self.client.session[CART_SESSION_KEY], {str(product.pk): 1})
+
+    @override_settings(GEMINI_API_KEY='')
+    def test_guide_chat_api_asks_for_product_when_cart_request_is_ambiguous(self):
+        response = self.client.post(reverse('core:guide_chat_api'), {'message': 'add pottery to cart'})
+
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn('Which product should I add?', data['answer'])
+        self.assertIn('Clay Serving Bowl', data['answer'])
+        self.assertIn('Handmade Water Pot', data['answer'])
+        self.assertNotIn(CART_SESSION_KEY, self.client.session)
+
+    @override_settings(GEMINI_API_KEY='')
+    def test_guide_chat_api_adds_product_from_follow_up_context(self):
+        product = Product.objects.get(slug='handmade-water-pot')
+        first_response = self.client.post(reverse('core:guide_chat_api'), {'message': 'Tell me about Handmade Water Pot'})
+        self.assertEqual(first_response.status_code, 200)
+
+        follow_up = self.client.post(reverse('core:guide_chat_api'), {'message': 'add it to cart'})
+
+        self.assertEqual(follow_up.status_code, 200)
+        data = follow_up.json()
+        self.assertIn('I added Handmade Water Pot to your cart', data['answer'])
+        self.assertEqual(self.client.session[CART_SESSION_KEY], {str(product.pk): 1})
 
     @override_settings(GEMINI_API_KEY='')
     def test_guide_page_accepts_chat_message(self):

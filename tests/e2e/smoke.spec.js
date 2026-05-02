@@ -93,6 +93,24 @@ test.describe('AerUla public experience', () => {
     await expect(page.locator('[data-guide-sources]')).toContainText('Pottery Workshop Visit');
   });
 
+  test('guide modal can add a clear product to cart and open checkout', async ({ page }) => {
+    await page.goto('/');
+
+    await page.getByLabel('Open cultural guide chatbot').click();
+    const messageBox = page.getByLabel('Ask about a hut, product, or tradition');
+    await messageBox.fill('add Clay Serving Bowl to cart');
+    await page.getByRole('button', { name: 'Send' }).click();
+
+    const latestAnswer = page.locator('[data-guide-transcript] .guide-chat-row.is-assistant').last();
+    await expect(latestAnswer).toContainText('I added Clay Serving Bowl to your cart');
+    await expect(latestAnswer.getByRole('link', { name: 'Go to checkout' })).toBeVisible();
+
+    await latestAnswer.getByRole('link', { name: 'Go to checkout' }).click();
+    await expect(page).toHaveURL(/\/marketplace\/checkout\/$/);
+    await expect(page.getByRole('heading', { name: 'Place your order.' })).toBeVisible();
+    await expect(page.getByText('LKR 2,400', { exact: true })).toBeVisible();
+  });
+
   test('village map links to a hut, simulation preview, and guide page', async ({ page }) => {
     await page.goto('/village/');
 

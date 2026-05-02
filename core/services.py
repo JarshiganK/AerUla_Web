@@ -21,6 +21,10 @@ BOOKING_TOKENS = {
     'book', 'booking', 'reserve', 'reservation', 'experience', 'experiences', 'request', 'visit', 'workshop',
 }
 
+SHOPPING_TOKENS = {
+    'add', 'buy', 'cart', 'checkout', 'order', 'purchase', 'shop',
+}
+
 QUICK_PROMPTS = [
     'What does the pottery hut teach?',
     'How is palmyrah used in Jaffna culture?',
@@ -108,6 +112,31 @@ def answer_guide_question(query, history=None):
     }
 
 
+def resolve_cart_request(query, history=None):
+    tokens = _tokenize(query)
+    if not _has_cart_intent(tokens):
+        return None
+
+    product = _resolve_product_for_cart(query, history or [])
+    if product is None:
+        products = _suggest_products_for_cart(query, history or [])
+        return {
+            'status': 'needs_product',
+            'answer': (
+                'I can add marketplace products to your cart. Which product should I add? '
+                f"Options: {', '.join(product.name for product in products)}."
+                if products
+                else 'I can add marketplace products to your cart. Tell me the product name, such as Clay Serving Bowl or Handmade Water Pot.'
+            ),
+            'products': products,
+        }
+
+    return {
+        'status': 'ready',
+        'product': product,
+    }
+
+
 def _build_corpus():
     huts = Hut.objects.filter(is_active=True).order_by('display_order', 'name')
     experiences = Experience.objects.filter(is_published=True).select_related('hut').order_by('display_order', 'title')
@@ -189,9 +218,10 @@ def _rank_sources(corpus, query):
 
     query_tokens = _tokenize(query)
     booking_intent = _has_booking_intent(query_tokens)
+    cart_intent = _has_cart_intent(query_tokens)
     ranked = []
     for source in corpus:
-        score = _score_source(source, query_tokens, query, booking_intent)
+        score = _score_source(source, query_tokens, query, booking_intent, cart_intent)
         if score:
             ranked.append((score, source))
 
@@ -199,7 +229,7 @@ def _rank_sources(corpus, query):
     return [_format_source(source, score) for score, source in ranked[:3]]
 
 
-def _score_source(source, query_tokens, query, booking_intent=False):
+def _score_source(source, query_tokens, query, booking_intent=False, cart_intent=False):
     if not query_tokens:
         return 0
 
@@ -220,6 +250,12 @@ def _score_source(source, query_tokens, query, booking_intent=False):
         elif source['type'] == 'product':
             score -= 3
 
+    if cart_intent:
+        if source['type'] == 'product':
+            score += 8
+        elif source['type'] == 'experience':
+            score -= 4
+
     return score
 
 
@@ -236,6 +272,10 @@ def _has_booking_intent(tokens):
     return bool(set(tokens).intersection(BOOKING_TOKENS))
 
 
+def _has_cart_intent(tokens):
+    return bool(set(tokens).intersection(SHOPPING_TOKENS))
+
+
 def _contextualize_query(query, history):
     tokens = _tokenize(query)
     if not _has_booking_intent(tokens):
@@ -250,6 +290,80 @@ def _contextualize_query(query, history):
         return query
 
     return f'{query} {hut_context}'
+
+
+def _resolve_product_for_cart(query, history):
+    effective_query = _contextualize_product_query(query, history)
+    ranked_products = _rank_products(effective_query)
+    if not ranked_products:
+        return None
+
+    top_score, top_product = ranked_products[0]
+    second_score = ranked_products[1][0] if len(ranked_products) > 1 else 0
+    if top_score <= 0 or top_score == second_score:
+        return None
+
+    return top_product
+
+
+def _suggest_products_for_cart(query, history):
+    effective_query = _contextualize_product_query(query, history)
+    ranked_products = _rank_products(effective_query)
+    if ranked_products:
+        return [product for _, product in ranked_products[:3]]
+
+    return list(Product.objects.filter(is_published=True).select_related('hut').order_by('display_order', 'name')[:3])
+
+
+def _contextualize_product_query(query, history):
+    product_context = _latest_product_reference(history)
+    if not product_context:
+        return query
+
+    query_text = query.lower()
+    if product_context.lower() in query_text:
+        return query
+
+    return f'{query} {product_context}'
+
+
+def _rank_products(query):
+    tokens = _tokenize(query)
+    if not tokens:
+        return []
+
+    ranked = []
+    for product in Product.objects.filter(is_published=True).select_related('hut'):
+        source = {
+            'type': 'product',
+            'text': ' '.join([product.name, product.summary, product.artisan, product.materials, product.hut_name]),
+        }
+        score = _score_source(source, tokens, query, cart_intent=True)
+        if product.name.lower() in query.lower():
+            score += 8
+        if score > 0:
+            ranked.append((score, product))
+
+    ranked.sort(key=lambda item: (-item[0], item[1].display_order, item[1].name))
+    return ranked
+
+
+def _latest_product_reference(history):
+    if not history:
+        return ''
+
+    products = list(Product.objects.filter(is_published=True).select_related('hut').order_by('display_order', 'name'))
+    for turn in reversed(history[-MAX_CHAT_TURNS:]):
+        text = f"{turn.get('user', '')} {turn.get('assistant', '')}".lower()
+        for product in products:
+            references = {
+                product.slug.lower(),
+                product.name.lower(),
+            }
+            if any(reference and reference in text for reference in references):
+                return product.name
+
+    return ''
 
 
 def _latest_hut_reference(history):

@@ -1997,6 +1997,13 @@ a:hover {
     line-height: 1.75;
 }
 
+.guide-chat-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+}
+
 .guide-prompt-strip-modal {
     margin-top: 0.85rem;
 }

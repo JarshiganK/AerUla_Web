@@ -25,11 +25,26 @@ document.addEventListener('DOMContentLoaded', () => {
         .replaceAll('"', '&quot;')
         .replaceAll("'", '&#39;');
 
-    const renderMessage = (role, text) => `
+    const renderActions = (actions) => {
+        if (!actions || !actions.length) {
+            return '';
+        }
+
+        return `
+            <div class="guide-chat-actions">
+                ${actions.map((action) => `
+                    <a class="btn btn-sm btn-dark" href="${escapeHtml(action.url || '#')}">${escapeHtml(action.label || 'Open')}</a>
+                `).join('')}
+            </div>
+        `;
+    };
+
+    const renderMessage = (role, text, actions = []) => `
         <div class="guide-chat-row is-${role}">
             <div class="guide-chat-bubble">
                 <span>${role === 'user' ? 'You' : 'AerUla Guide'}</span>
                 <p>${escapeHtml(text)}</p>
+                ${role === 'assistant' ? renderActions(actions) : ''}
             </div>
         </div>
     `;
@@ -63,8 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const appendTurn = (role, text) => {
-        transcript.insertAdjacentHTML('beforeend', renderMessage(role, text));
+    const appendTurn = (role, text, actions = []) => {
+        transcript.insertAdjacentHTML('beforeend', renderMessage(role, text, actions));
         transcript.scrollTop = transcript.scrollHeight;
     };
 
@@ -154,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const data = await postMessage(message);
-            appendTurn('assistant', data.answer || 'I could not generate an answer yet.');
+            appendTurn('assistant', data.answer || 'I could not generate an answer yet.', data.actions || []);
             renderSources(data.sources || []);
             input.value = '';
         } catch (error) {

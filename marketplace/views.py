@@ -4,12 +4,10 @@ from django.utils.crypto import get_random_string
 
 from village.models import Hut
 
+from .cart import CART_SESSION_KEY, add_product_to_session_cart
 from .forms import CheckoutForm
 from .models import Product
 from .models import Order, OrderItem
-
-
-CART_SESSION_KEY = 'marketplace_cart'
 
 
 def index(request):
@@ -54,10 +52,7 @@ def add_to_cart(request, slug):
     except Product.DoesNotExist:
         raise Http404('Product not found')
 
-    cart = request.session.get(CART_SESSION_KEY, {})
-    cart[str(product.pk)] = cart.get(str(product.pk), 0) + 1
-    request.session[CART_SESSION_KEY] = cart
-    request.session.modified = True
+    add_product_to_session_cart(request.session, product)
     return redirect('marketplace:cart')
 
 
