@@ -6,9 +6,10 @@ Design guidance for AerUla's web experience. Keep the UI simple, professional, f
 
 AerUla should combine:
 
-- Cultural discovery inspired by editorial museum and archive experiences.
+- Image-led cultural discovery inspired by editorial museum and archive experiences.
 - Clean product clarity inspired by modern SaaS interfaces.
 - Lightweight simulation-first interaction for mobile and desktop.
+- Short supporting text with real cultural imagery carrying most of the page.
 
 Do not copy any reference website directly. Use references only for design principles: clarity, spacing, hierarchy, strong content presentation, and polished interaction.
 
@@ -17,6 +18,7 @@ Do not copy any reference website directly. Use references only for design princ
 - Simple first: every screen should have one clear purpose.
 - Professional: use consistent spacing, typography, color, and button hierarchy.
 - Cultural: visual choices should support Sri Lankan heritage without becoming decorative clutter.
+- Relevant: hut, product, and simulation images must directly match the culture or object being presented.
 - Fast: avoid heavy assets, excessive animation, and unnecessary JavaScript.
 - Accessible: readable contrast, semantic HTML, visible focus states, and keyboard-friendly controls.
 - Mobile first: design must work well on phones before desktop polish.
@@ -38,6 +40,7 @@ Do not copy any reference website directly. Use references only for design princ
 - Avoid nested cards.
 - Use cards only for repeated items, dashboard summaries, products, hut previews, and compact content groups.
 - Prefer clean editorial sections over busy decorative layouts.
+- Prefer image grids, reference photos, and simulation benches over long text blocks.
 
 ### Border Radius
 
@@ -131,9 +134,19 @@ Card rules:
 
 - One idea per card.
 - Clear heading.
-- Short description.
+- Short description only when the image and title are not enough.
 - One primary action when needed.
 - Avoid decorative-only icons.
+- Include a relevant image for hut, product, booking, and simulation preview cards whenever available.
+
+### Images
+
+- Use images as first-class content, not decoration.
+- Every hut must have a relevant image, alt text, and source credit.
+- Product imagery should match the associated hut or product material.
+- Simulation screens should show a real reference image next to the interactive SVG/HTML/Canvas surface.
+- Avoid generic filler photos, unrelated craft photos, and images from the wrong cultural context when a closer Sri Lankan or Jaffna reference exists.
+- Keep text short around image grids; use captions and action labels instead of long paragraphs.
 
 ### Forms
 
@@ -168,8 +181,9 @@ Required elements:
 - Short value statement.
 - Primary action to enter the village.
 - Secondary action to browse marketplace.
-- Lightweight visual preview of the virtual village.
+- Large cultural photo stack plus lightweight visual preview of the virtual village.
 - Three-step explanation: Discover, Interact, Connect.
+- Gallery of relevant hut images.
 
 ### Virtual Village
 
@@ -178,6 +192,7 @@ Purpose: let users choose cultural huts and understand progress.
 Required elements:
 
 - Clear map or grid of huts.
+- Image preview for the selected hut.
 - States: locked, available, completed.
 - Progress indicator.
 - Mobile-friendly hut selection.
@@ -191,7 +206,7 @@ Required elements:
 
 - Story section.
 - Media section.
-- Mini simulation.
+- Mini simulation with a real reference image beside the interactive surface.
 - Quiz.
 - Badge/progress result.
 - Related bookings and products.
@@ -215,6 +230,7 @@ Purpose: connect cultural learning to host products.
 Required elements:
 
 - Product grid.
+- Product or hut reference images on every product card.
 - Hut/category filtering.
 - Product detail page.
 - Add-to-cart action.
@@ -225,6 +241,7 @@ Required elements:
 - Simulations must be quick to understand.
 - Use clear instructions but keep them short.
 - Provide immediate feedback.
+- Pair each simulation with a visible reference photo and a small interactive surface.
 - Make success/failure states understandable.
 - Save progress only after server validation.
 - Support touch, mouse, and keyboard where practical.

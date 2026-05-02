@@ -42,6 +42,9 @@ class QuizOption(models.Model):
 class UserProgress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='hut_progress')
     hut = models.ForeignKey(Hut, on_delete=models.CASCADE, related_name='user_progress')
+    simulation_completed = models.BooleanField(default=False)
+    simulation_score = models.PositiveSmallIntegerField(default=0)
+    quiz_completed = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
     score = models.PositiveSmallIntegerField(default=0)
     completed_at = models.DateTimeField(blank=True, null=True)

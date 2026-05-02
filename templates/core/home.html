@@ -9,9 +9,7 @@
             <div class="col-lg-6">
                 <p class="eyebrow">Cultural learning meets village commerce</p>
                 <h1 class="hero-title">Explore Sri Lankan heritage through a virtual village.</h1>
-                <p class="hero-copy">
-                    AerUla guides visitors through Jaffna-inspired huts, short simulations, quizzes, badges, bookings, and traditional marketplace products.
-                </p>
+                <p class="hero-copy">Step into image-led huts, short simulations, badges, bookings, and traditional products from one guided village path.</p>
                 <div class="hero-actions">
                     <a class="btn btn-dark btn-lg" href="{% url 'village:index' %}">Enter Virtual Village</a>
                     <a class="btn btn-light btn-lg" href="{% url 'marketplace:index' %}">Browse Marketplace</a>
@@ -23,23 +21,18 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="village-stage" aria-label="AerUla starter virtual village preview">
-                    <div class="stage-toolbar">
-                        <span>Village map</span>
-                        <span>Progress 0/5</span>
-                    </div>
-                    <div class="village-preview">
-                        <button class="hut hut-pottery" type="button">Pottery</button>
-                        <button class="hut hut-palmyrah" type="button">Palmyrah</button>
-                        <button class="hut hut-cooking" type="button">Cooking</button>
-                        <button class="hut hut-fishing" type="button">Fishing</button>
-                        <button class="hut hut-music" type="button">Folk Music</button>
-                        <div class="map-path map-path-one" aria-hidden="true"></div>
-                        <div class="map-path map-path-two" aria-hidden="true"></div>
-                    </div>
-                    <div class="stage-footer">
-                        <span>Click a hut to preview progress state</span>
-                        <span class="status-dot" aria-hidden="true"></span>
+                <div class="hero-photo-stack" aria-label="Real cultural references from the AerUla village journey">
+                    <figure class="hero-photo-card hero-photo-card-large">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tradtional_Sri_Lankan_Pottery.jpg?width=1200" alt="Traditional Sri Lankan pottery vessel with red and white clay decoration.">
+                        <figcaption>Pottery craft reference</figcaption>
+                    </figure>
+                    <figure class="hero-photo-card hero-photo-card-small">
+                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Palmyra_Product_Shop-Jaffna-1.jpg?width=900" alt="Palmyrah leaf products displayed in a Jaffna shop.">
+                        <figcaption>Jaffna palmyrah craft</figcaption>
+                    </figure>
+                    <div class="hero-photo-note">
+                        <strong>Images first</strong>
+                        <span>Huts, products, and simulations start from real cultural references.</span>
                     </div>
                 </div>
             </div>
@@ -51,31 +44,50 @@
     <div class="container">
         <div class="section-heading">
             <p class="eyebrow">How the MVP works</p>
-            <h2>One journey from curiosity to cultural commerce.</h2>
+            <h2>One visual journey from hut to badge to product.</h2>
         </div>
         <div class="row g-4">
             <div class="col-md-4">
                 <article class="feature-card">
                     <span class="feature-number">01</span>
                     <h3>Discover</h3>
-                    <p>Visitors enter a clean cultural map and choose huts for pottery, palmyrah, cooking, fishing, and folk music.</p>
+                    <p>Choose a photo-led hut from the 2D cultural map.</p>
                 </article>
             </div>
             <div class="col-md-4">
                 <article class="feature-card">
                     <span class="feature-number">02</span>
                     <h3>Interact</h3>
-                    <p>Each hut teaches through short stories, lightweight browser activities, quizzes, and badge progress.</p>
+                    <p>Use quick browser activities and quiz checkpoints.</p>
                 </article>
             </div>
             <div class="col-md-4">
                 <article class="feature-card">
                     <span class="feature-number">03</span>
                     <h3>Connect</h3>
-                    <p>Completed experiences lead naturally into host bookings, products, and a digital cultural passport.</p>
+                    <p>Unlock badges, bookings, and matching products.</p>
                 </article>
             </div>
         </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="section-heading">
+        <p class="eyebrow">Real cultural references</p>
+        <h2>Every hut uses a relevant cultural image.</h2>
+    </div>
+    <div class="home-hut-gallery">
+        {% for hut in featured_huts %}
+            <article class="photo-hut-card">
+                <img src="{{ hut.image_url }}" alt="{{ hut.image_alt }}" loading="lazy">
+                <div>
+                    <span class="hut-status hut-status-{{ hut.status }}">{{ hut.status|title }}</span>
+                    <h3>{{ hut.name }}</h3>
+                    <a href="{{ hut.image_source_url }}" rel="noopener" target="_blank">{{ hut.image_credit }}</a>
+                </div>
+            </article>
+        {% endfor %}
     </div>
 </section>
 
@@ -84,10 +96,8 @@
         <div class="col-lg-5">
             <div class="editorial-panel">
                 <p class="eyebrow">Designed for trust</p>
-                <h2>Simple for tourists, useful for hosts, manageable for admins.</h2>
-                <p>
-                    The interface keeps attention on culture and clear next steps. It avoids heavy effects so the simulation remains fast on everyday phones.
-                </p>
+                <h2>More visual, less text, still fast on phones.</h2>
+                <p>The interface keeps users in images, simulations, and clear actions.</p>
             </div>
         </div>
         <div class="col-lg-7">
@@ -95,25 +105,25 @@
                 <div class="col-sm-6">
                     <div class="compact-tile">
                         <h3>Passport progress</h3>
-                        <p>Show completed huts, badges, scores, and recommended next experiences.</p>
+                        <p>Show badges and next huts visually.</p>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="compact-tile">
                         <h3>Host products</h3>
-                        <p>Recommend marketplace items that match the hut a visitor just completed.</p>
+                        <p>Match products to each hut image.</p>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="compact-tile">
                         <h3>Admin control</h3>
-                        <p>Keep approvals, content, products, and bookings clear for daily operation.</p>
+                        <p>Keep approvals and catalogue content clear.</p>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="compact-tile">
                         <h3>Fast simulations</h3>
-                        <p>Use small browser interactions instead of heavy 3D for the MVP.</p>
+                        <p>Use lightweight SVG, Canvas, and JS.</p>
                     </div>
                 </div>
             </div>

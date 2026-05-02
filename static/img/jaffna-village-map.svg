@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">AerUla Jaffna Heritage Village Map</title>
+  <desc id="desc">A stylized top view village with huts, central courtyard, palm trees, paths, and lagoon water.</desc>
+  <defs>
+    <linearGradient id="skyGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7ddba"/>
+      <stop offset="50%" stop-color="#efd6ad"/>
+      <stop offset="100%" stop-color="#dcb98a"/>
+    </linearGradient>
+    <radialGradient id="ground" cx="50%" cy="52%" r="66%">
+      <stop offset="0%" stop-color="#e5cb9d"/>
+      <stop offset="100%" stop-color="#cbab7f"/>
+    </radialGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9ec4cc"/>
+      <stop offset="100%" stop-color="#628994"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8d6b4a"/>
+      <stop offset="100%" stop-color="#705137"/>
+    </linearGradient>
+    <style>
+      .path { fill: none; stroke: #7f6444; stroke-opacity: 0.52; stroke-width: 8; stroke-dasharray: 14 12; }
+      .fence { fill: none; stroke: #6e553a; stroke-width: 6; stroke-opacity: 0.7; }
+      .hut-base { fill: #af8a61; }
+      .hut-shadow { fill: #76573c; fill-opacity: 0.22; }
+      .tree-trunk { fill: #6a4a2f; }
+      .tree-top { fill: #396a41; }
+      .tree-leaf { fill: #2f5d38; }
+      .courtyard { fill: #d2ae7f; }
+      .gate { fill: #6f4e34; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#skyGlow)"/>
+  <ellipse cx="800" cy="860" rx="960" ry="490" fill="url(#ground)"/>
+
+  <ellipse cx="800" cy="170" rx="680" ry="130" fill="#587966" opacity="0.72"/>
+  <ellipse cx="800" cy="130" rx="760" ry="120" fill="url(#water)"/>
+  <ellipse cx="800" cy="145" rx="700" ry="70" fill="#c8d8d0" opacity="0.22"/>
+
+  <path class="fence" d="M120 312 Q800 250 1480 312"/>
+  <path class="fence" d="M150 760 Q800 820 1450 760"/>
+  <path class="fence" d="M170 350 Q145 545 170 740"/>
+  <path class="fence" d="M1430 350 Q1455 545 1430 740"/>
+
+  <ellipse class="courtyard" cx="800" cy="545" rx="520" ry="250"/>
+
+  <path class="path" d="M800 772 Q760 680 800 598"/>
+  <path class="path" d="M800 598 Q640 530 520 470"/>
+  <path class="path" d="M800 598 Q970 525 1080 472"/>
+  <path class="path" d="M800 598 Q790 465 800 370"/>
+
+  <g transform="translate(290 446)">
+    <ellipse class="hut-shadow" cx="0" cy="80" rx="114" ry="42"/>
+    <ellipse fill="url(#roof)" cx="0" cy="42" rx="120" ry="75"/>
+    <rect class="hut-base" x="-82" y="60" width="164" height="84" rx="28"/>
+  </g>
+  <g transform="translate(470 655)">
+    <ellipse class="hut-shadow" cx="0" cy="80" rx="114" ry="42"/>
+    <ellipse fill="url(#roof)" cx="0" cy="42" rx="120" ry="75"/>
+    <rect class="hut-base" x="-82" y="60" width="164" height="84" rx="28"/>
+  </g>
+  <g transform="translate(800 725)">
+    <ellipse class="hut-shadow" cx="0" cy="80" rx="114" ry="42"/>
+    <ellipse fill="url(#roof)" cx="0" cy="42" rx="120" ry="75"/>
+    <rect class="hut-base" x="-82" y="60" width="164" height="84" rx="28"/>
+  </g>
+  <g transform="translate(1125 655)">
+    <ellipse class="hut-shadow" cx="0" cy="80" rx="114" ry="42"/>
+    <ellipse fill="url(#roof)" cx="0" cy="42" rx="120" ry="75"/>
+    <rect class="hut-base" x="-82" y="60" width="164" height="84" rx="28"/>
+  </g>
+  <g transform="translate(1310 446)">
+    <ellipse class="hut-shadow" cx="0" cy="80" rx="114" ry="42"/>
+    <ellipse fill="url(#roof)" cx="0" cy="42" rx="120" ry="75"/>
+    <rect class="hut-base" x="-82" y="60" width="164" height="84" rx="28"/>
+  </g>
+  <g transform="translate(800 385)">
+    <ellipse class="hut-shadow" cx="0" cy="80" rx="114" ry="42"/>
+    <ellipse fill="url(#roof)" cx="0" cy="42" rx="120" ry="75"/>
+    <rect class="hut-base" x="-82" y="60" width="164" height="84" rx="28"/>
+  </g>
+
+  <g transform="translate(270 300)">
+    <rect class="tree-trunk" x="-11" y="35" width="22" height="82" rx="10"/>
+    <ellipse class="tree-top" cx="0" cy="22" rx="60" ry="24"/>
+    <ellipse class="tree-leaf" cx="-38" cy="14" rx="32" ry="15"/>
+    <ellipse class="tree-leaf" cx="42" cy="10" rx="36" ry="16"/>
+  </g>
+  <g transform="translate(1320 300)">
+    <rect class="tree-trunk" x="-11" y="35" width="22" height="82" rx="10"/>
+    <ellipse class="tree-top" cx="0" cy="22" rx="60" ry="24"/>
+    <ellipse class="tree-leaf" cx="-38" cy="14" rx="32" ry="15"/>
+    <ellipse class="tree-leaf" cx="42" cy="10" rx="36" ry="16"/>
+  </g>
+
+  <g transform="translate(800 252)">
+    <ellipse fill="#5b422d" cx="0" cy="58" rx="116" ry="26" opacity="0.36"/>
+    <rect fill="#74553a" x="-120" y="18" width="240" height="62" rx="8"/>
+    <polygon fill="#563f2c" points="-140,18 0,-52 140,18"/>
+    <text x="0" y="56" text-anchor="middle" font-size="42" font-family="Georgia, serif" fill="#f6e8cf">AERULA</text>
+  </g>
+
+  <g transform="translate(800 772)">
+    <ellipse fill="#4a3725" cx="0" cy="32" rx="190" ry="36" opacity="0.35"/>
+    <rect class="gate" x="-195" y="-18" width="390" height="72" rx="10"/>
+    <rect fill="#8f6c48" x="-166" y="-2" width="332" height="44" rx="8"/>
+  </g>
+</svg>

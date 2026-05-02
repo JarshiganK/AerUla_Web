@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Virtual Village Map | AerUla{% endblock %}
 
@@ -9,14 +10,12 @@
             <div>
                 <p class="eyebrow">Virtual Village Map</p>
                 <h1>Choose a cultural hut and continue your journey.</h1>
-                <p>
-                    Start with the unlocked hut experiences, preview each activity, and build progress toward badges, passport entries, bookings, and marketplace recommendations.
-                </p>
+                <p>Select an image-led hut, preview the activity, then continue toward badges, bookings, and products.</p>
             </div>
             <div class="village-progress-card" aria-label="Village progress summary">
                 <span>Progress</span>
                 <strong>0/{{ total_count }}</strong>
-                <p>{{ available_count }} huts ready for the MVP learning path.</p>
+                <p>{{ available_count }} image-led huts ready for the MVP path.</p>
             </div>
         </div>
     </div>
@@ -31,11 +30,12 @@
                     <span>Progress 0/{{ total_count }}</span>
                 </div>
                 <div class="village-preview village-map" data-village-map>
-                    <div class="map-water" aria-hidden="true"></div>
-                    <div class="map-field map-field-one" aria-hidden="true"></div>
-                    <div class="map-field map-field-two" aria-hidden="true"></div>
-                    <div class="map-path map-path-one" aria-hidden="true"></div>
-                    <div class="map-path map-path-two" aria-hidden="true"></div>
+                    <img
+                        class="village-map-art"
+                        src="{% static 'img/jaffna-village-map.svg' %}"
+                        alt="Illustrated map of the AerUla Jaffna heritage village with huts around a central gathering space and lagoon edge."
+                    >
+                    <div class="map-route-note" aria-hidden="true">Select a hut marker to begin</div>
                     {% for hut in huts %}
                         <button
                             class="hut village-map-hut {{ hut.position_class }}{% if forloop.first %} is-selected{% endif %}"
@@ -44,6 +44,10 @@
                             data-hut-summary="{{ hut.summary }}"
                             data-hut-activity="{{ hut.activity }}"
                             data-hut-badge="{{ hut.badge }}"
+                            data-hut-image="{{ hut.image_url }}"
+                            data-hut-image-alt="{{ hut.image_alt }}"
+                            data-hut-credit="{{ hut.image_credit }}"
+                            data-hut-source="{{ hut.image_source_url }}"
                             data-hut-url="{{ hut.url }}"
                             data-status="{{ hut.status }}"
                             aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
@@ -54,12 +58,16 @@
                     {% endfor %}
                 </div>
                 <div class="stage-footer">
-                    <span>Select a hut to preview the next activity</span>
+                    <span>Select a hut to preview the image, activity, and badge</span>
                     <span class="status-dot" aria-hidden="true"></span>
                 </div>
             </div>
 
             <aside class="hut-detail-panel" aria-live="polite">
+                <figure class="selected-hut-photo">
+                    <img src="{{ featured_hut.image_url }}" alt="{{ featured_hut.image_alt }}" data-hut-detail-image>
+                    <figcaption><a href="{{ featured_hut.image_source_url }}" target="_blank" rel="noopener" data-hut-detail-credit>{{ featured_hut.image_credit }}</a></figcaption>
+                </figure>
                 <span class="summary-label">Selected hut</span>
                 <h2 data-hut-detail-name>{{ featured_hut.name }}</h2>
                 <p data-hut-detail-summary>{{ featured_hut.summary }}</p>
@@ -96,13 +104,14 @@
         <div class="hut-card-grid">
             {% for hut in huts %}
                 <article class="hut-card">
+                    <img class="hut-card-photo" src="{{ hut.image_url }}" alt="{{ hut.image_alt }}" loading="lazy">
                     <div class="hut-card-header">
                         <span class="hut-status hut-status-{{ hut.status }}">{{ hut.status|title }}</span>
                         <span>{{ forloop.counter|stringformat:"02d" }}</span>
                     </div>
                     <h3>{{ hut.name }}</h3>
-                    <p>{{ hut.summary }}</p>
                     <strong>{{ hut.badge }}</strong>
+                    <small><a href="{{ hut.image_source_url }}" target="_blank" rel="noopener">{{ hut.image_credit }}</a></small>
                     <a href="{{ hut.url }}">Open hut</a>
                 </article>
             {% endfor %}

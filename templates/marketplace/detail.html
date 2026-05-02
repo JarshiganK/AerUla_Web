@@ -7,7 +7,10 @@
     <div class="container">
         <a class="back-link" href="{% url 'marketplace:index' %}">Back to marketplace</a>
         <div class="product-detail-layout">
-            <div class="product-detail-art product-art-{{ product.hut_slug }}" aria-hidden="true"></div>
+            <figure class="product-detail-art product-detail-photo">
+                <img src="{{ product.hut.image_url }}" alt="{{ product.hut.image_alt }}">
+                <figcaption><a href="{{ product.hut.image_source_url }}" target="_blank" rel="noopener">{{ product.hut.image_credit }}</a></figcaption>
+            </figure>
             <article class="product-detail-panel">
                 <p class="eyebrow">{{ product.hut_name }}</p>
                 <h1>{{ product.name }}</h1>

@@ -15,6 +15,8 @@ class VillageMapTests(TestCase):
         self.assertContains(response, 'Fishing Life Hut')
         self.assertContains(response, 'Folk Music Hut')
         self.assertContains(response, 'Progress 0/5')
+        self.assertContains(response, 'data-hut-image=')
+        self.assertContains(response, 'Traditional Sri Lankan Pottery')
 
     def test_village_map_exposes_available_and_locked_states(self):
         response = self.client.get(reverse('village:index'))
@@ -38,11 +40,14 @@ class HutExperienceTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'village/detail.html')
         self.assertContains(response, 'Pottery Hut')
-        self.assertContains(response, 'Learn the village context first.')
+        self.assertContains(response, 'See the real reference, then try the activity.')
         self.assertContains(response, 'Arrange the clay preparation, shaping, drying, and firing steps.')
         self.assertContains(response, 'Why is drying the pot before firing important?')
         self.assertContains(response, 'Clay Keeper')
         self.assertContains(response, 'Browse Related Products')
+        self.assertContains(response, 'scene-bench')
+        self.assertContains(response, 'River clay')
+        self.assertContains(response, 'Tradtional_Sri_Lankan_Pottery.jpg')
         self.assertContains(response, reverse('simulations:preview', kwargs={'slug': 'pottery'}))
 
     def test_locked_hut_detail_page_renders_preview_state(self):

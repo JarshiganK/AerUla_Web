@@ -10,13 +10,12 @@
             <div>
                 <p class="eyebrow">{{ hut.status|title }} hut</p>
                 <h1>{{ hut.name }}</h1>
-                <p>{{ hut.summary }}</p>
+                <p>{{ hut.activity }}</p>
             </div>
-            <div class="badge-card" aria-label="Badge preview">
-                <span>Badge</span>
-                <strong>{{ hut.badge }}</strong>
-                <p>Complete the story, activity, and quiz to add this badge to the cultural passport.</p>
-            </div>
+            <figure class="hut-hero-photo">
+                <img src="{{ hut.image_url }}" alt="{{ hut.image_alt }}">
+                <figcaption><a href="{{ hut.image_source_url }}" target="_blank" rel="noopener">{{ hut.image_credit }}</a></figcaption>
+            </figure>
         </div>
     </div>
 </section>
@@ -26,7 +25,7 @@
         <div class="hut-experience-layout">
             <article class="hut-story-panel">
                 <p class="eyebrow">Story</p>
-                <h2>Learn the village context first.</h2>
+                <h2>See the real reference, then try the activity.</h2>
                 <p>{{ hut.story }}</p>
             </article>
 
@@ -40,6 +39,11 @@
                         This hut is visible now and will unlock after earlier activities are connected to saved progress.
                     {% endif %}
                 </p>
+                <div class="badge-card badge-card-inline" aria-label="Badge preview">
+                    <span>Badge</span>
+                    <strong>{{ hut.badge }}</strong>
+                    <p>Finish the activity and quiz to add it to the passport.</p>
+                </div>
             </aside>
         </div>
     </div>
@@ -50,6 +54,16 @@
         <div class="section-heading">
             <p class="eyebrow">Mini simulation</p>
             <h2>{{ hut.activity }}</h2>
+        </div>
+        <div class="simulation-scene-preview simulation-scene-{{ hut.slug }}">
+            <div class="scene-photo">
+                <img src="{{ hut.image_url }}" alt="{{ hut.image_alt }}" loading="lazy">
+            </div>
+            <div class="scene-bench">
+                <span>{{ hut.simulation_scene.surface }}</span>
+                <strong>{{ hut.simulation_scene.material }}</strong>
+                <p>{{ hut.simulation_scene.tool }}</p>
+            </div>
         </div>
         <div class="simulation-preview-grid">
             {% for step in steps %}
@@ -83,7 +97,7 @@
         <div class="next-step-panel">
             <div>
                 <p class="eyebrow">After completion</p>
-                <h2>Connect this hut to products and bookings.</h2>
+                <h2>Continue through products and bookings.</h2>
                 <p>
                     {% if related_products %}
                         Related marketplace items for this hut include

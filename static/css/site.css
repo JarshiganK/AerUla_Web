@@ -131,6 +131,137 @@ body {
     font-weight: 650;
 }
 
+.hero-photo-stack {
+    position: relative;
+    min-height: 520px;
+}
+
+.hero-photo-card {
+    position: absolute;
+    overflow: hidden;
+    margin: 0;
+    border: 1px solid rgba(17, 24, 39, 0.1);
+    border-radius: 8px;
+    background: var(--aerula-paper);
+    box-shadow: 0 26px 70px rgba(17, 24, 39, 0.16);
+}
+
+.hero-photo-card img,
+.photo-hut-card img,
+.selected-hut-photo img,
+.hut-card-photo,
+.hut-hero-photo img,
+.scene-photo img,
+.craft-photo-reference img,
+.product-art-photo,
+.product-detail-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-photo-card figcaption,
+.selected-hut-photo figcaption,
+.hut-hero-photo figcaption,
+.craft-photo-reference figcaption,
+.product-detail-photo figcaption {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    max-width: calc(100% - 1.5rem);
+    padding: 0.35rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, 0.76);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.hero-photo-card-large {
+    inset: 0 12% 12% 0;
+}
+
+.hero-photo-card-small {
+    right: 0;
+    bottom: 0;
+    width: 42%;
+    height: 42%;
+}
+
+.hero-photo-note {
+    position: absolute;
+    left: 1.25rem;
+    bottom: 1.25rem;
+    max-width: 280px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 253, 248, 0.52);
+    border-radius: 8px;
+    background: rgba(255, 253, 248, 0.9);
+    box-shadow: 0 16px 34px rgba(17, 24, 39, 0.16);
+}
+
+.hero-photo-note strong,
+.hero-photo-note span {
+    display: block;
+}
+
+.hero-photo-note span {
+    margin-top: 0.35rem;
+    color: var(--aerula-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.home-hut-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.photo-hut-card {
+    overflow: hidden;
+    border: 1px solid var(--aerula-line);
+    border-radius: 8px;
+    background: var(--aerula-paper);
+}
+
+.photo-hut-card img {
+    aspect-ratio: 4 / 3;
+}
+
+.photo-hut-card div {
+    padding: 1.15rem;
+}
+
+.photo-hut-card h3 {
+    margin: 0.85rem 0 0;
+    font-size: 1.2rem;
+    font-weight: 850;
+}
+
+.photo-hut-card p {
+    margin: 0.7rem 0 0;
+    color: var(--aerula-muted);
+    line-height: 1.65;
+}
+
+.photo-hut-card a,
+.hut-card small a,
+.selected-hut-photo a,
+.hut-hero-photo a,
+.craft-photo-reference a {
+    color: inherit;
+}
+
+.photo-hut-card a {
+    display: inline-flex;
+    margin-top: 0.85rem;
+    color: var(--aerula-green);
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
 .village-stage {
     border: 1px solid rgba(17, 24, 39, 0.1);
     border-radius: 8px;
@@ -229,11 +360,11 @@ body {
     transform: rotate(-7deg);
 }
 
-.hut-pottery { left: 12%; top: 16%; }
-.hut-palmyrah { right: 12%; top: 20%; }
-.hut-cooking { left: 36%; top: 42%; }
-.hut-fishing { left: 14%; bottom: 14%; }
-.hut-music { right: 14%; bottom: 12%; }
+.village-map .hut-pottery { left: 18%; top: 39%; }
+.village-map .hut-palmyrah { right: 17%; top: 39%; }
+.village-map .hut-cooking { left: 41%; top: 49%; }
+.village-map .hut-fishing { left: 30%; bottom: 20%; }
+.village-map .hut-music { right: 29%; bottom: 20%; }
 
 .section-band {
     padding: 4.5rem 0;
@@ -591,11 +722,43 @@ body {
 }
 
 .village-map {
-    min-height: 560px;
+    position: relative;
+    min-height: 620px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #f6e8d1 0%, #ead0a8 100%);
+}
+
+.village-map-art {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.map-route-note {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    z-index: 1;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid rgba(17, 24, 39, 0.16);
+    border-radius: 999px;
+    background: rgba(255, 253, 248, 0.88);
+    color: #4b3e2e;
+    font-size: 0.74rem;
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
 .village-map-hut {
-    min-height: 84px;
+    z-index: 2;
+    min-height: 82px;
+    border-color: rgba(89, 63, 36, 0.34);
+    background: rgba(255, 253, 248, 0.95);
+    box-shadow: 0 16px 36px rgba(50, 35, 20, 0.2);
     gap: 0.25rem;
 }
 
@@ -605,60 +768,20 @@ body {
 }
 
 .village-map-hut small {
-    color: var(--aerula-muted);
+    color: #6b5a43;
     font-size: 0.74rem;
     font-weight: 800;
     text-transform: uppercase;
 }
 
+.village-map-hut.is-selected {
+    border-color: #7b5f3d;
+    background: #fff7e8;
+}
+
 .village-map-hut[data-status="locked"] {
-    background: rgba(255, 253, 248, 0.78);
-    color: rgba(17, 24, 39, 0.68);
-}
-
-.map-water,
-.map-field {
-    position: absolute;
-    pointer-events: none;
-}
-
-.map-water {
-    right: -8%;
-    bottom: -16%;
-    width: 42%;
-    height: 38%;
-    border-radius: 999px 0 0 0;
-    background: rgba(54, 91, 135, 0.2);
-}
-
-.map-field {
-    z-index: 0;
-    border: 1px solid rgba(47, 111, 79, 0.16);
-    background: repeating-linear-gradient(
-        45deg,
-        rgba(47, 111, 79, 0.1),
-        rgba(47, 111, 79, 0.1) 8px,
-        rgba(255, 253, 248, 0.38) 8px,
-        rgba(255, 253, 248, 0.38) 16px
-    );
-}
-
-.map-field-one {
-    left: 5%;
-    top: 8%;
-    width: 22%;
-    height: 18%;
-    border-radius: 8px;
-    transform: rotate(-7deg);
-}
-
-.map-field-two {
-    right: 9%;
-    top: 44%;
-    width: 24%;
-    height: 16%;
-    border-radius: 8px;
-    transform: rotate(6deg);
+    background: rgba(245, 239, 227, 0.92);
+    color: #665842;
 }
 
 .hut-detail-panel,
@@ -670,6 +793,15 @@ body {
 
 .hut-detail-panel {
     padding: 1.5rem;
+}
+
+.selected-hut-photo {
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 1.2rem;
+    border-radius: 8px;
+    aspect-ratio: 4 / 3;
+    background: var(--aerula-line);
 }
 
 .hut-detail-panel h2 {
@@ -729,7 +861,17 @@ body {
 }
 
 .hut-card {
-    padding: 1.15rem;
+    overflow: hidden;
+}
+
+.hut-card > :not(.hut-card-photo) {
+    margin-left: 1.15rem;
+    margin-right: 1.15rem;
+}
+
+.hut-card-photo {
+    aspect-ratio: 4 / 3;
+    background: var(--aerula-line);
 }
 
 .hut-card-header {
@@ -737,6 +879,7 @@ body {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1.25rem;
+    margin-top: 1.15rem;
     color: var(--aerula-muted);
     font-size: 0.78rem;
     font-weight: 850;
@@ -773,13 +916,23 @@ body {
 }
 
 .hut-card strong {
+    display: block;
     color: var(--aerula-gold);
     font-size: 0.92rem;
+}
+
+.hut-card small {
+    display: block;
+    margin-top: 0.65rem;
+    color: var(--aerula-muted);
+    font-size: 0.72rem;
+    line-height: 1.4;
 }
 
 .hut-card a {
     display: inline-flex;
     margin-top: 0.9rem;
+    margin-bottom: 1.15rem;
     color: var(--aerula-green);
     font-weight: 800;
     text-decoration: none;
@@ -814,6 +967,16 @@ body {
     grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
     gap: 2rem;
     align-items: end;
+}
+
+.hut-hero-photo {
+    position: relative;
+    overflow: hidden;
+    min-height: 330px;
+    margin: 0;
+    border-radius: 8px;
+    background: var(--aerula-line);
+    box-shadow: 0 20px 50px rgba(17, 24, 39, 0.14);
 }
 
 .hut-experience-heading h1 {
@@ -852,6 +1015,11 @@ body {
 
 .badge-card {
     padding: 1.35rem;
+}
+
+.badge-card-inline {
+    margin-top: 1.25rem;
+    background: #fff;
 }
 
 .badge-card span {
@@ -917,6 +1085,57 @@ body {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
+}
+
+.simulation-scene-preview {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.scene-photo,
+.scene-bench {
+    overflow: hidden;
+    min-height: 260px;
+    border: 1px solid var(--aerula-line);
+    border-radius: 8px;
+    background: var(--aerula-paper);
+}
+
+.scene-bench {
+    display: grid;
+    align-content: center;
+    padding: 1.5rem;
+    background:
+        radial-gradient(circle at 72% 28%, rgba(200, 146, 59, 0.23), transparent 22%),
+        linear-gradient(135deg, #fffdf8, #dcefe6);
+}
+
+.scene-bench span,
+.scene-bench strong,
+.scene-bench p {
+    display: block;
+}
+
+.scene-bench span {
+    color: var(--aerula-green);
+    font-size: 0.78rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.scene-bench strong {
+    margin-top: 0.45rem;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1;
+}
+
+.scene-bench p {
+    margin: 0.9rem 0 0;
+    color: var(--aerula-muted);
+    font-weight: 750;
 }
 
 .simulation-step {
@@ -1093,6 +1312,115 @@ body {
     line-height: 1.06;
 }
 
+.craft-simulator {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.85fr) minmax(0, 1.15fr);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.craft-photo-reference,
+.craft-bench {
+    overflow: hidden;
+    min-height: 300px;
+    border: 1px solid var(--aerula-line);
+    border-radius: 8px;
+    background: #fff;
+}
+
+.craft-photo-reference {
+    position: relative;
+    margin: 0;
+}
+
+.craft-bench {
+    display: grid;
+    align-content: stretch;
+    padding: 1rem;
+    background:
+        linear-gradient(145deg, rgba(47, 111, 79, 0.12), transparent 40%),
+        #fffdf8;
+}
+
+.craft-stage {
+    position: relative;
+    min-height: 220px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 8px;
+    background:
+        radial-gradient(circle at center, rgba(200, 146, 59, 0.2), transparent 26%),
+        linear-gradient(135deg, #ead6bd, #dcefe6);
+}
+
+.craft-stage-surface,
+.craft-stage-tool {
+    position: absolute;
+    z-index: 2;
+    padding: 0.4rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(255, 253, 248, 0.86);
+    color: var(--aerula-muted);
+    font-size: 0.72rem;
+    font-weight: 850;
+    text-transform: uppercase;
+}
+
+.craft-stage-surface {
+    left: 0.85rem;
+    top: 0.85rem;
+}
+
+.craft-stage-tool {
+    right: 0.85rem;
+    bottom: 0.85rem;
+}
+
+.craft-stage strong {
+    z-index: 2;
+    max-width: 72%;
+    color: var(--aerula-ink);
+    font-size: clamp(1.55rem, 4vw, 3rem);
+    line-height: 1;
+    text-align: center;
+}
+
+.craft-progress-orbit {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border: 18px solid rgba(255, 253, 248, 0.72);
+    border-top-color: rgba(47, 111, 79, 0.36);
+    border-radius: 999px;
+    transition: transform 220ms ease;
+}
+
+.craft-stage.is-active .craft-progress-orbit {
+    transform: rotate(52deg) scale(1.08);
+}
+
+.craft-materials {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.craft-materials span {
+    min-height: 52px;
+    display: grid;
+    place-items: center;
+    padding: 0.55rem;
+    border: 1px solid var(--aerula-line);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--aerula-green);
+    font-size: 0.78rem;
+    font-weight: 850;
+    text-align: center;
+}
+
 .step-sort-list {
     display: grid;
     gap: 0.75rem;
@@ -1117,6 +1445,25 @@ body {
     color: var(--aerula-ink);
     font-weight: 800;
     text-align: left;
+}
+
+.step-sort-item {
+    display: flex;
+    gap: 0.85rem;
+    align-items: center;
+}
+
+.step-chip {
+    flex: 0 0 auto;
+    display: inline-grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(47, 111, 79, 0.1);
+    color: var(--aerula-green);
+    font-size: 0.76rem;
+    font-weight: 850;
 }
 
 .step-sort-item:focus,
@@ -1157,6 +1504,11 @@ body {
     background: rgba(180, 35, 24, 0.06);
 }
 
+.step-sort-list li.is-active .step-sort-item {
+    border-color: rgba(54, 91, 135, 0.55);
+    background: rgba(54, 91, 135, 0.08);
+}
+
 .simulation-controls {
     display: flex;
     flex-wrap: wrap;
@@ -1193,6 +1545,124 @@ body {
     border: 1px solid rgba(200, 146, 59, 0.36);
     background: rgba(200, 146, 59, 0.1);
     color: #775012;
+}
+
+.simulation-workspace-360 {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+}
+
+.simulation-board-360 {
+    overflow: hidden;
+}
+
+.panorama-shell {
+    position: relative;
+    min-height: 520px;
+    overflow: hidden;
+    border: 1px solid var(--aerula-line);
+    border-radius: 8px;
+    background: #111827;
+}
+
+.panorama-canvas,
+.panorama-shell img {
+    display: block;
+    width: 100%;
+    height: 520px;
+}
+
+.panorama-canvas {
+    cursor: grab;
+    touch-action: none;
+}
+
+.panorama-canvas:active {
+    cursor: grabbing;
+}
+
+.panorama-shell img {
+    object-fit: cover;
+}
+
+.panorama-overlay {
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    background: rgba(17, 24, 39, 0.76);
+    color: #fff;
+}
+
+.panorama-play-button,
+.panorama-hotspots button {
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 999px;
+    background: rgba(255, 253, 248, 0.94);
+    color: var(--aerula-ink);
+    font-weight: 850;
+}
+
+.panorama-play-button {
+    padding: 0.7rem 1rem;
+}
+
+.panorama-overlay span {
+    max-width: 520px;
+    font-size: 0.9rem;
+    font-weight: 750;
+    line-height: 1.4;
+}
+
+.panorama-hotspots {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.panorama-hotspots button {
+    padding: 0.5rem 0.75rem;
+    box-shadow: 0 10px 24px rgba(17, 24, 39, 0.22);
+}
+
+.panorama-hotspots button.is-visited,
+.panorama-checklist strong.is-visited {
+    border-color: rgba(47, 111, 79, 0.36);
+    background: #dcefe6;
+    color: var(--aerula-green);
+}
+
+.panorama-checklist {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+}
+
+.panorama-checklist span {
+    color: var(--aerula-green);
+    font-size: 0.78rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.panorama-checklist strong {
+    display: block;
+    padding: 0.75rem;
+    border: 1px solid var(--aerula-line);
+    border-radius: 8px;
+    background: #fff;
+    font-size: 0.92rem;
 }
 
 .quiz-checkpoint-panel,
@@ -1378,6 +1848,12 @@ body {
         linear-gradient(135deg, #f6efe3, #dcefe6);
 }
 
+.product-art-photo {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+    background: var(--aerula-line);
+}
+
 .product-art-pottery {
     background:
         radial-gradient(circle at 50% 58%, rgba(200, 146, 59, 0.34), transparent 28%),
@@ -1446,6 +1922,17 @@ body {
     min-height: 520px;
     border: 1px solid var(--aerula-line);
     border-radius: 8px;
+}
+
+.product-detail-photo {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    background: var(--aerula-line);
+}
+
+.product-detail-photo img {
+    min-height: 520px;
 }
 
 .product-detail-panel {
@@ -1700,10 +2187,6 @@ body {
         font-size: 0.9rem;
     }
 
-    .hut-cooking {
-        left: 34%;
-    }
-
     .auth-section {
         padding: 3rem 0;
     }
@@ -1732,12 +2215,15 @@ body {
     .village-map-heading,
     .village-map-layout,
     .hut-card-grid,
+    .home-hut-gallery,
     .hut-experience-heading,
     .hut-experience-layout,
+    .simulation-scene-preview,
     .simulation-preview-grid,
     .quiz-preview-layout,
     .simulation-heading,
     .simulation-workspace,
+    .craft-simulator,
     .catalog-heading,
     .product-grid,
     .product-detail-layout,
@@ -1748,18 +2234,44 @@ body {
         grid-template-columns: 1fr;
     }
 
-    .village-map {
+    .hero-photo-stack {
         min-height: 430px;
     }
 
+    .hero-photo-card-large {
+        inset: 0 0 20% 0;
+    }
+
+    .hero-photo-card-small {
+        width: 50%;
+        height: 34%;
+    }
+
+    .hero-photo-note {
+        left: 0.85rem;
+        bottom: 0.85rem;
+        max-width: 220px;
+        padding: 0.85rem;
+    }
+
+    .village-map {
+        min-height: 470px;
+    }
+
     .village-map-hut {
-        width: 100px;
-        min-height: 68px;
+        width: 96px;
+        min-height: 66px;
     }
 
     .village-map-hut small {
         font-size: 0.68rem;
     }
+
+    .village-map .hut-pottery { left: 8%; top: 34%; }
+    .village-map .hut-palmyrah { right: 8%; top: 34%; }
+    .village-map .hut-cooking { left: 37%; top: 46%; }
+    .village-map .hut-fishing { left: 12%; bottom: 14%; }
+    .village-map .hut-music { right: 12%; bottom: 14%; }
 
     .next-step-panel {
         display: block;
@@ -1789,8 +2301,34 @@ body {
         min-height: 42px;
     }
 
+    .panorama-shell {
+        min-height: 360px;
+    }
+
+    .panorama-canvas,
+    .panorama-shell img {
+        height: 360px;
+    }
+
+    .panorama-overlay {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
     .product-detail-art {
         min-height: 260px;
+    }
+
+    .product-detail-photo img {
+        min-height: 260px;
+    }
+
+    .hut-hero-photo,
+    .scene-photo,
+    .scene-bench,
+    .craft-photo-reference,
+    .craft-bench {
+        min-height: 240px;
     }
 
     .cart-item {
@@ -1805,6 +2343,7 @@ body {
 
 @media (min-width: 768px) and (max-width: 1199.98px) {
     .hut-card-grid,
+    .home-hut-gallery,
     .simulation-preview-grid,
     .product-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));

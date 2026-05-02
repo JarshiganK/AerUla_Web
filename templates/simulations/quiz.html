@@ -10,12 +10,12 @@
             <div>
                 <p class="eyebrow">Quiz checkpoint</p>
                 <h1>{{ quiz_question.question }}</h1>
-                <p>Answer the checkpoint question to preview badge completion for {{ hut.name }}.</p>
+                <p>Answer the checkpoint question after the verified simulation to complete {{ hut.name }}.</p>
             </div>
             <div class="simulation-score-card">
                 <span>Badge</span>
                 <strong>{{ hut.badge }}</strong>
-                <p>Correct answers move learners toward passport progress.</p>
+                <p>The badge is recorded after both the simulation and quiz are verified.</p>
             </div>
         </div>
     </div>
@@ -42,8 +42,13 @@
         {% if is_correct is not None %}
             <div class="quiz-result-panel {% if is_correct %}is-success{% else %}is-warning{% endif %}">
                 {% if is_correct %}
-                    <h2>Badge preview unlocked.</h2>
-                    <p>{{ hut.badge }} has been recorded in your cultural passport if you are signed in.</p>
+                    {% if user.is_authenticated and progress.simulation_completed %}
+                        <h2>Badge recorded.</h2>
+                        <p>{{ hut.badge }} has been recorded in your cultural passport.</p>
+                    {% else %}
+                        <h2>Quiz checkpoint passed.</h2>
+                        <p>Complete the verified simulation while signed in to record {{ hut.badge }} in your cultural passport.</p>
+                    {% endif %}
                 {% else %}
                     <h2>Try the checkpoint again.</h2>
                     <p>Review the hut story and simulation order, then choose the strongest answer.</p>

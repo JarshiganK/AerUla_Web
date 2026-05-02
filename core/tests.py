@@ -11,6 +11,8 @@ class HomePageTests(TestCase):
         self.assertContains(response, 'Enter Virtual Village')
         self.assertContains(response, 'Browse Marketplace')
         self.assertContains(response, 'Passport progress')
+        self.assertContains(response, 'Real cultural references')
+        self.assertContains(response, 'Tradtional_Sri_Lankan_Pottery.jpg')
 
 
 class RouteTests(TestCase):

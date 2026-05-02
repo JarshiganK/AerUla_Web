@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ hut.short_name }} Simulation | AerUla{% endblock %}
+{% block title %}{{ hut.short_name }} 360 Simulation | AerUla{% endblock %}
 
 {% block content %}
 <section class="simulation-hero">
@@ -8,14 +8,14 @@
         <a class="back-link" href="{% url 'village:detail' hut.slug %}">Back to {{ hut.name }}</a>
         <div class="simulation-heading">
             <div>
-                <p class="eyebrow">Simulation preview</p>
+                <p class="eyebrow">360 video simulation</p>
                 <h1>{{ hut.activity }}</h1>
-                <p>{{ hut.summary }}</p>
+                <p>{{ hut.badge }}</p>
             </div>
             <div class="simulation-score-card" aria-live="polite">
-                <span>Preview score</span>
-                <strong data-simulation-score>0/{{ ordered_steps|length }}</strong>
-                <p data-simulation-feedback>Arrange the village craft steps in the correct order.</p>
+                <span>Verified score</span>
+                <strong data-simulation-score>{% if progress %}{{ progress.simulation_score }}%{% else %}0%{% endif %}</strong>
+                <p data-simulation-feedback>{% if progress.simulation_completed %}360 simulation verified. Take the quiz to record the badge.{% else %}Watch, look around, and inspect the required points in the scene.{% endif %}</p>
             </div>
         </div>
     </div>
@@ -23,46 +23,64 @@
 
 <section class="simulation-workspace-section">
     <div class="container">
-        <div class="simulation-workspace" data-step-simulation>
-            <div class="simulation-board">
+        <div
+            class="simulation-workspace simulation-workspace-360"
+            data-panorama-simulation
+            data-hut-name="{{ hut.short_name }}"
+            data-complete-url="{% url 'simulations:complete' hut.slug %}"
+            data-video-url="{{ hut.simulation_360.video_url }}"
+            data-duration-required="{{ hut.simulation_360.duration_required }}"
+            data-coverage-required="{{ hut.simulation_360.coverage_required }}"
+        >
+            <div class="simulation-board simulation-board-360">
                 <div class="simulation-board-header">
                     <div>
-                        <p class="eyebrow">Arrange steps</p>
-                        <h2>Build the correct process from first step to final step.</h2>
+                        <p class="eyebrow">Immersive hut visit</p>
+                        <h2>Drag the scene, play the 360 video, and inspect the craft points.</h2>
                     </div>
-                    <button class="btn btn-outline-dark" type="button" data-reset-simulation>Reset</button>
+                    <button class="btn btn-outline-dark" type="button" data-reset-panorama>Reset view</button>
                 </div>
 
-                <ol class="step-sort-list" data-step-list>
-                    {% for step in shuffled_steps %}
-                        <li>
-                            <button class="step-sort-item" type="button" data-step-value="{{ step.text }}">
-                                <span>{{ step.text }}</span>
+                <div class="panorama-shell">
+                    <canvas class="panorama-canvas" data-panorama-canvas aria-label="{{ hut.short_name }} 360 video viewer"></canvas>
+                    <video data-panorama-video preload="metadata" playsinline crossorigin="anonymous" hidden>
+                        <source src="{{ hut.simulation_360.video_url }}" type="video/mp4">
+                    </video>
+                    <div class="panorama-overlay">
+                        <button class="panorama-play-button" type="button" data-toggle-panorama>Play 360 Video</button>
+                        <span data-panorama-status>Drag to look around. A generated 360 hut scene is active until a local video is added.</span>
+                    </div>
+                    <div class="panorama-hotspots" aria-label="360 scene inspection points">
+                        {% for hotspot in hut.simulation_360.hotspots %}
+                            <button
+                                type="button"
+                                data-panorama-hotspot="{{ hotspot.id }}"
+                                data-yaw="{{ hotspot.yaw }}"
+                                data-pitch="{{ hotspot.pitch }}"
+                            >
+                                {{ hotspot.label }}
                             </button>
-                            <div class="step-move-controls" aria-label="Move {{ step.text }}">
-                                <button type="button" data-move-step="up">Up</button>
-                                <button type="button" data-move-step="down">Down</button>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ol>
+                        {% endfor %}
+                    </div>
+                </div>
 
                 <div class="simulation-controls" aria-label="Simulation controls">
-                    <button class="btn btn-dark" type="button" data-check-simulation>Check Order</button>
-                    <a class="btn btn-outline-dark" href="{% url 'simulations:quiz' hut.slug %}">Take Quiz</a>
-                    <p>Use a step, then move it up or down with the controls that appear.</p>
+                    <button class="btn btn-dark" type="button" data-verify-panorama>Verify 360 Visit</button>
+                    <a class="btn btn-outline-dark{% if not progress.simulation_completed %} disabled{% endif %}" href="{% url 'simulations:quiz' hut.slug %}" data-quiz-link {% if not progress.simulation_completed %}aria-disabled="true"{% endif %}>Take Quiz</a>
+                    <p data-panorama-progress>Watch time: 0s. View coverage: 0 degrees. Hotspots: 0/{{ hut.simulation_360.hotspots|length }}.</p>
                 </div>
             </div>
 
             <aside class="simulation-guide">
                 <span class="summary-label">Learning guide</span>
                 <h2>{{ hut.badge }}</h2>
-                <p>Check your order when the process feels right. A complete result can later be validated on the server before passport progress is awarded.</p>
-                <ol data-answer-key hidden>
-                    {% for order, step in ordered_steps %}
-                        <li data-answer-value="{{ step.text }}">{{ order }}. {{ step.text }}</li>
+                <p>This viewer is a real interactive 360 canvas scene now. Add an equirectangular video at <code>{{ hut.simulation_360.video_url }}</code> when you have filmed footage.</p>
+                <div class="panorama-checklist">
+                    <span>Required inspection points</span>
+                    {% for hotspot in hut.simulation_360.hotspots %}
+                        <strong data-hotspot-check="{{ hotspot.id }}">{{ hotspot.label }}</strong>
                     {% endfor %}
-                </ol>
+                </div>
                 <div class="simulation-result" data-simulation-result hidden></div>
             </aside>
         </div>
