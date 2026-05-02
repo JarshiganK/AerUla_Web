@@ -1,7 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from village.content import HUTS
+from bookings.models import BookingRequest, Experience
+from marketplace.models import Product
+from simulations.models import UserProgress
+from simulations.models import QuizQuestion
+from village.models import Hut
 
 
 @login_required
@@ -42,20 +46,25 @@ def index(request):
 
 @login_required
 def passport(request):
+    progress_by_hut = {
+        progress.hut_id: progress
+        for progress in UserProgress.objects.filter(user=request.user).select_related('hut')
+    }
     passport_huts = [
         {
-            **hut,
-            'completed': False,
-            'score': 'Pending',
+            'hut': hut,
+            'completed': progress_by_hut.get(hut.id).completed if hut.id in progress_by_hut else False,
+            'score': progress_by_hut.get(hut.id).score if hut.id in progress_by_hut else 'Pending',
         }
-        for hut in HUTS
+        for hut in Hut.objects.filter(is_active=True)
     ]
+    completed_count = sum(item['completed'] for item in passport_huts)
     return render(
         request,
         'dashboard/passport.html',
         {
             'passport_huts': passport_huts,
-            'completed_count': 0,
+            'completed_count': completed_count,
             'total_count': len(passport_huts),
         },
     )
@@ -68,9 +77,9 @@ def host_workspace(request):
         'dashboard/host.html',
         {
             'host_metrics': [
-                ('Experience listings', '3 drafts'),
-                ('Booking requests', '2 pending'),
-                ('Products', '5 catalogue items'),
+                ('Experience listings', f'{Experience.objects.count()} active'),
+                ('Booking requests', f'{BookingRequest.objects.filter(status=BookingRequest.STATUS_PENDING).count()} pending'),
+                ('Products', f'{Product.objects.count()} catalogue items'),
             ],
         },
     )
@@ -84,9 +93,10 @@ def admin_workspace(request):
         {
             'approval_queues': [
                 ('Hosts', '2 pending'),
-                ('Products', '4 pending'),
-                ('Bookings', '3 review items'),
-                ('Quizzes', '5 content checks'),
+                ('Products', f'{Product.objects.filter(is_published=False).count()} pending'),
+                ('Bookings', f'{BookingRequest.objects.filter(status=BookingRequest.STATUS_PENDING).count()} review items'),
+                ('Quizzes', f'{QuizQuestion.objects.count()} content checks'),
+                ('Huts', f'{Hut.objects.filter(is_active=True).count()} published'),
             ],
         },
     )

@@ -14,7 +14,7 @@
             </div>
             <div class="simulation-score-card" aria-live="polite">
                 <span>Preview score</span>
-                <strong data-simulation-score>0/{{ hut.steps|length }}</strong>
+                <strong data-simulation-score>0/{{ ordered_steps|length }}</strong>
                 <p data-simulation-feedback>Arrange the village craft steps in the correct order.</p>
             </div>
         </div>
@@ -36,10 +36,10 @@
                 <ol class="step-sort-list" data-step-list>
                     {% for step in shuffled_steps %}
                         <li>
-                            <button class="step-sort-item" type="button" data-step-value="{{ step }}">
-                                <span>{{ step }}</span>
+                            <button class="step-sort-item" type="button" data-step-value="{{ step.text }}">
+                                <span>{{ step.text }}</span>
                             </button>
-                            <div class="step-move-controls" aria-label="Move {{ step }}">
+                            <div class="step-move-controls" aria-label="Move {{ step.text }}">
                                 <button type="button" data-move-step="up">Up</button>
                                 <button type="button" data-move-step="down">Down</button>
                             </div>
@@ -60,7 +60,7 @@
                 <p>Check your order when the process feels right. A complete result can later be validated on the server before passport progress is awarded.</p>
                 <ol data-answer-key hidden>
                     {% for order, step in ordered_steps %}
-                        <li data-answer-value="{{ step }}">{{ order }}. {{ step }}</li>
+                        <li data-answer-value="{{ step.text }}">{{ order }}. {{ step.text }}</li>
                     {% endfor %}
                 </ol>
                 <div class="simulation-result" data-simulation-result hidden></div>

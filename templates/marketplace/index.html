@@ -14,7 +14,7 @@
             <div class="catalog-summary-card">
                 <span>Visible products</span>
                 <strong>{{ product_count }}</strong>
-                <p>Static MVP catalogue ready for cart and approval workflows later.</p>
+                <p>Admin-managed catalogue ready for cart and approval workflows.</p>
             </div>
         </div>
     </div>
@@ -34,12 +34,12 @@
                 <article class="product-card">
                     <div class="product-art product-art-{{ product.hut_slug }}" aria-hidden="true"></div>
                     <div class="product-card-body">
-                        <span class="hut-status hut-status-available">{{ product.status }}</span>
+                        <span class="hut-status hut-status-available">{{ product.status_label }}</span>
                         <h2>{{ product.name }}</h2>
                         <p>{{ product.summary }}</p>
                         <div class="product-meta">
                             <span>{{ product.hut_name }}</span>
-                            <strong>{{ product.price }}</strong>
+                            <strong>{{ product.formatted_price }}</strong>
                         </div>
                         <a class="btn btn-outline-dark btn-sm" href="{% url 'marketplace:detail' product.slug %}">View Product</a>
                     </div>

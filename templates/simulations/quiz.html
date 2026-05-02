@@ -9,7 +9,7 @@
         <div class="simulation-heading">
             <div>
                 <p class="eyebrow">Quiz checkpoint</p>
-                <h1>{{ hut.quiz_question }}</h1>
+                <h1>{{ quiz_question.question }}</h1>
                 <p>Answer the checkpoint question to preview badge completion for {{ hut.name }}.</p>
             </div>
             <div class="simulation-score-card">
@@ -26,10 +26,10 @@
         <form class="quiz-checkpoint-panel" method="post">
             {% csrf_token %}
             <div class="quiz-option-list">
-                {% for option in hut.quiz_options %}
-                    <label class="quiz-choice{% if selected_answer == option %} is-selected{% endif %}">
-                        <input type="radio" name="answer" value="{{ option }}" required {% if selected_answer == option %}checked{% endif %}>
-                        <span>{{ option }}</span>
+                {% for option in quiz_question.options.all %}
+                    <label class="quiz-choice{% if selected_answer == option.text %} is-selected{% endif %}">
+                        <input type="radio" name="answer" value="{{ option.text }}" required {% if selected_answer == option.text %}checked{% endif %}>
+                        <span>{{ option.text }}</span>
                     </label>
                 {% endfor %}
             </div>
@@ -43,7 +43,7 @@
             <div class="quiz-result-panel {% if is_correct %}is-success{% else %}is-warning{% endif %}">
                 {% if is_correct %}
                     <h2>Badge preview unlocked.</h2>
-                    <p>{{ hut.badge }} is ready to be awarded once persistent server-side progress is connected.</p>
+                    <p>{{ hut.badge }} has been recorded in your cultural passport if you are signed in.</p>
                 {% else %}
                     <h2>Try the checkpoint again.</h2>
                     <p>Review the hut story and simulation order, then choose the strongest answer.</p>

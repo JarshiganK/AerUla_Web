@@ -1,23 +1,26 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from .content import EXPERIENCES, get_experience
+from .forms import BookingRequestForm
+from .models import BookingRequest, Experience
 
 
 def index(request):
+    experiences = Experience.objects.filter(is_published=True).select_related('hut')
     return render(
         request,
         'bookings/index.html',
         {
-            'experiences': EXPERIENCES,
-            'experience_count': len(EXPERIENCES),
+            'experiences': experiences,
+            'experience_count': experiences.count(),
         },
     )
 
 
 def detail(request, slug):
-    experience = get_experience(slug)
-    if experience is None:
+    try:
+        experience = Experience.objects.select_related('hut').get(slug=slug, is_published=True)
+    except Experience.DoesNotExist:
         raise Http404('Experience not found')
 
     return render(
@@ -30,16 +33,31 @@ def detail(request, slug):
 
 
 def request_booking(request, slug):
-    experience = get_experience(slug)
-    if experience is None:
+    try:
+        experience = Experience.objects.select_related('hut').get(slug=slug, is_published=True)
+    except Experience.DoesNotExist:
         raise Http404('Experience not found')
 
-    submitted = request.method == 'POST'
+    submitted = False
+    if request.method == 'POST':
+        form = BookingRequestForm(request.POST)
+        if form.is_valid():
+            booking_request = form.save(commit=False)
+            booking_request.experience = experience
+            if request.user.is_authenticated:
+                booking_request.user = request.user
+            booking_request.status = BookingRequest.STATUS_PENDING
+            booking_request.save()
+            submitted = True
+    else:
+        form = BookingRequestForm()
+
     return render(
         request,
         'bookings/request.html',
         {
             'experience': experience,
+            'form': form,
             'submitted': submitted,
         },
     )

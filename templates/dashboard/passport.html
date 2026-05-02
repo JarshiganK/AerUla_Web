@@ -26,16 +26,16 @@
             {% for hut in passport_huts %}
                 <article class="passport-card">
                     <div class="hut-card-header">
-                        <span class="hut-status hut-status-{{ hut.status }}">{{ hut.status|title }}</span>
+                        <span class="hut-status hut-status-{{ hut.hut.status }}">{{ hut.hut.status|title }}</span>
                         <span>{{ hut.score }}</span>
                     </div>
-                    <h2>{{ hut.name }}</h2>
-                    <p>{{ hut.summary }}</p>
+                    <h2>{{ hut.hut.name }}</h2>
+                    <p>{{ hut.hut.summary }}</p>
                     <div class="passport-badge">
                         <span>Badge</span>
-                        <strong>{{ hut.badge }}</strong>
+                        <strong>{{ hut.hut.badge }}</strong>
                     </div>
-                    <a class="btn btn-outline-dark btn-sm" href="{% url 'village:detail' hut.slug %}">Continue Hut</a>
+                    <a class="btn btn-outline-dark btn-sm" href="{% url 'village:detail' hut.hut.slug %}">Continue Hut</a>
                 </article>
             {% endfor %}
         </div>

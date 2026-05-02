@@ -8,28 +8,34 @@
         <a class="back-link" href="{% url 'marketplace:cart' %}">Back to cart</a>
         <div class="booking-detail-layout">
             <article class="booking-detail-panel">
-                <p class="eyebrow">Checkout</p>
-                <h1>Place order preview.</h1>
-                <p>Order reference {{ order_reference }} is a preview checkpoint for the marketplace purchase path.</p>
-                <dl class="hut-detail-list">
-                    <div>
-                        <dt>Total</dt>
-                        <dd>{{ cart_total }}</dd>
-                    </div>
-                    <div>
-                        <dt>Status</dt>
-                        <dd>Pending payment integration</dd>
-                    </div>
-                    <div>
-                        <dt>Delivery</dt>
-                        <dd>Customer address form pending</dd>
-                    </div>
-                </dl>
+                {% if order %}
+                    <p class="eyebrow">Order placed</p>
+                    <h1>{{ order.reference }}</h1>
+                    <p>Your order has been recorded for marketplace follow-up.</p>
+                {% else %}
+                    <p class="eyebrow">Checkout</p>
+                    <h1>Place your order.</h1>
+                    <p>Confirm customer details and create an order record for {{ cart_total }}.</p>
+                    <form class="booking-request-form" method="post">
+                        {% csrf_token %}
+                        <label>
+                            Full name
+                            {{ form.customer_name }}
+                            {% for error in form.customer_name.errors %}<span class="form-error">{{ error }}</span>{% endfor %}
+                        </label>
+                        <label>
+                            Email
+                            {{ form.customer_email }}
+                            {% for error in form.customer_email.errors %}<span class="form-error">{{ error }}</span>{% endfor %}
+                        </label>
+                        <button class="btn btn-dark" type="submit">Place Order</button>
+                    </form>
+                {% endif %}
             </article>
             <aside class="booking-request-panel">
-                <span class="summary-label">Order placed</span>
-                <strong>Preview complete</strong>
-                <p>The next implementation step is persistent orders, stock checks, and payment provider integration.</p>
+                <span class="summary-label">Total</span>
+                <strong>{% if order %}{{ order.formatted_total }}{% else %}{{ cart_total }}{% endif %}</strong>
+                <p>{% if order %}Status: {{ order.get_status_display }}.{% else %}Payment integration can be connected after order capture.{% endif %}</p>
                 <a class="btn btn-dark w-100" href="{% url 'dashboard:index' %}">Return to Dashboard</a>
             </aside>
         </div>

@@ -41,7 +41,7 @@ class DashboardTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Host tools')
-        self.assertContains(response, 'Experience listings')
+        self.assertContains(response, 'Manage Listings')
         self.assertContains(response, reverse('dashboard:host'))
 
     def test_dashboard_renders_admin_workspace_for_staff(self):

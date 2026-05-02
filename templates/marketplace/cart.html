@@ -10,7 +10,7 @@
             <div>
                 <p class="eyebrow">Cart</p>
                 <h1>Review selected cultural products.</h1>
-                <p>This MVP cart shows the checkout page structure before persistent cart storage and stock validation are connected.</p>
+                <p>Review products added during this session before placing an order.</p>
             </div>
             <div class="catalog-summary-card">
                 <span>Items</span>
@@ -28,19 +28,29 @@
                 {% for item in cart_items %}
                     <article class="cart-item">
                         <div>
-                            <span class="summary-label">{{ item.hut_name }}</span>
-                            <h2>{{ item.name }}</h2>
-                            <p>{{ item.summary }}</p>
+                            <span class="summary-label">{{ item.product.hut_name }}</span>
+                            <h2>{{ item.product.name }}</h2>
+                            <p>{{ item.product.summary }}</p>
+                            <p>Quantity {{ item.quantity }}</p>
                         </div>
-                        <strong>{{ item.price }}</strong>
+                        <strong>{{ item.line_total }}</strong>
                     </article>
+                {% empty %}
+                    <div class="empty-state">
+                        <h2>Your cart is empty.</h2>
+                        <p>Add a marketplace product to begin checkout.</p>
+                    </div>
                 {% endfor %}
             </div>
             <aside class="booking-request-panel">
                 <span class="summary-label">Order preview</span>
                 <strong>{{ cart_total }}</strong>
-                <p>Checkout will later validate user details, stock, delivery information, and payment status.</p>
-                <a class="btn btn-dark w-100" href="{% url 'marketplace:checkout' %}">Continue to Checkout</a>
+                <p>Checkout validates customer details and creates a database order record.</p>
+                {% if cart_items %}
+                    <a class="btn btn-dark w-100" href="{% url 'marketplace:checkout' %}">Continue to Checkout</a>
+                {% else %}
+                    <a class="btn btn-dark w-100" href="{% url 'marketplace:index' %}">Browse Products</a>
+                {% endif %}
             </aside>
         </div>
     </div>

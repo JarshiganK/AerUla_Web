@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from .models import UserProgress
+
 
 class SimulationPreviewTests(TestCase):
     def test_simulation_index_redirects_to_first_available_preview(self):
@@ -38,6 +40,26 @@ class SimulationPreviewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Badge preview unlocked.')
+
+    def test_authenticated_correct_quiz_saves_progress(self):
+        from django.contrib.auth.models import User
+
+        user = User.objects.create_user(
+            username='learner@example.com',
+            email='learner@example.com',
+            password='StrongPass12345!',
+        )
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse('simulations:quiz', kwargs={'slug': 'pottery'}),
+            {'answer': 'It helps the clay harden evenly'},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        progress = UserProgress.objects.get(user=user, hut__slug='pottery')
+        self.assertTrue(progress.completed)
+        self.assertEqual(progress.score, 100)
 
     def test_unknown_simulation_returns_404(self):
         response = self.client.get(reverse('simulations:preview', kwargs={'slug': 'unknown'}))

@@ -22,7 +22,7 @@
             <article class="summary-card">
                 <span class="summary-label">Passport progress</span>
                 <strong>0 / 5 huts</strong>
-                <p>Progress tracking will update here once hut completion is connected.</p>
+                <p>Progress updates after verified quiz completion.</p>
                 <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:passport' %}">View Passport</a>
             </article>
             <article class="summary-card">
@@ -72,7 +72,7 @@
                 <article class="summary-card">
                     <span class="summary-label">Host tools</span>
                     <strong>Listings</strong>
-                    <p>Experience listings, products, availability, and booking requests will live here.</p>
+                    <p>Review experience listings, products, availability, and booking requests.</p>
                     <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:host' %}">Manage Listings</a>
                 </article>
             {% endif %}
@@ -80,7 +80,7 @@
                 <article class="summary-card">
                     <span class="summary-label">Admin tools</span>
                     <strong>Approvals</strong>
-                    <p>Host, hut, product, booking, and quiz approvals will be managed from this workspace.</p>
+                    <p>Review host, hut, product, booking, and quiz operations from this workspace.</p>
                     <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:admin_workspace' %}">Open Approvals</a>
                 </article>
             {% endif %}

@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from .models import BookingRequest
+
 
 class BookingPageTests(TestCase):
     def test_booking_index_renders_experiences(self):
@@ -29,7 +31,7 @@ class BookingPageTests(TestCase):
         self.assertTemplateUsed(response, 'bookings/request.html')
         self.assertContains(response, 'Booking request')
         self.assertContains(response, 'Preferred date')
-        self.assertContains(response, 'Submit Request Preview')
+        self.assertContains(response, 'Submit Request')
 
     def test_booking_request_post_renders_received_state(self):
         response = self.client.post(reverse('bookings:request', kwargs={'slug': 'pottery-workshop'}), {
@@ -40,6 +42,8 @@ class BookingPageTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Request received')
+        self.assertEqual(BookingRequest.objects.count(), 1)
+        self.assertEqual(BookingRequest.objects.get().guests, 2)
 
     def test_unknown_booking_returns_404(self):
         response = self.client.get(reverse('bookings:detail', kwargs={'slug': 'missing'}))

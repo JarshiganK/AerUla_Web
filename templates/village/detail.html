@@ -52,10 +52,10 @@
             <h2>{{ hut.activity }}</h2>
         </div>
         <div class="simulation-preview-grid">
-            {% for step in hut.steps %}
+            {% for step in steps %}
                 <div class="simulation-step">
                     <span>{{ forloop.counter|stringformat:"02d" }}</span>
-                    <p>{{ step }}</p>
+                    <p>{{ step.text }}</p>
                 </div>
             {% endfor %}
         </div>
@@ -67,11 +67,11 @@
         <div class="quiz-preview-layout">
             <div>
                 <p class="eyebrow">Quiz preview</p>
-                <h2>{{ hut.quiz_question }}</h2>
+                <h2>{{ quiz_question.question }}</h2>
             </div>
             <div class="quiz-option-list">
-                {% for option in hut.quiz_options %}
-                    <button class="quiz-option" type="button">{{ option }}</button>
+                {% for option in quiz_question.options.all %}
+                    <button class="quiz-option" type="button">{{ option.text }}</button>
                 {% endfor %}
             </div>
         </div>
@@ -84,7 +84,14 @@
             <div>
                 <p class="eyebrow">After completion</p>
                 <h2>Connect this hut to products and bookings.</h2>
-                <p>Related marketplace items for this hut include {{ hut.related_products|join:", " }}.</p>
+                <p>
+                    {% if related_products %}
+                        Related marketplace items for this hut include
+                        {% for product in related_products %}{{ product.name }}{% if not forloop.last %}, {% endif %}{% endfor %}.
+                    {% else %}
+                        Related marketplace items will appear here after products are published for this hut.
+                    {% endif %}
+                </p>
             </div>
             <div class="hut-detail-actions">
                 <a class="btn btn-dark" href="{% url 'simulations:preview' hut.slug %}">Start Simulation Preview</a>

@@ -22,14 +22,14 @@
                     </div>
                     <div>
                         <dt>Starting price</dt>
-                        <dd>{{ experience.price }}</dd>
+                        <dd>{{ experience.formatted_price }}</dd>
                     </div>
                 </dl>
             </article>
             <aside class="booking-request-panel">
                 <span class="summary-label">Request preview</span>
-                <strong>{{ experience.status }}</strong>
-                <p>The next backend step will validate dates, guest count, host availability, and booking status changes.</p>
+                <strong>{{ experience.status_label }}</strong>
+                <p>Request dates, guest count, and notes are validated before being saved for host review.</p>
                 <a class="btn btn-dark w-100" href="{% url 'bookings:request' experience.slug %}">Request Booking Preview</a>
             </aside>
         </div>

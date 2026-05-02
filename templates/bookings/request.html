@@ -10,33 +10,36 @@
             <article class="booking-detail-panel">
                 <p class="eyebrow">Booking request</p>
                 <h1>{{ experience.title }}</h1>
-                <p>Submit a preview request for {{ experience.host }}. Persistent availability and status updates will connect in the next backend slice.</p>
+                <p>Submit a request for {{ experience.host }}. The request will be saved for host review.</p>
 
                 <form class="booking-request-form" method="post">
                     {% csrf_token %}
                     <label>
                         Preferred date
-                        <input class="form-control" type="date" name="preferred_date" required>
+                        {{ form.preferred_date }}
+                        {% for error in form.preferred_date.errors %}<span class="form-error">{{ error }}</span>{% endfor %}
                     </label>
                     <label>
                         Guests
-                        <input class="form-control" type="number" name="guests" min="1" max="12" value="2" required>
+                        {{ form.guests }}
+                        {% for error in form.guests.errors %}<span class="form-error">{{ error }}</span>{% endfor %}
                     </label>
                     <label>
                         Notes for host
-                        <textarea class="form-control" name="notes" rows="4" placeholder="Accessibility, language, or timing notes"></textarea>
+                        {{ form.notes }}
+                        {% for error in form.notes.errors %}<span class="form-error">{{ error }}</span>{% endfor %}
                     </label>
-                    <button class="btn btn-dark" type="submit">Submit Request Preview</button>
+                    <button class="btn btn-dark" type="submit">Submit Request</button>
                 </form>
             </article>
             <aside class="booking-request-panel">
                 <span class="summary-label">Status</span>
                 {% if submitted %}
                     <strong>Request received</strong>
-                    <p>This preview confirms the request page works. Database-backed reservations will store the request later.</p>
+                    <p>Your request has been saved with pending status for host review.</p>
                 {% else %}
-                    <strong>{{ experience.status }}</strong>
-                    <p>{{ experience.duration }} with {{ experience.host }} from {{ experience.price }}.</p>
+                    <strong>{{ experience.status_label }}</strong>
+                    <p>{{ experience.duration }} with {{ experience.host }} from {{ experience.formatted_price }}.</p>
                 {% endif %}
             </aside>
         </div>

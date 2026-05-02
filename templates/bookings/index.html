@@ -9,7 +9,7 @@
             <div>
                 <p class="eyebrow">Bookings</p>
                 <h1>Reserve cultural experiences connected to the huts.</h1>
-                <p>Booking pages are ready for request workflows, host availability, and admin approval in the next implementation step.</p>
+                <p>Booking pages are connected to admin-managed experiences and validated request forms.</p>
             </div>
             <div class="catalog-summary-card">
                 <span>Experiences</span>
@@ -25,7 +25,7 @@
         <div class="experience-grid">
             {% for experience in experiences %}
                 <article class="experience-card">
-                    <span class="hut-status hut-status-available">{{ experience.status }}</span>
+                    <span class="hut-status hut-status-available">{{ experience.status_label }}</span>
                     <h2>{{ experience.title }}</h2>
                     <p>{{ experience.summary }}</p>
                     <dl class="experience-meta">
@@ -39,7 +39,7 @@
                         </div>
                         <div>
                             <dt>From</dt>
-                            <dd>{{ experience.price }}</dd>
+                            <dd>{{ experience.formatted_price }}</dd>
                         </div>
                     </dl>
                     <a class="btn btn-outline-dark btn-sm" href="{% url 'bookings:detail' experience.slug %}">View Booking</a>

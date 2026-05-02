@@ -23,11 +23,11 @@
                     </div>
                     <div>
                         <dt>Price</dt>
-                        <dd>{{ product.price }}</dd>
+                        <dd>{{ product.formatted_price }}</dd>
                     </div>
                 </dl>
                 <div class="hut-detail-actions">
-                    <a class="btn btn-dark" href="{% url 'marketplace:cart' %}">Add to Cart Preview</a>
+                    <a class="btn btn-dark" href="{% url 'marketplace:add_to_cart' product.slug %}">Add to Cart</a>
                     <a class="btn btn-outline-dark" href="{% url 'bookings:index' %}">Book Related Experience</a>
                 </div>
             </article>
