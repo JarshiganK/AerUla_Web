@@ -73,6 +73,7 @@
                     <span class="summary-label">Host tools</span>
                     <strong>Listings</strong>
                     <p>Experience listings, products, availability, and booking requests will live here.</p>
+                    <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:host' %}">Manage Listings</a>
                 </article>
             {% endif %}
             {% if is_admin %}
@@ -80,6 +81,7 @@
                     <span class="summary-label">Admin tools</span>
                     <strong>Approvals</strong>
                     <p>Host, hut, product, booking, and quiz approvals will be managed from this workspace.</p>
+                    <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:admin_workspace' %}">Open Approvals</a>
                 </article>
             {% endif %}
         </div>

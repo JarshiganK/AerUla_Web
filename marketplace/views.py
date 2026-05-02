@@ -39,3 +39,27 @@ def detail(request, slug):
             'related_products': related_products,
         },
     )
+
+
+def cart(request):
+    cart_items = PRODUCTS[:2]
+    return render(
+        request,
+        'marketplace/cart.html',
+        {
+            'cart_items': cart_items,
+            'cart_count': len(cart_items),
+            'cart_total': 'LKR 7,200',
+        },
+    )
+
+
+def checkout(request):
+    return render(
+        request,
+        'marketplace/checkout.html',
+        {
+            'order_reference': 'AER-MVP-0001',
+            'cart_total': 'LKR 7,200',
+        },
+    )

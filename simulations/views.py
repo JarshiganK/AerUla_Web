@@ -25,6 +25,28 @@ def preview(request, slug):
     )
 
 
+def quiz(request, slug):
+    hut = get_hut(slug)
+    if hut is None:
+        raise Http404('Quiz not found')
+
+    selected_answer = ''
+    is_correct = None
+    if request.method == 'POST':
+        selected_answer = request.POST.get('answer', '')
+        is_correct = selected_answer == hut['quiz_options'][0]
+
+    return render(
+        request,
+        'simulations/quiz.html',
+        {
+            'hut': hut,
+            'selected_answer': selected_answer,
+            'is_correct': is_correct,
+        },
+    )
+
+
 def _preview_order(steps):
     if len(steps) < 3:
         return steps

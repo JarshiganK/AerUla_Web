@@ -59,3 +59,34 @@ def passport(request):
             'total_count': len(passport_huts),
         },
     )
+
+
+@login_required
+def host_workspace(request):
+    return render(
+        request,
+        'dashboard/host.html',
+        {
+            'host_metrics': [
+                ('Experience listings', '3 drafts'),
+                ('Booking requests', '2 pending'),
+                ('Products', '5 catalogue items'),
+            ],
+        },
+    )
+
+
+@login_required
+def admin_workspace(request):
+    return render(
+        request,
+        'dashboard/admin_workspace.html',
+        {
+            'approval_queues': [
+                ('Hosts', '2 pending'),
+                ('Products', '4 pending'),
+                ('Bookings', '3 review items'),
+                ('Quizzes', '5 content checks'),
+            ],
+        },
+    )

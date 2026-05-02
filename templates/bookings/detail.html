@@ -30,7 +30,7 @@
                 <span class="summary-label">Request preview</span>
                 <strong>{{ experience.status }}</strong>
                 <p>The next backend step will validate dates, guest count, host availability, and booking status changes.</p>
-                <button class="btn btn-dark w-100" type="button">Request Booking Preview</button>
+                <a class="btn btn-dark w-100" href="{% url 'bookings:request' experience.slug %}">Request Booking Preview</a>
             </aside>
         </div>
     </div>

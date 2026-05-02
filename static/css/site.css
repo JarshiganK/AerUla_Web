@@ -1195,6 +1195,75 @@ body {
     color: #775012;
 }
 
+.quiz-checkpoint-panel,
+.quiz-result-panel,
+.cart-item {
+    border: 1px solid var(--aerula-line);
+    border-radius: 8px;
+    background: var(--aerula-paper);
+}
+
+.quiz-checkpoint-panel {
+    padding: 1.5rem;
+}
+
+.quiz-choice {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid var(--aerula-line);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--aerula-ink);
+    font-weight: 800;
+}
+
+.quiz-choice:hover,
+.quiz-choice:focus-within,
+.quiz-choice.is-selected {
+    border-color: rgba(47, 111, 79, 0.45);
+    background: #f1fbf5;
+}
+
+.quiz-choice input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--aerula-green);
+}
+
+.quiz-submit-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.quiz-result-panel {
+    margin-top: 1rem;
+    padding: 1.5rem;
+}
+
+.quiz-result-panel h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 850;
+}
+
+.quiz-result-panel p {
+    margin: 0.75rem 0 0;
+}
+
+.quiz-result-panel.is-success {
+    border-color: rgba(47, 111, 79, 0.3);
+    background: rgba(47, 111, 79, 0.1);
+}
+
+.quiz-result-panel.is-warning {
+    border-color: rgba(200, 146, 59, 0.36);
+    background: rgba(200, 146, 59, 0.1);
+}
+
 .catalog-hero {
     padding: 3.5rem 0;
     background:
@@ -1388,6 +1457,42 @@ body {
     font-size: 1.04rem;
 }
 
+.cart-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(270px, 340px);
+    gap: 1rem;
+    align-items: start;
+}
+
+.cart-item-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.cart-item {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem;
+}
+
+.cart-item h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 850;
+}
+
+.cart-item p {
+    margin: 0.55rem 0 0;
+    color: var(--aerula-muted);
+    line-height: 1.6;
+}
+
+.cart-item strong {
+    white-space: nowrap;
+}
+
 .booking-hero {
     padding: 3.5rem 0;
     background:
@@ -1492,6 +1597,30 @@ body {
 .booking-request-panel strong {
     display: block;
     font-size: 1.55rem;
+}
+
+.booking-request-form {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.4rem;
+}
+
+.booking-request-form label {
+    display: grid;
+    gap: 0.45rem;
+    color: var(--aerula-ink);
+    font-weight: 800;
+}
+
+.booking-request-form .form-control {
+    border-color: var(--aerula-line);
+    border-radius: 8px;
+    padding: 0.75rem 0.9rem;
+}
+
+.booking-request-form .form-control:focus {
+    border-color: var(--aerula-green);
+    box-shadow: 0 0 0 0.22rem rgba(47, 111, 79, 0.15);
 }
 
 .passport-hero {
@@ -1612,6 +1741,7 @@ body {
     .catalog-heading,
     .product-grid,
     .product-detail-layout,
+    .cart-layout,
     .experience-grid,
     .booking-detail-layout,
     .passport-grid {
@@ -1661,6 +1791,15 @@ body {
 
     .product-detail-art {
         min-height: 260px;
+    }
+
+    .cart-item {
+        display: block;
+    }
+
+    .cart-item strong {
+        display: block;
+        margin-top: 0.85rem;
     }
 }
 

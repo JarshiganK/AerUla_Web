@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Host Workspace | AerUla{% endblock %}
+
+{% block content %}
+<section class="dashboard-hero">
+    <div class="container">
+        <div class="dashboard-heading">
+            <div>
+                <p class="eyebrow">Host workspace</p>
+                <h1>Manage experiences, products, and availability.</h1>
+                <p>This workspace gives local hosts a focused page for the operational tools planned in the MVP.</p>
+            </div>
+            <a class="btn btn-dark" href="{% url 'bookings:index' %}">View Bookings</a>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <div class="container">
+        <div class="dashboard-grid">
+            {% for label, value in host_metrics %}
+                <article class="summary-card">
+                    <span class="summary-label">{{ label }}</span>
+                    <strong>{{ value }}</strong>
+                    <p>Persistent host management data will connect when database-backed listing workflows are added.</p>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

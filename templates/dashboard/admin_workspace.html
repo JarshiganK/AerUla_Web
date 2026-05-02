@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Workspace | AerUla{% endblock %}
+
+{% block content %}
+<section class="dashboard-hero">
+    <div class="container">
+        <div class="dashboard-heading">
+            <div>
+                <p class="eyebrow">Admin workspace</p>
+                <h1>Review approvals, content, and platform activity.</h1>
+                <p>This page provides a custom admin surface alongside Django admin for MVP operations.</p>
+            </div>
+            <a class="btn btn-dark" href="/admin/">Open Django Admin</a>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <div class="container">
+        <div class="dashboard-grid">
+            {% for label, value in approval_queues %}
+                <article class="summary-card">
+                    <span class="summary-label">{{ label }}</span>
+                    <strong>{{ value }}</strong>
+                    <p>Approval queues will connect to real hosts, huts, products, bookings, quizzes, and reviews.</p>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

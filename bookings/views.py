@@ -27,3 +27,19 @@ def detail(request, slug):
             'experience': experience,
         },
     )
+
+
+def request_booking(request, slug):
+    experience = get_experience(slug)
+    if experience is None:
+        raise Http404('Experience not found')
+
+    submitted = request.method == 'POST'
+    return render(
+        request,
+        'bookings/request.html',
+        {
+            'experience': experience,
+            'submitted': submitted,
+        },
+    )
