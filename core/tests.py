@@ -50,6 +50,41 @@ class GuidePageTests(TestCase):
         self.assertContains(response, 'answer', status_code=200)
 
     @override_settings(GEMINI_API_KEY='')
+    def test_guide_chat_api_does_not_force_default_hut_for_unmatched_question(self):
+        response = self.client.post(reverse('core:guide_chat_api'), {'message': 'Jarshigan'})
+
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['sources'], [])
+        self.assertIn('could not find an AerUla knowledge-base match', data['answer'])
+        self.assertNotIn('Pottery Hut is the closest match', data['answer'])
+
+    @override_settings(GEMINI_API_KEY='')
+    def test_guide_chat_api_prioritizes_bookable_experience_for_booking_intent(self):
+        response = self.client.post(reverse('core:guide_chat_api'), {'message': 'book pottery'})
+
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['sources'][0]['title'], 'Pottery Workshop Visit')
+        self.assertEqual(data['sources'][0]['source_label'], 'Bookable experience')
+        self.assertIn(reverse('bookings:request', kwargs={'slug': 'pottery-workshop'}), data['sources'][0]['url'])
+        self.assertIn('cannot submit the booking for you in chat yet', data['answer'])
+        self.assertNotIn('Clay Serving Bowl is the closest match', data['answer'])
+
+    @override_settings(GEMINI_API_KEY='')
+    def test_guide_chat_api_uses_previous_hut_for_booking_follow_up(self):
+        first_response = self.client.post(reverse('core:guide_chat_api'), {'message': 'book pottery'})
+        self.assertEqual(first_response.status_code, 200)
+
+        follow_up = self.client.post(reverse('core:guide_chat_api'), {'message': 'can you book for me'})
+
+        self.assertEqual(follow_up.status_code, 200)
+        data = follow_up.json()
+        self.assertEqual(data['sources'][0]['title'], 'Pottery Workshop Visit')
+        self.assertEqual(data['sources'][0]['source_label'], 'Bookable experience')
+        self.assertNotIn('Folk Song Booklet', data['answer'])
+
+    @override_settings(GEMINI_API_KEY='')
     def test_guide_page_accepts_chat_message(self):
         response = self.client.post(reverse('core:guide'), {'message': 'Tell me about pottery'}, follow=True)
 

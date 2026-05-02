@@ -6,14 +6,19 @@ from urllib.request import Request, urlopen
 from django.conf import settings
 from django.urls import reverse
 
+from bookings.models import Experience
 from marketplace.models import Product
 from simulations.models import QuizQuestion, SimulationStep
 from village.models import Hut
 
 
 STOP_WORDS = {
-    'a', 'an', 'and', 'are', 'as', 'ask', 'about', 'by', 'for', 'guide', 'how', 'is', 'me', 'of', 'or', 'the',
+    'a', 'an', 'and', 'are', 'as', 'ask', 'about', 'by', 'can', 'for', 'guide', 'how', 'is', 'me', 'of', 'or', 'the',
     'to', 'what', 'when', 'where', 'which', 'who', 'why', 'with', 'you', 'your', 'tell', 'more', 'this', 'that',
+}
+
+BOOKING_TOKENS = {
+    'book', 'booking', 'reserve', 'reservation', 'experience', 'experiences', 'request', 'visit', 'workshop',
 }
 
 QUICK_PROMPTS = [
@@ -33,13 +38,11 @@ GEMINI_SYSTEM_INSTRUCTION = (
 )
 
 
-def build_ai_guide(query: str | None):
+def build_ai_guide(query: str | None, history=None):
     normalized_query = (query or '').strip()
+    effective_query = _contextualize_query(normalized_query, history or [])
     corpus = list(_build_corpus())
-    ranked_sources = _rank_sources(corpus, normalized_query)
-
-    if normalized_query and not ranked_sources:
-        ranked_sources = _default_sources()
+    ranked_sources = _rank_sources(corpus, effective_query)
 
     if not normalized_query:
         ranked_sources = _default_sources()
@@ -74,7 +77,7 @@ def build_chat_messages(history):
 
 
 def answer_guide_question(query, history=None):
-    guide_context = build_ai_guide(query)
+    guide_context = build_ai_guide(query, history=history or [])
     sources = [
         {
             'title': source['title'],
@@ -107,6 +110,7 @@ def answer_guide_question(query, history=None):
 
 def _build_corpus():
     huts = Hut.objects.filter(is_active=True).order_by('display_order', 'name')
+    experiences = Experience.objects.filter(is_published=True).select_related('hut').order_by('display_order', 'title')
     products = Product.objects.filter(is_published=True).select_related('hut').order_by('display_order', 'name')
     steps = SimulationStep.objects.select_related('hut').order_by('hut__display_order', 'correct_order')
     quizzes = QuizQuestion.objects.select_related('hut').order_by('hut__display_order', 'id')
@@ -121,6 +125,25 @@ def _build_corpus():
             'source_label': 'Village hut',
             'badge': hut.badge_title,
             'extra': hut.activity,
+        }
+
+    for experience in experiences:
+        yield {
+            'type': 'experience',
+            'title': experience.title,
+            'text': ' '.join([
+                'book booking reserve reservation request visit workshop experience',
+                experience.title,
+                experience.summary,
+                experience.host,
+                experience.duration,
+                experience.hut_name,
+            ]),
+            'summary': experience.summary,
+            'url': reverse('bookings:request', kwargs={'slug': experience.slug}),
+            'source_label': 'Bookable experience',
+            'badge': experience.status_label,
+            'extra': f'{experience.duration} with {experience.host} from {experience.formatted_price}',
         }
 
     for product in products:
@@ -165,9 +188,10 @@ def _rank_sources(corpus, query):
         return []
 
     query_tokens = _tokenize(query)
+    booking_intent = _has_booking_intent(query_tokens)
     ranked = []
     for source in corpus:
-        score = _score_source(source['text'], query_tokens, query)
+        score = _score_source(source, query_tokens, query, booking_intent)
         if score:
             ranked.append((score, source))
 
@@ -175,18 +199,26 @@ def _rank_sources(corpus, query):
     return [_format_source(source, score) for score, source in ranked[:3]]
 
 
-def _score_source(text, query_tokens, query):
+def _score_source(source, query_tokens, query, booking_intent=False):
     if not query_tokens:
         return 0
 
+    text = source['text']
     lowered = text.lower()
+    source_tokens = set(_tokenize(text))
     score = 0
     for token in query_tokens:
-        if token in lowered:
+        if token in source_tokens:
             score += 2
 
     if query.lower() in lowered:
         score += 4
+
+    if booking_intent:
+        if source['type'] == 'experience':
+            score += 8
+        elif source['type'] == 'product':
+            score -= 3
 
     return score
 
@@ -198,6 +230,46 @@ def _tokenize(text):
         if cleaned and cleaned not in STOP_WORDS:
             tokens.append(cleaned)
     return tokens
+
+
+def _has_booking_intent(tokens):
+    return bool(set(tokens).intersection(BOOKING_TOKENS))
+
+
+def _contextualize_query(query, history):
+    tokens = _tokenize(query)
+    if not _has_booking_intent(tokens):
+        return query
+
+    hut_context = _latest_hut_reference(history)
+    if not hut_context:
+        return query
+
+    query_text = query.lower()
+    if hut_context.lower() in query_text:
+        return query
+
+    return f'{query} {hut_context}'
+
+
+def _latest_hut_reference(history):
+    if not history:
+        return ''
+
+    huts = list(Hut.objects.filter(is_active=True).order_by('display_order', 'name'))
+    for turn in reversed(history[-MAX_CHAT_TURNS:]):
+        text = f"{turn.get('user', '')} {turn.get('assistant', '')}".lower()
+        for hut in huts:
+            references = {
+                hut.slug.lower(),
+                hut.short_name.lower(),
+                hut.name.lower(),
+                hut.name.lower().replace(' hut', ''),
+            }
+            if any(reference and reference in text for reference in references):
+                return hut.short_name
+
+    return ''
 
 
 def _format_source(source, score):
@@ -230,7 +302,11 @@ def _default_sources():
 
 def _compose_answer(query, sources):
     if not sources:
-        return 'I could not find a close match yet. Try a hut name like pottery, palmyrah, cooking, fishing, or folk music.'
+        return (
+            "I could not find an AerUla knowledge-base match for that yet. "
+            "Ask me about a hut, product, tradition, simulation, badge, or bookable experience. "
+            "Good examples are pottery, palmyrah, cooking, fishing, folk music, or village products."
+        )
 
     lead = sources[0]
     if not query:
@@ -246,6 +322,11 @@ def _compose_answer(query, sources):
 
     if lead['source_label'] == 'Marketplace product':
         lines.append(f"It is connected to {lead['extra']} and supports a real shopping path.")
+    elif lead['source_label'] == 'Bookable experience':
+        lines.append(
+            f"I cannot submit the booking for you in chat yet, but I can point you to the request form. "
+            f"This experience is {lead['extra']}."
+        )
     elif lead['source_label'] == 'Simulation step':
         lines.append(f"It supports the activity path: {lead['extra']}.")
     elif lead['source_label'] == 'Quiz prompt':

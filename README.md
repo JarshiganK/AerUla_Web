@@ -60,3 +60,18 @@ If the database and user already exist and only migrations are needed:
 ```powershell
 .\scripts\init_dev.ps1 -SkipDbInit
 ```
+
+## Playwright E2E Tests
+
+Install the browser test dependencies once:
+
+```powershell
+cmd /c npm install
+cmd /c npx playwright install chromium
+```
+
+Run the browser regression suite. Playwright starts a fresh Django dev server on port 8123 automatically and runs desktop and mobile Chromium projects:
+
+```powershell
+cmd /c npm run test:e2e
+```
