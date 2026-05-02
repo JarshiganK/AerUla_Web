@@ -66,7 +66,6 @@ function initPanoramaSimulation() {
     const playButton = simulation.querySelector('[data-toggle-panorama]');
     const verifyButton = simulation.querySelector('[data-verify-panorama]');
     const resetButton = simulation.querySelector('[data-reset-panorama]');
-    const quizLink = simulation.querySelector('[data-quiz-link]');
     const status = simulation.querySelector('[data-panorama-status]');
     const hotspotButtons = Array.from(simulation.querySelectorAll('[data-panorama-hotspot]'));
     const durationRequired = Number(simulation.dataset.durationRequired || 20);
@@ -377,16 +376,10 @@ function initPanoramaSimulation() {
                 score.textContent = `${data.score}%`;
                 feedback.textContent = data.message;
                 result.textContent = data.completed
-                    ? '360 simulation verified. The quiz is unlocked for badge completion.'
+                    ? '360 simulation verified. Your badge has been recorded.'
                     : `Need ${durationRequired}s watched, ${coverageRequired} degrees viewed, and every hotspot inspected.`;
                 result.classList.toggle('is-success', data.completed);
                 result.classList.toggle('is-warning', !data.completed);
-
-                if (data.completed && quizLink) {
-                    quizLink.classList.remove('disabled');
-                    quizLink.removeAttribute('aria-disabled');
-                    quizLink.href = data.quiz_url;
-                }
             })
             .catch((error) => {
                 feedback.textContent = 'The simulation could not be verified.';

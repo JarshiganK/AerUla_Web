@@ -42,7 +42,7 @@
                 <div class="badge-card badge-card-inline" aria-label="Badge preview">
                     <span>Badge</span>
                     <strong>{{ hut.badge }}</strong>
-                    <p>Finish the activity and quiz to add it to the passport.</p>
+                    <p>Finish the verified simulation to add it to the passport.</p>
                 </div>
             </aside>
         </div>
@@ -72,22 +72,6 @@
                     <p>{{ step.text }}</p>
                 </div>
             {% endfor %}
-        </div>
-    </div>
-</section>
-
-<section class="hut-experience-section">
-    <div class="container">
-        <div class="quiz-preview-layout">
-            <div>
-                <p class="eyebrow">Quiz preview</p>
-                <h2>{{ quiz_question.question }}</h2>
-            </div>
-            <div class="quiz-option-list">
-                {% for option in quiz_question.options.all %}
-                    <button class="quiz-option" type="button">{{ option.text }}</button>
-                {% endfor %}
-            </div>
         </div>
     </div>
 </section>

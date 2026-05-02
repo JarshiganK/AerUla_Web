@@ -31,7 +31,9 @@
                 </dl>
                 <div class="hut-detail-actions">
                     <a class="btn btn-dark" href="{% url 'marketplace:add_to_cart' product.slug %}">Add to Cart</a>
+                    <a class="btn btn-dark" href="{% url 'marketplace:add_to_cart' product.slug %}?next=checkout">Buy Now</a>
                     <a class="btn btn-outline-dark" href="{% url 'bookings:index' %}">Book Related Experience</a>
+                    <button class="btn btn-outline-dark" type="button" data-guide-open data-guide-prompt="Tell me about {{ product.name }}">Ask Guide</button>
                 </div>
             </article>
         </div>

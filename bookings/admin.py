@@ -5,9 +5,9 @@ from .models import BookingRequest, Experience
 
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
-    list_display = ('title', 'hut', 'host', 'status', 'formatted_price', 'is_published')
+    list_display = ('title', 'hut', 'host', 'provider', 'status', 'formatted_price', 'is_published')
     list_filter = ('status', 'is_published', 'hut')
-    search_fields = ('title', 'host', 'summary')
+    search_fields = ('title', 'host', 'provider__username', 'provider__email', 'summary')
     prepopulated_fields = {'slug': ('title',)}
     ordering = ('display_order', 'title')
 

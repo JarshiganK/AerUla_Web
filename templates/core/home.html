@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}AerUla — Explore Sri Lankan Heritage{% endblock %}
+{% block title %}AerUla - Explore Sri Lankan Heritage{% endblock %}
 
 {% block content %}
 <section class="hero-section" style="background-color: #083B8A; color: white; padding: 6rem 0;">
@@ -20,7 +20,7 @@
                     <p style="font-size: 3rem; margin: 0; font-weight: 700;">5</p>
                     <p style="font-size: 0.95rem; margin-top: 0.5rem;">Interactive Cultural Huts</p>
                     <hr style="border: none; border-top: 2px solid #D9A86C; margin: 1.5rem 0;">
-                    <p style="font-size: 3rem; margin: 0; font-weight: 700;">∞</p>
+                    <p style="font-size: 3rem; margin: 0; font-weight: 700;">Always on</p>
                     <p style="font-size: 0.95rem; margin-top: 0.5rem;">AI Cultural Guide</p>
                     <hr style="border: none; border-top: 2px solid #D9A86C; margin: 1.5rem 0;">
                     <p style="font-size: 3rem; margin: 0; font-weight: 700;">100+</p>
@@ -49,7 +49,7 @@
                 <article class="feature-card" style="background: white; padding: 2rem; border-radius: 12px; border-left: 4px solid #D9A86C; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
                     <span class="feature-number" style="color: #D9A86C; font-size: 2.5rem; font-weight: 700;">2</span>
                     <h3 style="color: #061A40; margin-top: 1rem;">Learn & Simulate</h3>
-                    <p style="color: #6B7280;">Complete quick interactive simulations, answer quizzes, and unlock your understanding of each tradition.</p>
+                    <p style="color: #6B7280;">Complete quick interactive simulations and unlock your understanding of each tradition.</p>
                 </article>
             </div>
             <div class="col-md-4">
@@ -71,9 +71,9 @@
                 <h2 style="color: #061A40; font-size: 2rem; margin-bottom: 1.5rem;">Ask the Cultural Guide</h2>
                 <p style="color: #6B7280; line-height: 1.6; margin-bottom: 1.5rem;">AerUla's embedded AI guide answers your questions about each tradition. Ask what a craft means, how it connects to Jaffna culture, or book a real experience.</p>
                 <ul style="list-style: none; padding: 0; color: #6B7280;">
-                    <li style="margin-bottom: 1rem; display: flex; gap: 1rem;"><span style="color: #2E7D5B; font-weight: 700;">✓</span> Instant cultural context on any hut</li>
-                    <li style="margin-bottom: 1rem; display: flex; gap: 1rem;"><span style="color: #2E7D5B; font-weight: 700;">✓</span> Tailored for tourists, students, and scholars</li>
-                    <li style="margin-bottom: 1rem; display: flex; gap: 1rem;"><span style="color: #2E7D5B; font-weight: 700;">✓</span> Connect traditions to real bookable experiences</li>
+                    <li style="margin-bottom: 1rem; display: flex; gap: 1rem;"><span style="color: #2E7D5B; font-weight: 700;">1</span> Instant cultural context on any hut</li>
+                    <li style="margin-bottom: 1rem; display: flex; gap: 1rem;"><span style="color: #2E7D5B; font-weight: 700;">2</span> Tailored for tourists, students, and scholars</li>
+                    <li style="margin-bottom: 1rem; display: flex; gap: 1rem;"><span style="color: #2E7D5B; font-weight: 700;">3</span> Connect traditions to real bookable experiences</li>
                 </ul>
             </div>
             <div class="col-lg-6">
@@ -110,60 +110,18 @@
         <div class="home-hut-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
             {% for hut in featured_huts %}
                 <article class="photo-hut-card" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s;">
-                    <img src="{{ hut.image_url }}" alt="{{ hut.image_alt }}" loading="lazy" style="width: 100%; height: 200px; object-fit: cover;">
-                    <div style="padding: 1.5rem;">
-                        <p style="color: #2E7D5B; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin: 0 0 0.5rem;">{{ hut.status|title }}</p>
-                        <h3 style="color: #061A40; margin: 0 0 0.5rem; font-size: 1.25rem;">{{ hut.name }}</h3>
+                    <a class="home-hut-card-link" href="{% url 'village:detail' hut.slug %}" aria-label="Open {{ hut.name }}">
+                        <img src="{{ hut.image_url }}" alt="{{ hut.image_alt }}" loading="lazy" style="width: 100%; height: 200px; object-fit: cover;">
+                        <div style="padding: 1.5rem 1.5rem 0;">
+                            <p style="color: #2E7D5B; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin: 0 0 0.5rem;">{{ hut.status|title }}</p>
+                            <h3 style="color: #061A40; margin: 0 0 0.5rem; font-size: 1.25rem;">{{ hut.name }}</h3>
+                        </div>
+                    </a>
+                    <div style="padding: 0 1.5rem 1.5rem;">
                         <p style="color: #6B7280; font-size: 0.9rem; margin: 0;"><a href="{{ hut.image_source_url }}" rel="noopener" target="_blank" style="color: #083B8A; text-decoration: none;">{{ hut.image_credit }}</a></p>
                     </div>
                 </article>
             {% endfor %}
-        </div>
-    </div>
-</section>
-
-<section style="padding: 4rem 0;">
-    <div class="container">
-        <div class="row g-4 align-items-stretch">
-            <div class="col-lg-5">
-                <div style="padding: 2rem; border-left: 4px solid #083B8A;">
-                    <p class="eyebrow" style="color: #083B8A;">Three role pillar</p>
-                    <h2 style="color: #061A40; font-size: 2rem;">Designed for learners, creators, and hosts</h2>
-                    <p style="color: #6B7280; line-height: 1.6;">From exploring heritage, to building real tourism, to managing cultural products.</p>
-                </div>
-            </div>
-            <div class="col-lg-7">
-                <div class="row g-3">
-                    <div class="col-sm-6">
-                        <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB;">
-                            <p style="color: #083B8A; font-weight: 700; margin: 0 0 0.5rem;">🎓 Learners</p>
-                            <h4 style="color: #061A40; margin: 0 0 0.75rem; font-size: 1rem;">Cultural Passport</h4>
-                            <p style="color: #6B7280; font-size: 0.9rem; margin: 0;">Collect badges, track your journey, unlock new experiences.</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB;">
-                            <p style="color: #2E7D5B; font-weight: 700; margin: 0 0 0.5rem;">🛍️ Products</p>
-                            <h4 style="color: #061A40; margin: 0 0 0.75rem; font-size: 1rem;">Artisan Marketplace</h4>
-                            <p style="color: #6B7280; font-size: 0.9rem; margin: 0;">Support local creators. Browse, purchase, and book real experiences.</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB;">
-                            <p style="color: #D9A86C; font-weight: 700; margin: 0 0 0.5rem;">👤 Hosts</p>
-                            <h4 style="color: #061A40; margin: 0 0 0.75rem; font-size: 1rem;">Host Dashboard</h4>
-                            <p style="color: #6B7280; font-size: 0.9rem; margin: 0;">List products, manage bookings, reach cultural learners worldwide.</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB;">
-                            <p style="color: #F2B84B; font-weight: 700; margin: 0 0 0.5rem;">⚙️ Admins</p>
-                            <h4 style="color: #061A40; margin: 0 0 0.75rem; font-size: 1rem;">Admin Console</h4>
-                            <p style="color: #6B7280; font-size: 0.9rem; margin: 0;">Manage content, approve listings, track analytics and growth.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>

@@ -2,13 +2,14 @@ const { test, expect } = require('@playwright/test');
 
 const uniqueEmail = () => `traveller-${Date.now()}-${Math.floor(Math.random() * 10000)}@example.com`;
 
-async function signUpAndVerify(page) {
+async function signUpAndVerify(page, accountType = 'Viewer') {
   const email = uniqueEmail();
   const password = 'AerUlaPass123!';
 
   await page.goto('/accounts/signup/');
   await page.getByLabel('First name').fill('Maya');
   await page.getByLabel('Email address').fill(email);
+  await page.getByLabel('Account type').selectOption(accountType);
   await page.getByLabel('Password', { exact: true }).fill(password);
   await page.getByLabel('Password confirmation').fill(password);
   await page.getByRole('button', { name: 'Create account' }).click();
@@ -22,12 +23,6 @@ async function signUpAndVerify(page) {
   await expect(page.getByRole('heading', { name: /Welcome back, Maya\./ })).toBeVisible();
 
   return { email, password };
-}
-
-async function answerPotteryQuiz(page) {
-  await page.goto('/simulations/pottery/quiz/');
-  await page.getByLabel('It helps the clay harden evenly').check();
-  await page.getByRole('button', { name: 'Check Answer' }).click();
 }
 
 async function logOut(page) {
@@ -45,6 +40,10 @@ test.describe('AerUla public experience', () => {
     await expect(page.getByRole('heading', { name: 'Explore Sri Lanka beyond the surface.' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Explore the Village' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Browse Experiences' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Open Pottery Hut' })).toBeVisible();
+    await expect(page.getByText('Three role pillar')).toHaveCount(0);
+    await expect(page.getByText('Digital cultural village for Sri Lankan heritage learning.')).toBeVisible();
+    await expect(page.getByText('Built for learners, hosts, artisans, and admins.')).toBeVisible();
 
     await page.getByLabel('Open cultural guide chatbot').click();
     await expect(page.getByRole('heading', { name: 'Chat with AerUla' })).toBeVisible();
@@ -55,6 +54,14 @@ test.describe('AerUla public experience', () => {
 
     await expect(page.locator('[data-guide-transcript] .guide-chat-row.is-user').last()).toContainText('What does the pottery hut teach?');
     await expect(page.locator('[data-guide-transcript] .guide-chat-row.is-assistant').last()).toBeVisible();
+  });
+
+  test('home hut image cards link to hut detail pages', async ({ page }) => {
+    await page.goto('/');
+
+    await page.getByRole('link', { name: 'Open Pottery Hut' }).click();
+    await expect(page).toHaveURL(/\/village\/pottery\/$/);
+    await expect(page.getByRole('heading', { name: 'Pottery Hut' })).toBeVisible();
   });
 
   test('guide modal does not invent hut matches for unrelated text', async ({ page }) => {
@@ -134,6 +141,11 @@ test.describe('AerUla public experience', () => {
   test('marketplace filtering, cart, checkout, and booking requests work', async ({ page }) => {
     await page.goto('/marketplace/');
     await expect(page.getByRole('heading', { name: 'Products connected to the cultural village journey.' })).toBeVisible();
+    const firstProductCard = page.locator('.product-card').filter({ hasText: 'Clay Serving Bowl' }).first();
+    await expect(firstProductCard.getByRole('link', { name: 'Add to Cart' })).toBeVisible();
+    await expect(firstProductCard.getByRole('link', { name: 'Buy Now' })).toBeVisible();
+    await expect(firstProductCard.getByRole('link', { name: 'View Product' })).toBeVisible();
+    await expect(firstProductCard.getByRole('button', { name: 'Ask Guide' })).toBeVisible();
 
     await page.getByRole('link', { name: 'Pottery' }).first().click();
     await expect(page).toHaveURL(/\/marketplace\/\?hut=pottery$/);
@@ -175,7 +187,7 @@ test.describe('AerUla authenticated journey', () => {
     await expect(page.getByRole('link', { name: 'View Passport' })).toBeVisible();
   });
 
-  test('verified user can complete a hut quiz and see passport progress', async ({ page }) => {
+  test('verified user can complete a hut simulation and see passport progress', async ({ page }) => {
     await signUpAndVerify(page);
 
     await page.goto('/simulations/pottery/');
@@ -194,12 +206,36 @@ test.describe('AerUla authenticated journey', () => {
     expect(response.ok()).toBeTruthy();
     expect((await response.json()).completed).toBeTruthy();
 
-    await answerPotteryQuiz(page);
-    await expect(page.getByRole('heading', { name: 'Badge recorded.' })).toBeVisible();
-
-    await page.getByRole('link', { name: 'View Passport' }).click();
+    await page.goto('/dashboard/passport/');
     await expect(page).toHaveURL(/\/dashboard\/passport\/$/);
     await expect(page.getByText('1/5')).toBeVisible();
     await expect(page.locator('.passport-card').filter({ hasText: 'Pottery Hut' })).toContainText('100');
+  });
+
+  test('vendor can access the vendor workspace and submit an experience', async ({ page }) => {
+    await signUpAndVerify(page, 'Vendor');
+
+    await expect(page.getByRole('link', { name: 'Manage Experiences' })).toBeVisible();
+    await page.getByRole('link', { name: 'Manage Experiences' }).click();
+    await expect(page).toHaveURL(/\/dashboard\/vendor\/$/);
+    await expect(page.getByRole('heading', { name: 'Manage the cultural experiences you provide.' })).toBeVisible();
+
+    await page.getByRole('link', { name: 'Add Experience' }).first().click();
+    await expect(page).toHaveURL(/\/dashboard\/vendor\/experiences\/new\/$/);
+    await page.getByLabel('Hut', { exact: true }).selectOption({ label: 'Pottery Hut' });
+    await page.getByLabel('Title').fill('Playwright Clay Session');
+    await page.getByLabel('Slug').fill(`playwright-clay-session-${Date.now()}`);
+    await page.getByLabel('Host').fill('Playwright Vendor Studio');
+    await page.getByLabel('Duration').fill('2 hours');
+    await page.getByLabel('Price').fill('3500');
+    await page.getByLabel('Currency').fill('LKR');
+    await page.getByLabel('Summary').fill('A hands-on pottery session submitted by a vendor.');
+    await page.getByLabel('What is included').fill('Clay preparation\nGuided shaping');
+    await page.getByRole('button', { name: 'Submit for Review' }).click();
+
+    await expect(page).toHaveURL(/\/dashboard\/vendor\/$/);
+    await expect(page.getByText('Your experience was submitted for admin review.')).toBeVisible();
+    await expect(page.getByText('Playwright Clay Session')).toBeVisible();
+    await expect(page.getByText('waiting for admin review')).toBeVisible();
   });
 });

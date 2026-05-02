@@ -14,6 +14,9 @@ class MarketplaceTests(TestCase):
         self.assertContains(response, 'Clay Serving Bowl')
         self.assertContains(response, 'Woven Palmyrah Basket')
         self.assertContains(response, 'All products')
+        self.assertContains(response, 'Buy Now')
+        self.assertContains(response, 'Ask Guide')
+        self.assertContains(response, 'Tell me about Clay Serving Bowl')
 
     def test_marketplace_can_filter_by_hut(self):
         response = self.client.get(reverse('marketplace:index'), {'hut': 'pottery'})
@@ -31,13 +34,25 @@ class MarketplaceTests(TestCase):
         self.assertContains(response, 'Clay Serving Bowl')
         self.assertContains(response, 'Nallur Clay Studio')
         self.assertContains(response, 'Add to Cart')
+        self.assertContains(response, 'Buy Now')
+        self.assertContains(response, 'Ask Guide')
         self.assertContains(response, reverse('marketplace:add_to_cart', kwargs={'slug': 'clay-serving-bowl'}))
+        self.assertContains(response, f"{reverse('marketplace:add_to_cart', kwargs={'slug': 'clay-serving-bowl'})}?next=checkout")
         self.assertContains(response, reverse('bookings:index'))
 
     def test_add_to_cart_stores_product_in_session(self):
         response = self.client.get(reverse('marketplace:add_to_cart', kwargs={'slug': 'clay-serving-bowl'}))
 
         self.assertRedirects(response, reverse('marketplace:cart'))
+        self.assertTrue(self.client.session['marketplace_cart'])
+
+    def test_buy_now_adds_product_and_redirects_to_checkout(self):
+        response = self.client.get(
+            reverse('marketplace:add_to_cart', kwargs={'slug': 'clay-serving-bowl'}),
+            {'next': 'checkout'},
+        )
+
+        self.assertRedirects(response, reverse('marketplace:checkout'))
         self.assertTrue(self.client.session['marketplace_cart'])
 
     def test_cart_page_renders_checkout_action(self):

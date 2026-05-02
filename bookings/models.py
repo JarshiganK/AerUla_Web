@@ -13,6 +13,13 @@ class Experience(models.Model):
     ]
 
     hut = models.ForeignKey(Hut, on_delete=models.PROTECT, related_name='experiences')
+    provider = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='provided_experiences',
+    )
     slug = models.SlugField(unique=True)
     title = models.CharField(max_length=150)
     host = models.CharField(max_length=140)

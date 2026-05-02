@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from bookings.models import Experience
 from marketplace.models import Product
-from simulations.models import QuizQuestion, SimulationStep
+from simulations.models import SimulationStep
 from village.models import Hut
 
 
@@ -142,7 +142,6 @@ def _build_corpus():
     experiences = Experience.objects.filter(is_published=True).select_related('hut').order_by('display_order', 'title')
     products = Product.objects.filter(is_published=True).select_related('hut').order_by('display_order', 'name')
     steps = SimulationStep.objects.select_related('hut').order_by('hut__display_order', 'correct_order')
-    quizzes = QuizQuestion.objects.select_related('hut').order_by('hut__display_order', 'id')
 
     for hut in huts:
         yield {
@@ -197,18 +196,6 @@ def _build_corpus():
             'source_label': 'Simulation step',
             'badge': step.hut.badge_title,
             'extra': step.hut.activity,
-        }
-
-    for question in quizzes:
-        yield {
-            'type': 'quiz',
-            'title': f'{question.hut.name} quiz question',
-            'text': ' '.join([question.hut.name, question.question]),
-            'summary': question.question,
-            'url': reverse('village:detail', kwargs={'slug': question.hut.slug}),
-            'source_label': 'Quiz prompt',
-            'badge': question.hut.badge_title,
-            'extra': question.hut.activity,
         }
 
 
@@ -443,8 +430,6 @@ def _compose_answer(query, sources):
         )
     elif lead['source_label'] == 'Simulation step':
         lines.append(f"It supports the activity path: {lead['extra']}.")
-    elif lead['source_label'] == 'Quiz prompt':
-        lines.append(f"You can continue by exploring the matching quiz prompt for {lead['title'].split(' quiz question')[0]}.")
     else:
         lines.append(f"The related badge is {lead['badge']} and the activity is {lead['extra'].lower()}.")
 

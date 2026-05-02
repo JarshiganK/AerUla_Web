@@ -22,13 +22,13 @@
             <article class="summary-card">
                 <span class="summary-label">Passport progress</span>
                 <strong>0 / 5 huts</strong>
-                <p>Progress updates after verified quiz completion.</p>
+                <p>Progress updates after verified simulation completion.</p>
                 <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:passport' %}">View Passport</a>
             </article>
             <article class="summary-card">
                 <span class="summary-label">Badges earned</span>
                 <strong>0</strong>
-                <p>Badges unlock after verified simulations and quizzes.</p>
+                <p>Badges unlock after verified simulation visits.</p>
             </article>
             <article class="summary-card">
                 <span class="summary-label">Bookings</span>
@@ -60,7 +60,7 @@
     </div>
 </section>
 
-{% if is_host or is_admin %}
+{% if is_vendor or is_developer %}
 <section class="dashboard-section">
     <div class="container">
         <div class="section-heading">
@@ -68,20 +68,20 @@
             <h2>Role workspace.</h2>
         </div>
         <div class="dashboard-grid">
-            {% if is_host %}
+            {% if is_vendor %}
                 <article class="summary-card">
-                    <span class="summary-label">Host tools</span>
-                    <strong>Listings</strong>
-                    <p>Review experience listings, products, availability, and booking requests.</p>
-                    <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:host' %}">Manage Listings</a>
+                    <span class="summary-label">Vendor tools</span>
+                    <strong>Experiences</strong>
+                    <p>Add cultural experiences you provide and track booking requests after admin review.</p>
+                    <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:vendor' %}">Manage Experiences</a>
                 </article>
             {% endif %}
-            {% if is_admin %}
+            {% if is_developer %}
                 <article class="summary-card">
-                    <span class="summary-label">Admin tools</span>
-                    <strong>Approvals</strong>
-                    <p>Review host, hut, product, booking, and quiz operations from this workspace.</p>
-                    <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:admin_workspace' %}">Open Approvals</a>
+                    <span class="summary-label">Developer admin tools</span>
+                    <strong>Full control</strong>
+                    <p>Review users, vendors, huts, products, bookings, and platform content.</p>
+                    <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:admin_workspace' %}">Open Admin Workspace</a>
                 </article>
             {% endif %}
         </div>

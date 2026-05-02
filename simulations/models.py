@@ -18,33 +18,11 @@ class SimulationStep(models.Model):
         return f'{self.hut.short_name}: {self.text}'
 
 
-class QuizQuestion(models.Model):
-    hut = models.OneToOneField(Hut, on_delete=models.CASCADE, related_name='quiz_question')
-    question = models.CharField(max_length=220)
-
-    def __str__(self):
-        return self.question
-
-
-class QuizOption(models.Model):
-    question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE, related_name='options')
-    text = models.CharField(max_length=180)
-    is_correct = models.BooleanField(default=False)
-    display_order = models.PositiveSmallIntegerField(default=0)
-
-    class Meta:
-        ordering = ['display_order', 'id']
-
-    def __str__(self):
-        return self.text
-
-
 class UserProgress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='hut_progress')
     hut = models.ForeignKey(Hut, on_delete=models.CASCADE, related_name='user_progress')
     simulation_completed = models.BooleanField(default=False)
     simulation_score = models.PositiveSmallIntegerField(default=0)
-    quiz_completed = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
     score = models.PositiveSmallIntegerField(default=0)
     completed_at = models.DateTimeField(blank=True, null=True)

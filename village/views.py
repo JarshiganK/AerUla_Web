@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from marketplace.models import Product
-from simulations.models import QuizQuestion, SimulationStep, UserProgress
+from simulations.models import SimulationStep, UserProgress
 
 from .models import Hut
 
@@ -28,7 +28,6 @@ def detail(request, slug):
 
     hut = _with_url(hut)
     steps = SimulationStep.objects.filter(hut=hut).order_by('correct_order')
-    quiz_question = QuizQuestion.objects.filter(hut=hut).prefetch_related('options').first()
     related_products = Product.objects.filter(hut=hut, is_published=True)[:2]
     other_huts = [_with_url(item) for item in Hut.objects.filter(is_active=True).exclude(slug=slug)]
     progress = None
@@ -41,7 +40,6 @@ def detail(request, slug):
         {
             'hut': hut,
             'steps': steps,
-            'quiz_question': quiz_question,
             'related_products': related_products,
             'other_huts': other_huts,
             'progress': progress,

@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <article class="guide-source-card guide-source-card-empty">
                     <span>Ready</span>
                     <h3>Ask a question to see grounded sources here.</h3>
-                    <p>Powered by huts, simulations, quiz prompts, and marketplace content.</p>
+                    <p>Powered by huts, simulations, bookings, and marketplace content.</p>
                 </article>
             `;
             if (sourceCount) {

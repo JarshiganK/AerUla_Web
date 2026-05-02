@@ -259,14 +259,13 @@ Required elements:
 
 ### Hut Experience
 
-Purpose: teach, simulate, quiz, and convert.
+Purpose: teach, simulate, record progress, and convert.
 
 Required elements:
 
 - Story section.
 - Media section.
 - Mini simulation with a real reference image beside the interactive surface.
-- Quiz.
 - Badge/progress result.
 - Related bookings and products.
 

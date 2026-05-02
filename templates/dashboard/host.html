@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Host Workspace | AerUla{% endblock %}
+{% block title %}Vendor Workspace | AerUla{% endblock %}
 
 {% block content %}
 <section class="dashboard-hero">
     <div class="container">
         <div class="dashboard-heading">
             <div>
-                <p class="eyebrow">Host workspace</p>
-                <h1>Manage experiences, products, and availability.</h1>
-                <p>This workspace gives local hosts a focused page for the operational tools planned in the MVP.</p>
+                <p class="eyebrow">Vendor workspace</p>
+                <h1>Manage the cultural experiences you provide.</h1>
+                <p>Add real experiences, keep them ready for admin review, and track requests connected to your listings.</p>
             </div>
-            <a class="btn btn-dark" href="{% url 'bookings:index' %}">View Bookings</a>
+            <a class="btn btn-dark" href="{% url 'dashboard:vendor_experience_create' %}">Add Experience</a>
         </div>
     </div>
 </section>
@@ -27,6 +27,33 @@
                 </article>
             {% endfor %}
         </div>
+    </div>
+</section>
+
+<section class="dashboard-section dashboard-section-light">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">My listings</p>
+            <h2>Submitted experiences.</h2>
+        </div>
+        {% if vendor_experiences %}
+            <div class="dashboard-grid">
+                {% for experience in vendor_experiences %}
+                    <article class="summary-card">
+                        <span class="summary-label">{{ experience.hut.name }}</span>
+                        <strong>{{ experience.title }}</strong>
+                        <p>{{ experience.summary }}</p>
+                        <p><strong>Status:</strong> {{ experience.status_label }}{% if not experience.is_published %} - waiting for admin review{% endif %}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <article class="empty-state">
+                <h3>No experiences submitted yet.</h3>
+                <p>Create your first cultural experience so a developer admin can review and publish it.</p>
+                <a class="btn btn-dark" href="{% url 'dashboard:vendor_experience_create' %}">Add Experience</a>
+            </article>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

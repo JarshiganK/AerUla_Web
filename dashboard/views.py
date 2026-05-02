@@ -1,22 +1,23 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
+from accounts.roles import developer_required, is_developer, is_vendor, vendor_required
+from bookings.forms import VendorExperienceForm
 from bookings.models import BookingRequest, Experience
 from marketplace.models import Product
 from simulations.models import UserProgress
-from simulations.models import QuizQuestion
 from village.models import Hut
 
 
 @login_required
 def index(request):
-    groups = set(request.user.groups.values_list('name', flat=True))
-    is_host = 'Host' in groups or 'host' in groups
-    is_admin = request.user.is_staff or request.user.is_superuser
+    user_is_vendor = is_vendor(request.user)
+    user_is_developer = is_developer(request.user)
 
     context = {
-        'is_host': is_host,
-        'is_admin': is_admin,
+        'is_vendor': user_is_vendor,
+        'is_developer': user_is_developer,
         'journey_steps': [
             {
                 'label': 'Explore',
@@ -28,7 +29,7 @@ def index(request):
             {
                 'label': 'Learn',
                 'title': 'Complete a Hut Activity',
-                'description': 'Read the story, finish the mini simulation, and answer the quiz.',
+                'description': 'Read the story, finish the verified simulation, and record your badge.',
                 'action': 'Continue Journey',
                 'url_name': 'village:index',
             },
@@ -71,31 +72,67 @@ def passport(request):
 
 
 @login_required
+@vendor_required
 def host_workspace(request):
+    vendor_experiences = Experience.objects.filter(provider=request.user).select_related('hut')
+    pending_booking_count = BookingRequest.objects.filter(
+        experience__provider=request.user,
+        status=BookingRequest.STATUS_PENDING,
+    ).count()
     return render(
         request,
         'dashboard/host.html',
         {
             'host_metrics': [
-                ('Experience listings', f'{Experience.objects.count()} active'),
-                ('Booking requests', f'{BookingRequest.objects.filter(status=BookingRequest.STATUS_PENDING).count()} pending'),
-                ('Products', f'{Product.objects.count()} catalogue items'),
+                ('My experience listings', f'{vendor_experiences.count()} submitted'),
+                ('My booking requests', f'{pending_booking_count} pending'),
+                ('Marketplace products', f'{Product.objects.count()} catalogue items'),
             ],
+            'vendor_experiences': vendor_experiences,
         },
     )
 
 
 @login_required
+@vendor_required
+def vendor_experience_create(request):
+    if request.method == 'POST':
+        form = VendorExperienceForm(request.POST)
+        if form.is_valid():
+            experience = form.save(commit=False)
+            experience.provider = request.user
+            experience.save()
+            messages.success(request, 'Your experience was submitted for admin review.')
+            return redirect('dashboard:vendor')
+    else:
+        initial = {}
+        if request.user.first_name:
+            initial['host'] = request.user.first_name
+        form = VendorExperienceForm(initial=initial)
+
+    return render(
+        request,
+        'dashboard/vendor_experience_form.html',
+        {
+            'form': form,
+        },
+    )
+
+
+@login_required
+@developer_required
 def admin_workspace(request):
     return render(
         request,
         'dashboard/admin_workspace.html',
         {
             'approval_queues': [
-                ('Hosts', '2 pending'),
+                (
+                    'Vendor experiences',
+                    f'{Experience.objects.filter(provider__isnull=False, is_published=False).count()} pending',
+                ),
                 ('Products', f'{Product.objects.filter(is_published=False).count()} pending'),
                 ('Bookings', f'{BookingRequest.objects.filter(status=BookingRequest.STATUS_PENDING).count()} review items'),
-                ('Quizzes', f'{QuizQuestion.objects.count()} content checks'),
                 ('Huts', f'{Hut.objects.filter(is_active=True).count()} published'),
             ],
         },

@@ -22,7 +22,7 @@ class SimulationPreviewTests(TestCase):
         self.assertContains(response, 'data-panorama-canvas')
         self.assertContains(response, 'Play 360 Video')
         self.assertContains(response, 'Verify 360 Visit')
-        self.assertContains(response, reverse('simulations:quiz', kwargs={'slug': 'pottery'}))
+        self.assertContains(response, 'View Passport')
         self.assertContains(response, 'Verified score')
         self.assertContains(response, 'Clay Keeper')
         self.assertContains(response, '/media/simulations/360/pottery.mp4')
@@ -79,86 +79,10 @@ class SimulationPreviewTests(TestCase):
         progress = UserProgress.objects.get(user=user, hut__slug='pottery')
         self.assertTrue(progress.simulation_completed)
         self.assertEqual(progress.simulation_score, 100)
-        self.assertFalse(progress.completed)
-        self.assertEqual(progress.score, 50)
-
-    def test_quiz_renders_checkpoint_question(self):
-        response = self.client.get(reverse('simulations:quiz', kwargs={'slug': 'pottery'}))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'simulations/quiz.html')
-        self.assertContains(response, 'Why is drying the pot before firing important?')
-        self.assertContains(response, 'Check Answer')
-        self.assertContains(response, 'Clay Keeper')
-
-    def test_quiz_post_shows_badge_preview_for_correct_answer(self):
-        response = self.client.post(
-            reverse('simulations:quiz', kwargs={'slug': 'pottery'}),
-            {'answer': 'It helps the clay harden evenly'},
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Quiz checkpoint passed.')
-
-    def test_authenticated_correct_quiz_without_simulation_does_not_award_badge(self):
-        from django.contrib.auth.models import User
-
-        user = User.objects.create_user(
-            username='learner@example.com',
-            email='learner@example.com',
-            password='StrongPass12345!',
-        )
-        self.client.force_login(user)
-
-        response = self.client.post(
-            reverse('simulations:quiz', kwargs={'slug': 'pottery'}),
-            {'answer': 'It helps the clay harden evenly'},
-        )
-
-        self.assertEqual(response.status_code, 200)
-        progress = UserProgress.objects.get(user=user, hut__slug='pottery')
-        self.assertTrue(progress.quiz_completed)
-        self.assertFalse(progress.completed)
-        self.assertEqual(progress.score, 50)
-
-    def test_authenticated_correct_quiz_after_simulation_awards_badge(self):
-        from django.contrib.auth.models import User
-
-        user = User.objects.create_user(
-            username='badge@example.com',
-            email='badge@example.com',
-            password='StrongPass12345!',
-        )
-        self.client.force_login(user)
-        self.client.post(
-            reverse('simulations:complete', kwargs={'slug': 'pottery'}),
-            data=json.dumps({
-                'watched_seconds': 20,
-                'coverage_degrees': 240,
-                'hotspots': ['clay-wheel', 'drying-shelf', 'kiln-fire'],
-            }),
-            content_type='application/json',
-        )
-
-        response = self.client.post(
-            reverse('simulations:quiz', kwargs={'slug': 'pottery'}),
-            {'answer': 'It helps the clay harden evenly'},
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Badge recorded.')
-        progress = UserProgress.objects.get(user=user, hut__slug='pottery')
-        self.assertTrue(progress.simulation_completed)
-        self.assertTrue(progress.quiz_completed)
         self.assertTrue(progress.completed)
         self.assertEqual(progress.score, 100)
 
     def test_unknown_simulation_returns_404(self):
         response = self.client.get(reverse('simulations:preview', kwargs={'slug': 'unknown'}))
-
-        self.assertEqual(response.status_code, 404)
-
-    def test_unknown_quiz_returns_404(self):
-        response = self.client.get(reverse('simulations:quiz', kwargs={'slug': 'unknown'}))
 
         self.assertEqual(response.status_code, 404)

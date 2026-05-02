@@ -4,6 +4,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+from .roles import ROLE_VENDOR, ROLE_VIEWER, assign_role
+
 
 class EmailAuthenticationForm(AuthenticationForm):
     error_messages = {
@@ -56,6 +58,13 @@ class EmailAuthenticationForm(AuthenticationForm):
 
 
 class SignUpForm(UserCreationForm):
+    ACCOUNT_VIEWER = ROLE_VIEWER
+    ACCOUNT_VENDOR = ROLE_VENDOR
+    ACCOUNT_TYPE_CHOICES = [
+        (ACCOUNT_VIEWER, 'Viewer - explore huts, badges, bookings, and products'),
+        (ACCOUNT_VENDOR, 'Vendor - add and manage cultural experiences'),
+    ]
+
     first_name = forms.CharField(
         label='First name',
         max_length=150,
@@ -71,10 +80,20 @@ class SignUpForm(UserCreationForm):
             'class': 'form-control',
         }),
     )
+    account_type = forms.ChoiceField(
+        label='Account type',
+        choices=ACCOUNT_TYPE_CHOICES,
+        initial=ACCOUNT_VIEWER,
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        }),
+        help_text='Choose vendor only if you will provide bookable cultural experiences.',
+    )
 
     class Meta:
         model = User
-        fields = ('first_name', 'email', 'password1', 'password2')
+        fields = ('first_name', 'email', 'account_type', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -89,6 +108,9 @@ class SignUpForm(UserCreationForm):
             raise forms.ValidationError('An account with this email already exists.')
         return email
 
+    def clean_account_type(self):
+        return self.cleaned_data.get('account_type') or self.ACCOUNT_VIEWER
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = self.cleaned_data['email']
@@ -96,6 +118,7 @@ class SignUpForm(UserCreationForm):
         user.is_active = False
         if commit:
             user.save()
+            assign_role(user, self.cleaned_data['account_type'])
         return user
 
 

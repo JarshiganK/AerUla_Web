@@ -292,6 +292,22 @@ a:hover {
     background: var(--aerula-white);
 }
 
+.home-hut-card-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.home-hut-card-link:focus-visible {
+    outline: 3px solid rgba(8, 59, 138, 0.32);
+    outline-offset: -3px;
+}
+
+.photo-hut-card:hover .home-hut-card-link h3,
+.home-hut-card-link:focus-visible h3 {
+    color: var(--aerula-brand-blue);
+}
+
 .photo-hut-card img {
     aspect-ratio: 4 / 3;
 }
@@ -313,7 +329,7 @@ a:hover {
     line-height: 1.65;
 }
 
-.photo-hut-card a,
+.photo-hut-card p a,
 .hut-card small a,
 .selected-hut-photo a,
 .hut-hero-photo a,
@@ -321,7 +337,7 @@ a:hover {
     color: inherit;
 }
 
-.photo-hut-card a {
+.photo-hut-card p a {
     display: inline-flex;
     margin-top: 0.85rem;
     color: var(--aerula-palmyrah-green);
@@ -1078,7 +1094,6 @@ a:hover {
 .hut-story-panel,
 .hut-progress-panel,
 .simulation-step,
-.quiz-option,
 .next-step-panel {
     border: 1px solid var(--aerula-line);
     border-radius: 8px;
@@ -1135,7 +1150,6 @@ a:hover {
 }
 
 .hut-story-panel h2,
-.quiz-preview-layout h2,
 .next-step-panel h2 {
     margin: 0;
     font-size: clamp(1.7rem, 3vw, 2.55rem);
@@ -1226,32 +1240,6 @@ a:hover {
     color: var(--aerula-ink);
     font-weight: 750;
     line-height: 1.5;
-}
-
-.quiz-preview-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(300px, 1.1fr);
-    gap: 1.5rem;
-    align-items: start;
-}
-
-.quiz-option-list {
-    display: grid;
-    gap: 0.75rem;
-}
-
-.quiz-option {
-    width: 100%;
-    padding: 1rem;
-    color: var(--aerula-ink);
-    font-weight: 750;
-    text-align: left;
-}
-
-.quiz-option:hover,
-.quiz-option:focus {
-    border-color: rgba(47, 111, 79, 0.5);
-    background: #f1fbf5;
 }
 
 .next-step-panel {
@@ -1737,73 +1725,10 @@ a:hover {
     font-size: 0.92rem;
 }
 
-.quiz-checkpoint-panel,
-.quiz-result-panel,
 .cart-item {
     border: 1px solid var(--aerula-line);
     border-radius: 8px;
     background: var(--aerula-paper);
-}
-
-.quiz-checkpoint-panel {
-    padding: 1.5rem;
-}
-
-.quiz-choice {
-    display: flex;
-    gap: 0.8rem;
-    align-items: center;
-    padding: 1rem;
-    border: 1px solid var(--aerula-line);
-    border-radius: 8px;
-    background: #fff;
-    color: var(--aerula-ink);
-    font-weight: 800;
-}
-
-.quiz-choice:hover,
-.quiz-choice:focus-within,
-.quiz-choice.is-selected {
-    border-color: rgba(47, 111, 79, 0.45);
-    background: #f1fbf5;
-}
-
-.quiz-choice input {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--aerula-green);
-}
-
-.quiz-submit-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1.25rem;
-}
-
-.quiz-result-panel {
-    margin-top: 1rem;
-    padding: 1.5rem;
-}
-
-.quiz-result-panel h2 {
-    margin: 0;
-    font-size: 1.6rem;
-    font-weight: 850;
-}
-
-.quiz-result-panel p {
-    margin: 0.75rem 0 0;
-}
-
-.quiz-result-panel.is-success {
-    border-color: rgba(47, 111, 79, 0.3);
-    background: rgba(47, 111, 79, 0.1);
-}
-
-.quiz-result-panel.is-warning {
-    border-color: rgba(200, 146, 59, 0.36);
-    background: rgba(200, 146, 59, 0.1);
 }
 
 .catalog-hero {
@@ -1882,6 +1807,92 @@ a:hover {
     border: 1px solid var(--aerula-line);
     border-radius: 12px;
     background: var(--aerula-paper);
+}
+
+.site-footer {
+    padding: 3.5rem 0 2rem;
+    border-top: 1px solid var(--aerula-line);
+    background: var(--aerula-dark-navy);
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.site-footer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(150px, 1fr));
+    gap: 2rem;
+}
+
+.site-footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: #fff;
+    font-weight: 850;
+}
+
+.site-footer-logo:hover,
+.site-footer-logo:focus {
+    color: var(--aerula-sunset-gold);
+}
+
+.site-footer-brand h2 {
+    max-width: 480px;
+    margin: 1.1rem 0 0;
+    color: #fff;
+    font-size: 1.35rem;
+    line-height: 1.35;
+}
+
+.site-footer-brand p {
+    max-width: 560px;
+    margin: 1rem 0 0;
+    line-height: 1.7;
+}
+
+.site-footer h3 {
+    margin: 0 0 1rem;
+    color: #fff;
+    font-size: 0.86rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.site-footer-list {
+    display: grid;
+    gap: 0.7rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.site-footer-list a,
+.site-footer-list button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.78);
+    font: inherit;
+    font-weight: 650;
+    text-align: left;
+}
+
+.site-footer-list a:hover,
+.site-footer-list a:focus,
+.site-footer-list button:hover,
+.site-footer-list button:focus {
+    color: var(--aerula-sunset-gold);
+}
+
+.site-footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.9rem;
 }
 
 .guide-launch-fab {
@@ -2348,6 +2359,14 @@ a:hover {
         right: 1rem;
         bottom: 1rem;
     }
+
+    .site-footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .site-footer-brand {
+        grid-column: 1 / -1;
+    }
 }
 
 .catalog-filter-bar {
@@ -2383,6 +2402,8 @@ a:hover {
 }
 
 .product-card {
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--aerula-border-gray);
     border-radius: 12px;
@@ -2405,7 +2426,11 @@ a:hover {
 }
 
 .product-art-photo {
+    display: block;
+    width: 100%;
+    height: 220px;
     min-height: 0;
+    object-fit: cover;
     aspect-ratio: 4 / 3;
     background: var(--aerula-line);
 }
@@ -2435,15 +2460,17 @@ a:hover {
 }
 
 .product-card-body {
+    flex: 1;
     padding: 1.25rem;
     background: var(--aerula-white);
     display: flex;
     flex-direction: column;
-    min-height: 200px;
+    min-height: 250px;
 }
 
 .product-card-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.75rem;
     margin-top: auto;
     padding-top: 1rem;
@@ -2451,7 +2478,7 @@ a:hover {
 }
 
 .product-card-actions .btn {
-    flex: 1;
+    flex: 1 1 calc(50% - 0.75rem);
     text-align: center;
     padding: 0.7rem 1rem;
     font-size: 0.85rem;
@@ -2837,7 +2864,6 @@ a:hover {
     .hut-experience-layout,
     .simulation-scene-preview,
     .simulation-preview-grid,
-    .quiz-preview-layout,
     .simulation-heading,
     .simulation-workspace,
     .craft-simulator,
@@ -2955,6 +2981,19 @@ a:hover {
     .cart-item strong {
         display: block;
         margin-top: 0.85rem;
+    }
+
+    .site-footer {
+        padding: 2.75rem 0 1.5rem;
+    }
+
+    .site-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .site-footer-bottom {
+        display: grid;
     }
 }
 

@@ -3,13 +3,12 @@ import json
 from django.http import Http404, JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from village.models import Hut
 
-from .models import QuizQuestion, UserProgress
+from .models import UserProgress
 
 
 def index(request):
@@ -87,12 +86,10 @@ def complete(request, slug):
         progress, _ = UserProgress.objects.get_or_create(user=request.user, hut=hut)
         progress.simulation_completed = progress.simulation_completed or simulation_completed
         progress.simulation_score = max(progress.simulation_score, score)
-        if progress.quiz_completed and progress.simulation_completed:
+        if progress.simulation_completed:
             progress.completed = True
             progress.score = 100
             progress.completed_at = progress.completed_at or timezone.now()
-        elif progress.simulation_completed:
-            progress.score = max(progress.score, 50)
         progress.save(
             update_fields=[
                 'simulation_completed',
@@ -108,57 +105,10 @@ def complete(request, slug):
         {
             'score': score,
             'completed': simulation_completed,
-            'quiz_url': reverse('simulations:quiz', kwargs={'slug': hut.slug}),
             'message': (
-                '360 simulation verified. Take the quiz to record the badge.'
+                '360 simulation verified. Your badge has been recorded.'
                 if simulation_completed
                 else 'Keep watching, looking around, and inspecting the required points.'
             ),
         }
-    )
-
-
-def quiz(request, slug):
-    try:
-        hut = Hut.objects.get(slug=slug, is_active=True)
-    except Hut.DoesNotExist:
-        raise Http404('Quiz not found')
-
-    quiz_question = QuizQuestion.objects.filter(hut=hut).prefetch_related('options').first()
-    if quiz_question is None:
-        raise Http404('Quiz not found')
-
-    selected_answer = ''
-    is_correct = None
-    progress = None
-    if request.user.is_authenticated:
-        progress = UserProgress.objects.filter(user=request.user, hut=hut).first()
-
-    if request.method == 'POST':
-        selected_answer = request.POST.get('answer', '')
-        correct_option = quiz_question.options.filter(is_correct=True).first()
-        is_correct = correct_option is not None and selected_answer == correct_option.text
-        if is_correct and request.user.is_authenticated:
-            progress, _ = UserProgress.objects.get_or_create(user=request.user, hut=hut)
-            progress.quiz_completed = True
-            if progress.simulation_completed:
-                progress.completed = True
-                progress.score = 100
-                progress.completed_at = progress.completed_at or timezone.now()
-            else:
-                progress.score = max(progress.score, 50)
-            progress.save(
-                update_fields=['quiz_completed', 'completed', 'score', 'completed_at', 'updated_at']
-            )
-
-    return render(
-        request,
-        'simulations/quiz.html',
-        {
-            'hut': hut,
-            'quiz_question': quiz_question,
-            'selected_answer': selected_answer,
-            'is_correct': is_correct,
-            'progress': progress,
-        },
     )

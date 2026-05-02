@@ -53,6 +53,8 @@ def add_to_cart(request, slug):
         raise Http404('Product not found')
 
     add_product_to_session_cart(request.session, product)
+    if request.GET.get('next') == 'checkout':
+        return redirect('marketplace:checkout')
     return redirect('marketplace:cart')
 
 

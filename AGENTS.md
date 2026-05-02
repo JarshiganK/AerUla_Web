@@ -24,7 +24,7 @@ The planned deployment split is:
 
 1. **Digital-first cultural village**: A browser-based interactive map of cultural huts users can explore.
 2. **AI cultural guide**: An embedded AI assistant that explains traditions, answers culture questions, and personalizes the experience.
-3. **Interactive heritage huts**: Each hut contains a story, cultural context, mini simulations, and quizzes.
+3. **Interactive heritage huts**: Each hut contains a story, cultural context, and mini simulations.
 4. **Cultural passport and badge progression**: Users earn digital badges as they complete huts, track progress, and unlock recommendations.
 5. **Marketplace for real experiences and artisan products**: Connected to completed huts, showing bookable experiences and buyable products from local artisans.
 6. **Admin-controlled cultural content management**: Hosts, admins, and content managers can manage huts, experiences, products, and user approvals.
@@ -54,7 +54,7 @@ Read `prd.md` and `DESIGN_SYSTEM.md` before making product or architecture decis
 - **Authentication pages**: Login, signup, password reset, email verification.
 - **User dashboard**: Profile, earned badges, progress, upcoming bookings, recommendations.
 - **Virtual village map**: Interactive 2D map, hut cards, locked/available states, image previews.
-- **Hut detail/simulation page**: Cultural story, mini interactive simulation, quiz, AI guide prompt area, badge unlock, related real-world experience card.
+- **Hut detail/simulation page**: Cultural story, mini interactive simulation, AI guide prompt area, badge unlock, related real-world experience card.
 - **AI cultural guide page or embedded widget**: Calm interface, cultural context explanation, image/story support, tourist/student/scholar depth levels.
 - **Cultural passport/profile page**: Earned and locked badges, completed huts, scores, share/certificate preview, next recommended hut.
 - **Marketplace page**: Product grid, experience cards, hut/category filter, bookings/purchase flow.
@@ -108,6 +108,7 @@ If migrations are added, also run:
 - Validate all user input server-side, especially bookings, orders, product forms, host applications, uploads, and simulation score submissions.
 - Do not trust client-side simulation scores. Recalculate or validate completion state on the server before awarding badges.
 - Use Django permissions, groups, or explicit role checks for tourist, host, admin, and super admin flows.
+- Current role gates use Django groups plus staff flags: `Viewer` for normal learners, `Vendor`/`Host` for experience providers, and staff/superuser or `Developer`/`Admin` for developer admin workspaces. Vendor and developer-only pages must use explicit server-side checks, not template-only hiding.
 - File uploads must validate content type, size, extension, and storage destination.
 - Avoid raw SQL. If raw SQL is required, use parameterized queries only.
 - Keep dependencies pinned in `requirements.txt` and review upgrades before production deployment.
@@ -190,7 +191,7 @@ Before any AWS launch, add and verify:
 - Keep app boundaries clear:
   - `accounts`: users, roles, host profiles, auth-related forms.
   - `village`: huts, cultural content, map structure, media references.
-  - `simulations`: activity configs, quiz logic, progress, scores, badges, passport.
+  - `simulations`: activity configs, progress validation, scores, badges, passport.
   - `bookings`: availability, reservations, booking status.
   - `marketplace`: products, carts, orders, reviews.
   - `dashboard`: role-specific screens and summaries.
@@ -251,7 +252,7 @@ AerUla is simulation-heavy, so performance is a product requirement.
 - Use lazy loading for below-the-fold media and noncritical content.
 - Avoid blocking the main thread with expensive calculations. If complex logic is introduced later, consider Web Workers.
 - Preserve accessibility: simulations need keyboard-friendly alternatives or fallback controls where practical.
-- Server endpoints that save progress, quiz scores, bookings, and orders must be efficient and avoid unnecessary queries.
+- Server endpoints that save progress, bookings, and orders must be efficient and avoid unnecessary queries.
 - Watch database query count for dashboard, marketplace, and passport pages; use `select_related`, `prefetch_related`, pagination, and indexes where appropriate.
 
 ## Testing and Acceptance
@@ -265,7 +266,7 @@ Prioritize:
 - Authentication and role routing.
 - Host/admin permissions.
 - Hut completion and progress persistence.
-- Quiz scoring and badge awarding.
+- Simulation scoring and badge awarding.
 - Booking status changes.
 - Cart/order totals and stock behavior.
 - Marketplace product visibility and approval status.

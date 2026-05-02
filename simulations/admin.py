@@ -1,18 +1,6 @@
 from django.contrib import admin
 
-from .models import QuizOption, QuizQuestion, SimulationStep, UserProgress
-
-
-class QuizOptionInline(admin.TabularInline):
-    model = QuizOption
-    extra = 1
-
-
-@admin.register(QuizQuestion)
-class QuizQuestionAdmin(admin.ModelAdmin):
-    list_display = ('question', 'hut')
-    search_fields = ('question', 'hut__name')
-    inlines = [QuizOptionInline]
+from .models import SimulationStep, UserProgress
 
 
 @admin.register(SimulationStep)

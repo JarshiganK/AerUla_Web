@@ -15,7 +15,7 @@
             <div class="simulation-score-card" aria-live="polite">
                 <span>Verified score</span>
                 <strong data-simulation-score>{% if progress %}{{ progress.simulation_score }}%{% else %}0%{% endif %}</strong>
-                <p data-simulation-feedback>{% if progress.simulation_completed %}360 simulation verified. Take the quiz to record the badge.{% else %}Watch, look around, and inspect the required points in the scene.{% endif %}</p>
+                <p data-simulation-feedback>{% if progress.simulation_completed %}360 simulation verified. Your badge has been recorded.{% else %}Watch, look around, and inspect the required points in the scene.{% endif %}</p>
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
 
                 <div class="simulation-controls" aria-label="Simulation controls">
                     <button class="btn btn-dark" type="button" data-verify-panorama>Verify 360 Visit</button>
-                    <a class="btn btn-outline-dark{% if not progress.simulation_completed %} disabled{% endif %}" href="{% url 'simulations:quiz' hut.slug %}" data-quiz-link {% if not progress.simulation_completed %}aria-disabled="true"{% endif %}>Take Quiz</a>
+                    <a class="btn btn-outline-dark" href="{% url 'dashboard:passport' %}" data-passport-link>View Passport</a>
                     <p data-panorama-progress>Watch time: 0s. View coverage: 0 degrees. Hotspots: 0/{{ hut.simulation_360.hotspots|length }}.</p>
                 </div>
             </div>

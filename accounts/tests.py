@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.core import mail
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -14,6 +14,7 @@ class SignupTests(TestCase):
         response = self.client.post(reverse('accounts:signup'), {
             'first_name': 'Nila',
             'email': 'nila@example.com',
+            'account_type': 'Viewer',
             'password1': 'StrongPass12345!',
             'password2': 'StrongPass12345!',
         })
@@ -22,6 +23,7 @@ class SignupTests(TestCase):
         user = User.objects.get(email='nila@example.com')
         self.assertEqual(user.username, 'nila@example.com')
         self.assertFalse(user.is_active)
+        self.assertTrue(user.groups.filter(name='Viewer').exists())
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn('Verify your AerUla account', mail.outbox[0].subject)
         self.assertIn('/accounts/verify/', mail.outbox[0].body)
@@ -38,6 +40,7 @@ class SignupTests(TestCase):
         response = self.client.post(reverse('accounts:signup'), {
             'first_name': 'Nila',
             'email': 'NILA@example.com',
+            'account_type': 'Viewer',
             'password1': 'StrongPass12345!',
             'password2': 'StrongPass12345!',
         })
@@ -45,6 +48,20 @@ class SignupTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'An account with this email already exists.')
         self.assertEqual(User.objects.filter(email__iexact='nila@example.com').count(), 1)
+
+    def test_vendor_signup_assigns_vendor_group(self):
+        response = self.client.post(reverse('accounts:signup'), {
+            'first_name': 'Kavin',
+            'email': 'vendor@example.com',
+            'account_type': 'Vendor',
+            'password1': 'StrongPass12345!',
+            'password2': 'StrongPass12345!',
+        })
+
+        self.assertRedirects(response, reverse('accounts:verification_sent'), fetch_redirect_response=False)
+        user = User.objects.get(email='vendor@example.com')
+        self.assertTrue(user.groups.filter(name='Vendor').exists())
+        self.assertTrue(Group.objects.filter(name='Vendor').exists())
 
 
 class LoginTests(TestCase):

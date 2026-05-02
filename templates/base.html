@@ -53,6 +53,52 @@
         {% block content %}{% endblock %}
     </main>
 
+    <footer class="site-footer">
+        <div class="container">
+            <div class="site-footer-grid">
+                <section class="site-footer-brand" aria-labelledby="footer-about-heading">
+                    <a class="site-footer-logo" href="{% url 'core:home' %}">
+                        <span class="brand-mark" aria-hidden="true">A</span>
+                        <span>AerUla</span>
+                    </a>
+                    <h2 id="footer-about-heading">Digital cultural village for Sri Lankan heritage learning.</h2>
+                    <p>Explore interactive huts, ask the AI cultural guide, earn passport badges, and connect with real experiences and artisan products.</p>
+                </section>
+
+                <section aria-labelledby="footer-journey-heading">
+                    <h3 id="footer-journey-heading">Journey</h3>
+                    <ul class="site-footer-list">
+                        <li><a href="{% url 'village:index' %}">Explore the virtual village</a></li>
+                        <li><a href="{% url 'dashboard:passport' %}">View cultural passport</a></li>
+                        <li><button type="button" data-guide-open>Ask the AI guide</button></li>
+                    </ul>
+                </section>
+
+                <section aria-labelledby="footer-marketplace-heading">
+                    <h3 id="footer-marketplace-heading">Marketplace</h3>
+                    <ul class="site-footer-list">
+                        <li><a href="{% url 'marketplace:index' %}">Browse artisan products</a></li>
+                        <li><a href="{% url 'bookings:index' %}">Book cultural experiences</a></li>
+                        <li><a href="{% url 'dashboard:vendor' %}">Vendor experience workspace</a></li>
+                    </ul>
+                </section>
+
+                <section aria-labelledby="footer-platform-heading">
+                    <h3 id="footer-platform-heading">Platform</h3>
+                    <ul class="site-footer-list">
+                        <li><a href="{% url 'dashboard:index' %}">Learner dashboard</a></li>
+                        <li><a href="{% url 'dashboard:admin_workspace' %}">Developer admin console</a></li>
+                        <li><a href="{% url 'accounts:signup' %}">Create an account</a></li>
+                    </ul>
+                </section>
+            </div>
+            <div class="site-footer-bottom">
+                <span>AerUla connects cultural learning with responsible local tourism.</span>
+                <span>Built for learners, hosts, artisans, and admins.</span>
+            </div>
+        </div>
+    </footer>
+
     <button class="guide-launch-fab" type="button" data-guide-open aria-label="Open cultural guide chatbot">
         Ask Guide
     </button>
@@ -124,7 +170,7 @@
                                     <article class="guide-source-card guide-source-card-empty">
                                         <span>Ready</span>
                                         <h3>Ask a question to see grounded sources here.</h3>
-                                        <p>Powered by huts, simulations, quiz prompts, and marketplace content.</p>
+                                        <p>Powered by huts, simulations, bookings, and marketplace content.</p>
                                     </article>
                                 {% endif %}
                             </div>

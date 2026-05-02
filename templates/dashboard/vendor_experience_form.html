@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Add Experience | AerUla{% endblock %}
+
+{% block content %}
+<section class="dashboard-hero">
+    <div class="container">
+        <div class="dashboard-heading">
+            <div>
+                <p class="eyebrow">Vendor workspace</p>
+                <h1>Add a cultural experience.</h1>
+                <p>Submit the experience you provide. It stays unpublished until a developer admin reviews it.</p>
+            </div>
+            <a class="btn btn-outline-light" href="{% url 'dashboard:vendor' %}">Back to Vendor Workspace</a>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <div class="container">
+        <div class="auth-card auth-card-wide">
+            <h2>Experience details</h2>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+                {% endif %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <div class="form-help">{{ field.help_text }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="form-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <button class="btn btn-dark" type="submit">Submit for Review</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

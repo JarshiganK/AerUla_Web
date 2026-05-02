@@ -42,7 +42,9 @@
                         </div>
                         <div class="product-card-actions">
                             <a class="btn btn-dark btn-sm" href="{% url 'marketplace:add_to_cart' product.slug %}">Add to Cart</a>
+                            <a class="btn btn-dark btn-sm" href="{% url 'marketplace:add_to_cart' product.slug %}?next=checkout">Buy Now</a>
                             <a class="btn btn-outline-dark btn-sm" href="{% url 'marketplace:detail' product.slug %}">View Product</a>
+                            <button class="btn btn-outline-dark btn-sm" type="button" data-guide-open data-guide-prompt="Tell me about {{ product.name }}">Ask Guide</button>
                         </div>
                     </div>
                 </article>

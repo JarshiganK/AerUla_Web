@@ -21,6 +21,12 @@ class HomePageTests(TestCase):
         self.assertContains(response, 'What does the pottery hut teach?')
         self.assertContains(response, 'Authentic cultural references')
         self.assertContains(response, 'Tradtional_Sri_Lankan_Pottery.jpg')
+        self.assertContains(response, reverse('village:detail', kwargs={'slug': 'pottery'}))
+        self.assertContains(response, 'Open Pottery Hut')
+        self.assertNotContains(response, 'Three role pillar')
+        self.assertNotContains(response, 'Designed for learners, creators, and hosts')
+        self.assertContains(response, 'Digital cultural village for Sri Lankan heritage learning')
+        self.assertContains(response, 'Built for learners, hosts, artisans, and admins')
 
 
 class GuidePageTests(TestCase):

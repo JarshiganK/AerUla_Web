@@ -34,7 +34,7 @@ class VillageMapTests(TestCase):
 
 
 class HutExperienceTests(TestCase):
-    def test_hut_detail_page_renders_story_activity_quiz_and_badge(self):
+    def test_hut_detail_page_renders_story_activity_and_badge(self):
         response = self.client.get(reverse('village:detail', kwargs={'slug': 'pottery'}))
 
         self.assertEqual(response.status_code, 200)
@@ -42,7 +42,7 @@ class HutExperienceTests(TestCase):
         self.assertContains(response, 'Pottery Hut')
         self.assertContains(response, 'See the real reference, then try the activity.')
         self.assertContains(response, 'Arrange the clay preparation, shaping, drying, and firing steps.')
-        self.assertContains(response, 'Why is drying the pot before firing important?')
+        self.assertNotContains(response, 'Why is drying the pot before firing important?')
         self.assertContains(response, 'Clay Keeper')
         self.assertContains(response, 'Browse Related Products')
         self.assertContains(response, 'scene-bench')
