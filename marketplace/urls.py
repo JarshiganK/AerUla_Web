@@ -5,5 +5,6 @@ from . import views
 app_name = 'marketplace'
 
 urlpatterns = [
-    path('', views.placeholder, name='index'),
+    path('', views.index, name='index'),
+    path('<slug:slug>/', views.detail, name='detail'),
 ]

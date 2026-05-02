@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} | AerUla Marketplace{% endblock %}
+
+{% block content %}
+<section class="catalog-hero">
+    <div class="container">
+        <a class="back-link" href="{% url 'marketplace:index' %}">Back to marketplace</a>
+        <div class="product-detail-layout">
+            <div class="product-detail-art product-art-{{ product.hut_slug }}" aria-hidden="true"></div>
+            <article class="product-detail-panel">
+                <p class="eyebrow">{{ product.hut_name }}</p>
+                <h1>{{ product.name }}</h1>
+                <p>{{ product.summary }}</p>
+                <dl class="hut-detail-list">
+                    <div>
+                        <dt>Artisan</dt>
+                        <dd>{{ product.artisan }}</dd>
+                    </div>
+                    <div>
+                        <dt>Materials</dt>
+                        <dd>{{ product.materials }}</dd>
+                    </div>
+                    <div>
+                        <dt>Price</dt>
+                        <dd>{{ product.price }}</dd>
+                    </div>
+                </dl>
+                <div class="hut-detail-actions">
+                    <button class="btn btn-dark" type="button">Add to Cart Preview</button>
+                    <a class="btn btn-outline-dark" href="{% url 'bookings:index' %}">Book Related Experience</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+{% if related_products %}
+<section class="catalog-section">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Same hut</p>
+            <h2>Related products.</h2>
+        </div>
+        <div class="related-hut-strip">
+            {% for related in related_products %}
+                <a href="{% url 'marketplace:detail' related.slug %}">{{ related.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

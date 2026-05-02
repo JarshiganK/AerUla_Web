@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Cultural Passport | AerUla{% endblock %}
+
+{% block content %}
+<section class="passport-hero">
+    <div class="container">
+        <div class="catalog-heading">
+            <div>
+                <p class="eyebrow">Cultural Passport</p>
+                <h1>Track hut completion, badges, and next steps.</h1>
+                <p>The passport is ready for verified simulation and quiz progress once server-side completion is connected.</p>
+            </div>
+            <div class="catalog-summary-card">
+                <span>Completed huts</span>
+                <strong>{{ completed_count }}/{{ total_count }}</strong>
+                <p>Badges stay pending until activity validation is implemented.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="passport-section">
+    <div class="container">
+        <div class="passport-grid">
+            {% for hut in passport_huts %}
+                <article class="passport-card">
+                    <div class="hut-card-header">
+                        <span class="hut-status hut-status-{{ hut.status }}">{{ hut.status|title }}</span>
+                        <span>{{ hut.score }}</span>
+                    </div>
+                    <h2>{{ hut.name }}</h2>
+                    <p>{{ hut.summary }}</p>
+                    <div class="passport-badge">
+                        <span>Badge</span>
+                        <strong>{{ hut.badge }}</strong>
+                    </div>
+                    <a class="btn btn-outline-dark btn-sm" href="{% url 'village:detail' hut.slug %}">Continue Hut</a>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

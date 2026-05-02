@@ -13,21 +13,7 @@ class HomePageTests(TestCase):
         self.assertContains(response, 'Passport progress')
 
 
-class PlaceholderRouteTests(TestCase):
-    def test_placeholder_app_routes_render(self):
-        routes = {
-            'bookings:index': 'AerUla bookings module is ready.',
-            'marketplace:index': 'AerUla marketplace module is ready.',
-            'simulations:index': 'AerUla simulations module is ready.',
-        }
-
-        for route_name, expected_text in routes.items():
-            with self.subTest(route_name=route_name):
-                response = self.client.get(reverse(route_name))
-
-                self.assertEqual(response.status_code, 200)
-                self.assertContains(response, expected_text)
-
+class RouteTests(TestCase):
     def test_accounts_index_redirects_to_login(self):
         response = self.client.get(reverse('accounts:index'))
 

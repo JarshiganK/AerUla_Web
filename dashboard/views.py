@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+from village.content import HUTS
+
 
 @login_required
 def index(request):
@@ -36,3 +38,24 @@ def index(request):
         ],
     }
     return render(request, 'dashboard/index.html', context)
+
+
+@login_required
+def passport(request):
+    passport_huts = [
+        {
+            **hut,
+            'completed': False,
+            'score': 'Pending',
+        }
+        for hut in HUTS
+    ]
+    return render(
+        request,
+        'dashboard/passport.html',
+        {
+            'passport_huts': passport_huts,
+            'completed_count': 0,
+            'total_count': len(passport_huts),
+        },
+    )

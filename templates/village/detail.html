@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}{{ hut.name }} | AerUla{% endblock %}
+
+{% block content %}
+<section class="hut-experience-hero">
+    <div class="container">
+        <a class="back-link" href="{% url 'village:index' %}">Back to village map</a>
+        <div class="hut-experience-heading">
+            <div>
+                <p class="eyebrow">{{ hut.status|title }} hut</p>
+                <h1>{{ hut.name }}</h1>
+                <p>{{ hut.summary }}</p>
+            </div>
+            <div class="badge-card" aria-label="Badge preview">
+                <span>Badge</span>
+                <strong>{{ hut.badge }}</strong>
+                <p>Complete the story, activity, and quiz to add this badge to the cultural passport.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="hut-experience-section">
+    <div class="container">
+        <div class="hut-experience-layout">
+            <article class="hut-story-panel">
+                <p class="eyebrow">Story</p>
+                <h2>Learn the village context first.</h2>
+                <p>{{ hut.story }}</p>
+            </article>
+
+            <aside class="hut-progress-panel">
+                <span class="summary-label">Journey status</span>
+                <strong>{% if hut.status == "available" %}Ready to start{% else %}Story preview{% endif %}</strong>
+                <p>
+                    {% if hut.status == "available" %}
+                        This hut is open for the MVP learning path.
+                    {% else %}
+                        This hut is visible now and will unlock after earlier activities are connected to saved progress.
+                    {% endif %}
+                </p>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<section class="hut-experience-section hut-experience-section-light">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Mini simulation</p>
+            <h2>{{ hut.activity }}</h2>
+        </div>
+        <div class="simulation-preview-grid">
+            {% for step in hut.steps %}
+                <div class="simulation-step">
+                    <span>{{ forloop.counter|stringformat:"02d" }}</span>
+                    <p>{{ step }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="hut-experience-section">
+    <div class="container">
+        <div class="quiz-preview-layout">
+            <div>
+                <p class="eyebrow">Quiz preview</p>
+                <h2>{{ hut.quiz_question }}</h2>
+            </div>
+            <div class="quiz-option-list">
+                {% for option in hut.quiz_options %}
+                    <button class="quiz-option" type="button">{{ option }}</button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="hut-experience-section hut-experience-section-light">
+    <div class="container">
+        <div class="next-step-panel">
+            <div>
+                <p class="eyebrow">After completion</p>
+                <h2>Connect this hut to products and bookings.</h2>
+                <p>Related marketplace items for this hut include {{ hut.related_products|join:", " }}.</p>
+            </div>
+            <div class="hut-detail-actions">
+                <a class="btn btn-dark" href="{% url 'simulations:preview' hut.slug %}">Start Simulation Preview</a>
+                <a class="btn btn-outline-dark" href="{% url 'marketplace:index' %}">Browse Related Products</a>
+            </div>
+        </div>
+
+        <div class="related-hut-strip" aria-label="Other village huts">
+            {% for other_hut in other_huts %}
+                <a href="{{ other_hut.url }}">{{ other_hut.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

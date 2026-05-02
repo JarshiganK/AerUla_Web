@@ -44,6 +44,7 @@
                             data-hut-summary="{{ hut.summary }}"
                             data-hut-activity="{{ hut.activity }}"
                             data-hut-badge="{{ hut.badge }}"
+                            data-hut-url="{{ hut.url }}"
                             data-status="{{ hut.status }}"
                             aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
                         >
@@ -75,7 +76,7 @@
                 </dl>
 
                 <div class="hut-detail-actions">
-                    <a class="btn btn-dark" href="{% url 'simulations:index' %}" data-hut-action>Start Preview</a>
+                    <a class="btn btn-dark" href="{{ featured_hut.url }}" data-hut-action>Open Hut</a>
                     <a class="btn btn-outline-dark" href="{% url 'marketplace:index' %}">Related Products</a>
                 </div>
                 <p class="hut-lock-note" data-hut-lock-note hidden>
@@ -102,6 +103,7 @@
                     <h3>{{ hut.name }}</h3>
                     <p>{{ hut.summary }}</p>
                     <strong>{{ hut.badge }}</strong>
+                    <a href="{{ hut.url }}">Open hut</a>
                 </article>
             {% endfor %}
         </div>

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ experience.title }} | AerUla Bookings{% endblock %}
+
+{% block content %}
+<section class="booking-hero">
+    <div class="container">
+        <a class="back-link" href="{% url 'bookings:index' %}">Back to bookings</a>
+        <div class="booking-detail-layout">
+            <article class="booking-detail-panel">
+                <p class="eyebrow">{{ experience.hut_name }}</p>
+                <h1>{{ experience.title }}</h1>
+                <p>{{ experience.summary }}</p>
+                <dl class="hut-detail-list">
+                    <div>
+                        <dt>Host</dt>
+                        <dd>{{ experience.host }}</dd>
+                    </div>
+                    <div>
+                        <dt>Duration</dt>
+                        <dd>{{ experience.duration }}</dd>
+                    </div>
+                    <div>
+                        <dt>Starting price</dt>
+                        <dd>{{ experience.price }}</dd>
+                    </div>
+                </dl>
+            </article>
+            <aside class="booking-request-panel">
+                <span class="summary-label">Request preview</span>
+                <strong>{{ experience.status }}</strong>
+                <p>The next backend step will validate dates, guest count, host availability, and booking status changes.</p>
+                <button class="btn btn-dark w-100" type="button">Request Booking Preview</button>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<section class="booking-section">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Included</p>
+            <h2>What visitors can expect.</h2>
+        </div>
+        <div class="simulation-preview-grid">
+            {% for item in experience.includes %}
+                <div class="simulation-step">
+                    <span>{{ forloop.counter|stringformat:"02d" }}</span>
+                    <p>{{ item }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

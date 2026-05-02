@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Bookings | AerUla{% endblock %}
+
+{% block content %}
+<section class="booking-hero">
+    <div class="container">
+        <div class="catalog-heading">
+            <div>
+                <p class="eyebrow">Bookings</p>
+                <h1>Reserve cultural experiences connected to the huts.</h1>
+                <p>Booking pages are ready for request workflows, host availability, and admin approval in the next implementation step.</p>
+            </div>
+            <div class="catalog-summary-card">
+                <span>Experiences</span>
+                <strong>{{ experience_count }}</strong>
+                <p>Host-led experiences aligned with the current MVP hut path.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="booking-section">
+    <div class="container">
+        <div class="experience-grid">
+            {% for experience in experiences %}
+                <article class="experience-card">
+                    <span class="hut-status hut-status-available">{{ experience.status }}</span>
+                    <h2>{{ experience.title }}</h2>
+                    <p>{{ experience.summary }}</p>
+                    <dl class="experience-meta">
+                        <div>
+                            <dt>Host</dt>
+                            <dd>{{ experience.host }}</dd>
+                        </div>
+                        <div>
+                            <dt>Duration</dt>
+                            <dd>{{ experience.duration }}</dd>
+                        </div>
+                        <div>
+                            <dt>From</dt>
+                            <dd>{{ experience.price }}</dd>
+                        </div>
+                    </dl>
+                    <a class="btn btn-outline-dark btn-sm" href="{% url 'bookings:detail' experience.slug %}">View Booking</a>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

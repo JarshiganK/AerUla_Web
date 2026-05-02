@@ -1,0 +1,61 @@
+PRODUCTS = [
+    {
+        'slug': 'clay-serving-bowl',
+        'name': 'Clay Serving Bowl',
+        'hut_slug': 'pottery',
+        'hut_name': 'Pottery Hut',
+        'price': 'LKR 2,400',
+        'status': 'Available',
+        'summary': 'A hand-shaped bowl inspired by everyday village pottery and shared meals.',
+        'artisan': 'Nallur Clay Studio',
+        'materials': 'Local clay, natural mineral finish',
+    },
+    {
+        'slug': 'handmade-water-pot',
+        'name': 'Handmade Water Pot',
+        'hut_slug': 'pottery',
+        'hut_name': 'Pottery Hut',
+        'price': 'LKR 4,800',
+        'status': 'Limited',
+        'summary': 'A traditional cooling vessel connected to the pottery learning path.',
+        'artisan': 'Kopay Pottery Collective',
+        'materials': 'Fired red clay',
+    },
+    {
+        'slug': 'woven-palmyrah-basket',
+        'name': 'Woven Palmyrah Basket',
+        'hut_slug': 'palmyrah',
+        'hut_name': 'Palmyrah Craft Hut',
+        'price': 'LKR 3,200',
+        'status': 'Available',
+        'summary': 'A sturdy woven basket made with prepared palmyrah strips.',
+        'artisan': 'Vaddukoddai Weavers',
+        'materials': 'Dried palmyrah leaf',
+    },
+    {
+        'slug': 'village-spice-mix',
+        'name': 'Village Spice Mix',
+        'hut_slug': 'cooking',
+        'hut_name': 'Village Cooking Hut',
+        'price': 'LKR 1,250',
+        'status': 'Available',
+        'summary': 'A small-batch spice blend for recreating the cooking hut flavor profile.',
+        'artisan': 'Ammamma Kitchen',
+        'materials': 'Roasted spices',
+    },
+    {
+        'slug': 'folk-song-booklet',
+        'name': 'Folk Song Booklet',
+        'hut_slug': 'folk-music',
+        'hut_name': 'Folk Music Hut',
+        'price': 'LKR 1,800',
+        'status': 'Preview',
+        'summary': 'A printed starter booklet for village songs, rhythms, and performance notes.',
+        'artisan': 'Community Archive',
+        'materials': 'Printed booklet',
+    },
+]
+
+
+def get_product(slug):
+    return next((product for product in PRODUCTS if product['slug'] == slug), None)

@@ -23,6 +23,7 @@ class DashboardTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Welcome back, Nila.')
         self.assertContains(response, 'Passport progress')
+        self.assertContains(response, reverse('dashboard:passport'))
         self.assertContains(response, 'Enter Virtual Village')
         self.assertContains(response, 'Browse Cultural Products')
 
@@ -56,3 +57,25 @@ class DashboardTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Admin tools')
         self.assertContains(response, 'Approvals')
+
+    def test_passport_requires_login(self):
+        response = self.client.get(reverse('dashboard:passport'))
+
+        self.assertRedirects(response, f"{reverse('accounts:login')}?next={reverse('dashboard:passport')}")
+
+    def test_passport_renders_huts_and_badges(self):
+        user = User.objects.create_user(
+            username='nila@example.com',
+            email='nila@example.com',
+            password='StrongPass12345!',
+        )
+        self.client.force_login(user)
+
+        response = self.client.get(reverse('dashboard:passport'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'dashboard/passport.html')
+        self.assertContains(response, 'Cultural Passport')
+        self.assertContains(response, 'Pottery Hut')
+        self.assertContains(response, 'Clay Keeper')
+        self.assertContains(response, 'Continue Hut')

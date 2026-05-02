@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}{{ hut.short_name }} Simulation | AerUla{% endblock %}
+
+{% block content %}
+<section class="simulation-hero">
+    <div class="container">
+        <a class="back-link" href="{% url 'village:detail' hut.slug %}">Back to {{ hut.name }}</a>
+        <div class="simulation-heading">
+            <div>
+                <p class="eyebrow">Simulation preview</p>
+                <h1>{{ hut.activity }}</h1>
+                <p>{{ hut.summary }}</p>
+            </div>
+            <div class="simulation-score-card" aria-live="polite">
+                <span>Preview score</span>
+                <strong data-simulation-score>0/{{ hut.steps|length }}</strong>
+                <p data-simulation-feedback>Arrange the village craft steps in the correct order.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="simulation-workspace-section">
+    <div class="container">
+        <div class="simulation-workspace" data-step-simulation>
+            <div class="simulation-board">
+                <div class="simulation-board-header">
+                    <div>
+                        <p class="eyebrow">Arrange steps</p>
+                        <h2>Build the correct process from first step to final step.</h2>
+                    </div>
+                    <button class="btn btn-outline-dark" type="button" data-reset-simulation>Reset</button>
+                </div>
+
+                <ol class="step-sort-list" data-step-list>
+                    {% for step in shuffled_steps %}
+                        <li>
+                            <button class="step-sort-item" type="button" data-step-value="{{ step }}">
+                                <span>{{ step }}</span>
+                            </button>
+                            <div class="step-move-controls" aria-label="Move {{ step }}">
+                                <button type="button" data-move-step="up">Up</button>
+                                <button type="button" data-move-step="down">Down</button>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ol>
+
+                <div class="simulation-controls" aria-label="Simulation controls">
+                    <button class="btn btn-dark" type="button" data-check-simulation>Check Order</button>
+                    <p>Use a step, then move it up or down with the controls that appear.</p>
+                </div>
+            </div>
+
+            <aside class="simulation-guide">
+                <span class="summary-label">Learning guide</span>
+                <h2>{{ hut.badge }}</h2>
+                <p>Check your order when the process feels right. A complete result can later be validated on the server before passport progress is awarded.</p>
+                <ol data-answer-key hidden>
+                    {% for order, step in ordered_steps %}
+                        <li data-answer-value="{{ step }}">{{ order }}. {{ step }}</li>
+                    {% endfor %}
+                </ol>
+                <div class="simulation-result" data-simulation-result hidden></div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

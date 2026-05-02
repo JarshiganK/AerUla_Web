@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Marketplace | AerUla{% endblock %}
+
+{% block content %}
+<section class="catalog-hero">
+    <div class="container">
+        <div class="catalog-heading">
+            <div>
+                <p class="eyebrow">Marketplace</p>
+                <h1>Products connected to the cultural village journey.</h1>
+                <p>Browse traditional goods tied to hut stories, simulations, and local host knowledge.</p>
+            </div>
+            <div class="catalog-summary-card">
+                <span>Visible products</span>
+                <strong>{{ product_count }}</strong>
+                <p>Static MVP catalogue ready for cart and approval workflows later.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="catalog-section">
+    <div class="container">
+        <div class="catalog-filter-bar" aria-label="Marketplace hut filters">
+            <a class="{% if not selected_hut %}is-active{% endif %}" href="{% url 'marketplace:index' %}">All products</a>
+            {% for hut in huts %}
+                <a class="{% if selected_hut == hut.slug %}is-active{% endif %}" href="{% url 'marketplace:index' %}?hut={{ hut.slug }}">{{ hut.short_name }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="product-grid">
+            {% for product in products %}
+                <article class="product-card">
+                    <div class="product-art product-art-{{ product.hut_slug }}" aria-hidden="true"></div>
+                    <div class="product-card-body">
+                        <span class="hut-status hut-status-available">{{ product.status }}</span>
+                        <h2>{{ product.name }}</h2>
+                        <p>{{ product.summary }}</p>
+                        <div class="product-meta">
+                            <span>{{ product.hut_name }}</span>
+                            <strong>{{ product.price }}</strong>
+                        </div>
+                        <a class="btn btn-outline-dark btn-sm" href="{% url 'marketplace:detail' product.slug %}">View Product</a>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty-state">
+                    <h2>No products found.</h2>
+                    <p>Choose another hut filter to continue browsing the MVP catalogue.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
