@@ -8,14 +8,14 @@
     <div class="container">
         <div class="village-map-heading">
             <div>
-                <p class="eyebrow">Virtual Village Map</p>
-                <h1>Choose a cultural hut and continue your journey.</h1>
-                <p>Select an image-led hut, preview the activity, then continue toward badges, bookings, and products.</p>
+                <p class="eyebrow">Virtual village</p>
+                <h1>Choose a hut and continue your journey.</h1>
+                <p>Select a marker on the map to preview each story, activity, and badge before you enter.</p>
             </div>
             <div class="village-progress-card" aria-label="Village progress summary">
                 <span>Progress</span>
                 <strong>0/{{ total_count }}</strong>
-                <p>{{ available_count }} image-led huts ready for the MVP path.</p>
+                <p>{{ available_count }} of {{ total_count }} huts are open to explore.</p>
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@
                     {% endfor %}
                 </div>
                 <div class="stage-footer">
-                    <span>Select a hut to preview the image, activity, and badge</span>
+                    <span>Tap a hut to preview its story</span>
                     <span class="status-dot" aria-hidden="true"></span>
                 </div>
             </div>
@@ -85,10 +85,10 @@
 
                 <div class="hut-detail-actions">
                     <a class="btn btn-dark" href="{{ featured_hut.url }}" data-hut-action>Open Hut</a>
-                    <a class="btn btn-outline-dark" href="{% url 'marketplace:index' %}">Related Products</a>
+                    <a class="btn btn-outline-dark" href="{% url 'marketplace:index' %}">Browse marketplace</a>
                 </div>
                 <p class="hut-lock-note" data-hut-lock-note hidden>
-                    This hut is planned for the next guided step. Preview the story now, then complete unlocked huts first.
+                    This hut unlocks once you finish the open huts ahead of it on the path.
                 </p>
             </aside>
         </div>
@@ -98,8 +98,8 @@
 <section class="village-hut-section">
     <div class="container">
         <div class="section-heading">
-            <p class="eyebrow">Hut path</p>
-            <h2>Each stop connects learning, progress, and cultural commerce.</h2>
+            <p class="eyebrow">Along the path</p>
+            <h2>Each hut connects learning with local artisans and hosts.</h2>
         </div>
         <div class="hut-card-grid">
             {% for hut in huts %}

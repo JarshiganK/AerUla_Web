@@ -10,7 +10,7 @@
             <article class="booking-detail-panel">
                 <p class="eyebrow">Booking request</p>
                 <h1>{{ experience.title }}</h1>
-                <p>Submit a request for {{ experience.host }}. The request will be saved for host review.</p>
+                <p>Your request goes straight to {{ experience.host }}.</p>
 
                 <form class="booking-request-form" method="post">
                     {% csrf_token %}
@@ -35,8 +35,8 @@
             <aside class="booking-request-panel">
                 <span class="summary-label">Status</span>
                 {% if submitted %}
-                    <strong>Request received</strong>
-                    <p>Your request has been saved with pending status for host review.</p>
+                    <strong>Thank you</strong>
+                    <p>We've shared your details with the host; they will follow up soon.</p>
                 {% else %}
                     <strong>{{ experience.status_label }}</strong>
                     <p>{{ experience.duration }} with {{ experience.host }} from {{ experience.formatted_price }}.</p>

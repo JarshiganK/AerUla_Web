@@ -8,18 +8,18 @@
         <div class="catalog-heading">
             <div>
                 <p class="eyebrow">AI Cultural Guide</p>
-                <h1>Chat with AerUla's cultural guide.</h1>
-                <p>Ask about huts, traditions, products, or the next experience, and get answers grounded in the village knowledge base.</p>
+                <h1>Ask AerUla's cultural guide.</h1>
+                <p>Questions about traditions, huts, products, and bookings—answered from AerUla's curated content.</p>
             </div>
             <div class="catalog-summary-card">
-                <span>Guide mode</span>
-                <strong>RAG</strong>
-                <p>Retrieval-augmented chat sourced from AerUla content.</p>
+                <span>How it helps</span>
+                <strong>Curated answers</strong>
+                <p>Responses lean on hut stories, simulations, bookings, and product pages.</p>
             </div>
         </div>
 
         <form method="get" action="{% url 'core:guide' %}" class="guide-search-panel">
-            <label class="form-label" for="guide-query">Ask about a hut, product, or tradition</label>
+            <label class="form-label" for="guide-query">Search</label>
             <div class="guide-search-row">
                 <input id="guide-query" name="q" type="search" class="form-control form-control-lg" value="{{ query }}" placeholder="e.g. What makes Jaffna pottery special?">
                 <button class="btn btn-dark btn-lg" type="submit">Ask the guide</button>
@@ -41,9 +41,9 @@
                 <div class="guide-answer-header">
                     <div>
                         <p class="eyebrow">Chat</p>
-                        <h2>Continue the conversation</h2>
+                        <h2>Conversation</h2>
                     </div>
-                    <span class="guide-answer-badge">Grounded response</span>
+                    <span class="guide-answer-badge">AerUla guidance</span>
                 </div>
 
                 <div class="guide-chat-stream" aria-label="Conversation history">
@@ -59,7 +59,7 @@
 
                 <form method="post" action="{% url 'core:guide' %}" class="guide-search-panel guide-compose-panel">
                     {% csrf_token %}
-                    <label class="form-label" for="guide-message">Ask about a hut, product, or tradition</label>
+                    <label class="form-label" for="guide-message">Message</label>
                     <div class="guide-search-row">
                         <input id="guide-message" name="message" type="search" class="form-control form-control-lg" value="{{ current_message }}" placeholder="e.g. What makes Jaffna pottery special?">
                         <button class="btn btn-dark btn-lg" type="submit">Send</button>
@@ -68,8 +68,8 @@
 
                 <div class="guide-answer-hints">
                     <div>
-                        <span>Try asking about</span>
-                        <strong>huts, products, traditions, or bookable experiences</strong>
+                        <span>Try</span>
+                        <strong>huts, crafts, traditions, or experiences</strong>
                     </div>
                     <a href="{% url 'core:guide' %}?clear=1">Clear chat</a>
                 </div>

@@ -404,9 +404,9 @@ def _default_sources():
 def _compose_answer(query, sources):
     if not sources:
         return (
-            "I could not find an AerUla knowledge-base match for that yet. "
-            "Ask me about a hut, product, tradition, simulation, badge, or bookable experience. "
-            "Good examples are pottery, palmyrah, cooking, fishing, folk music, or village products."
+            "I couldn't find that in AerUla's curated guides yet. "
+            "Ask about a hut, product, tradition, or bookable experience—"
+            "for example pottery, palmyrah, cooking, fishing, folk music, or village crafts."
         )
 
     lead = sources[0]
@@ -417,7 +417,7 @@ def _compose_answer(query, sources):
         )
 
     lines = [
-        f"Based on the AerUla village knowledge base, {lead['title']} is the closest match for your question.",
+        f"{lead['title']} is the closest match for your question.",
         f"{lead['summary']}",
     ]
 

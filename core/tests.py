@@ -16,7 +16,7 @@ class HomePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Explore Sri Lanka beyond the surface')
         self.assertContains(response, 'Explore the Village')
-        self.assertContains(response, 'Browse Experiences')
+        self.assertContains(response, 'Browse experiences')
         self.assertContains(response, 'Ask Guide')
         self.assertContains(response, 'What does the pottery hut teach?')
         self.assertContains(response, 'Authentic cultural references')
@@ -25,8 +25,9 @@ class HomePageTests(TestCase):
         self.assertContains(response, 'Open Pottery Hut')
         self.assertNotContains(response, 'Three role pillar')
         self.assertNotContains(response, 'Designed for learners, creators, and hosts')
-        self.assertContains(response, 'Digital cultural village for Sri Lankan heritage learning')
-        self.assertContains(response, 'Built for learners, hosts, artisans, and admins')
+        self.assertContains(response, 'Sri Lankan heritage you can explore with care')
+        self.assertContains(response, 'for travellers, hosts, and artisans')
+        self.assertContains(response, 'cultural journal')
 
 
 class GuidePageTests(TestCase):
@@ -37,14 +38,14 @@ class GuidePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'AI Cultural Guide')
         self.assertContains(response, 'pottery')
-        self.assertContains(response, 'RAG')
+        self.assertContains(response, 'Curated answers')
 
     @override_settings(GEMINI_API_KEY='')
     def test_guide_page_offers_default_prompts(self):
         response = self.client.get(reverse('core:guide'))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Continue the conversation')
+        self.assertContains(response, 'Conversation')
         self.assertContains(response, 'What does the pottery hut teach?')
 
     @override_settings(GEMINI_API_KEY='')
@@ -65,7 +66,7 @@ class GuidePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data['sources'], [])
-        self.assertIn('could not find an AerUla knowledge-base match', data['answer'])
+        self.assertIn("couldn't find that in AerUla's curated guides yet", data['answer'])
         self.assertNotIn('Pottery Hut is the closest match', data['answer'])
 
     @override_settings(GEMINI_API_KEY='')
@@ -135,7 +136,7 @@ class GuidePageTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Tell me about pottery')
-        self.assertContains(response, 'Based on the AerUla village knowledge base')
+        self.assertContains(response, 'closest match for your question.')
 
     @override_settings(GEMINI_API_KEY='test-key', GEMINI_MODEL='gemini-test')
     @patch('core.services._generate_gemini_answer', return_value='Gemini-guided answer')

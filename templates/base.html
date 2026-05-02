@@ -20,11 +20,20 @@
             </button>
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'village:index' %}">Virtual Village</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'marketplace:index' %}">Marketplace</a></li>
-                    <li class="nav-item">
-                        <button class="btn btn-sm btn-outline-dark nav-cta" type="button" data-guide-open>Ask Guide</button>
-                    </li>
+                    {% if viewer_site.public_show_virtual_village %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'village:index' %}">Virtual Village</a></li>
+                    {% endif %}
+                    {% if viewer_site.public_show_marketplace %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'marketplace:index' %}">Marketplace</a></li>
+                    {% endif %}
+                    {% if viewer_site.public_show_experience_bookings %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'bookings:index' %}">Bookings</a></li>
+                    {% endif %}
+                    {% if viewer_site.public_show_cultural_guide %}
+                        <li class="nav-item">
+                            <button class="btn btn-sm btn-outline-dark nav-cta" type="button" data-guide-open>Ask Guide</button>
+                        </li>
+                    {% endif %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:index' %}">Dashboard</a></li>
                     {% if user.is_authenticated %}
                         <li class="nav-item ms-lg-2">
@@ -61,45 +70,55 @@
                         <span class="brand-mark" aria-hidden="true">A</span>
                         <span>AerUla</span>
                     </a>
-                    <h2 id="footer-about-heading">Digital cultural village for Sri Lankan heritage learning.</h2>
-                    <p>Explore interactive huts, ask the AI cultural guide, earn passport badges, and connect with real experiences and artisan products.</p>
+                    <h2 id="footer-about-heading">Sri Lankan heritage you can explore with care.</h2>
+                    <p>Interactive huts, a cultural guide, milestone badges for your journal, and connections to artisans and hosts.</p>
                 </section>
 
                 <section aria-labelledby="footer-journey-heading">
-                    <h3 id="footer-journey-heading">Journey</h3>
+                    <h3 id="footer-journey-heading">Explore</h3>
                     <ul class="site-footer-list">
-                        <li><a href="{% url 'village:index' %}">Explore the virtual village</a></li>
-                        <li><a href="{% url 'dashboard:passport' %}">View cultural passport</a></li>
-                        <li><button type="button" data-guide-open>Ask the AI guide</button></li>
+                        {% if viewer_site.public_show_virtual_village %}
+                            <li><a href="{% url 'village:index' %}">Virtual village</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'dashboard:journal' %}">Cultural journal</a></li>
+                        {% if viewer_site.public_show_cultural_guide %}
+                            <li><button type="button" data-guide-open>Cultural guide</button></li>
+                        {% endif %}
                     </ul>
                 </section>
 
                 <section aria-labelledby="footer-marketplace-heading">
                     <h3 id="footer-marketplace-heading">Marketplace</h3>
                     <ul class="site-footer-list">
-                        <li><a href="{% url 'marketplace:index' %}">Browse artisan products</a></li>
-                        <li><a href="{% url 'bookings:index' %}">Book cultural experiences</a></li>
-                        <li><a href="{% url 'dashboard:vendor' %}">Vendor experience workspace</a></li>
+                        {% if viewer_site.public_show_marketplace %}
+                            <li><a href="{% url 'marketplace:index' %}">Artisan products</a></li>
+                        {% endif %}
+                        {% if viewer_site.public_show_experience_bookings %}
+                            <li><a href="{% url 'bookings:index' %}">Experience bookings</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'dashboard:vendor' %}">Host workspace</a></li>
                     </ul>
                 </section>
 
                 <section aria-labelledby="footer-platform-heading">
-                    <h3 id="footer-platform-heading">Platform</h3>
+                    <h3 id="footer-platform-heading">Account</h3>
                     <ul class="site-footer-list">
-                        <li><a href="{% url 'dashboard:index' %}">Learner dashboard</a></li>
-                        <li><a href="{% url 'dashboard:admin_workspace' %}">Developer admin console</a></li>
-                        <li><a href="{% url 'accounts:signup' %}">Create an account</a></li>
+                        <li><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                        {% if is_platform_operator %}
+                            <li><a href="{% url 'dashboard:admin_workspace' %}">Admin control center</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'accounts:signup' %}">Sign up</a></li>
                     </ul>
                 </section>
             </div>
             <div class="site-footer-bottom">
-                <span>AerUla connects cultural learning with responsible local tourism.</span>
-                <span>Built for learners, hosts, artisans, and admins.</span>
+                <span>AerUla connects cultural learning with responsible local tourism—for travellers, hosts, and artisans.</span>
             </div>
         </div>
     </footer>
 
-    <button class="guide-launch-fab" type="button" data-guide-open aria-label="Open cultural guide chatbot">
+    {% if viewer_site.public_show_cultural_guide %}
+    <button class="guide-launch-fab" type="button" data-guide-open aria-label="Open cultural guide">
         Ask Guide
     </button>
 
@@ -109,8 +128,8 @@
                 <div class="modal-header guide-chat-header">
                     <div>
                         <p class="eyebrow mb-1">AI Cultural Guide</p>
-                        <h2 id="guideChatModalLabel" class="guide-chat-title">Chat with AerUla</h2>
-                        <p class="guide-chat-subtitle mb-0">Ask about huts, traditions, products, or the next experience.</p>
+                        <h2 id="guideChatModalLabel" class="guide-chat-title">Cultural guide</h2>
+                        <p class="guide-chat-subtitle mb-0">Questions about traditions, huts, products, or bookings.</p>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -130,15 +149,15 @@
 
                             <form class="guide-search-panel guide-compose-panel" data-guide-form action="{% url 'core:guide_chat_api' %}" method="post">
                                 {% csrf_token %}
-                                <label class="form-label" for="guide-message-input">Ask about a hut, product, or tradition</label>
+                                <label class="form-label" for="guide-message-input">Your question</label>
                                 <div class="guide-search-row">
                                     <input id="guide-message-input" name="message" type="search" class="form-control form-control-lg" placeholder="e.g. What makes Jaffna pottery special?" data-guide-input>
                                     <button class="btn btn-dark btn-lg" type="submit" data-guide-send>Send</button>
                                 </div>
                                 <div class="guide-answer-hints guide-answer-hints-modal">
                                     <div>
-                                        <span>Ask about</span>
-                                        <strong>huts, products, traditions, or bookable experiences</strong>
+                                        <span>Try</span>
+                                        <strong>huts, crafts, traditions, or experiences</strong>
                                     </div>
                                     <button class="btn btn-link p-0 guide-clear-link" type="button" data-guide-clear>Clear chat</button>
                                 </div>
@@ -168,9 +187,9 @@
                                     {% endfor %}
                                 {% else %}
                                     <article class="guide-source-card guide-source-card-empty">
-                                        <span>Ready</span>
-                                        <h3>Ask a question to see grounded sources here.</h3>
-                                        <p>Powered by huts, simulations, bookings, and marketplace content.</p>
+                                        <span>Sources</span>
+                                        <h3>Ask something to see related pages here.</h3>
+                                        <p>Links draw from AerUla huts, activities, bookings, and the marketplace.</p>
                                     </article>
                                 {% endif %}
                             </div>
@@ -180,6 +199,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     {% block vendor_scripts %}{% endblock %}

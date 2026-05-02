@@ -10,7 +10,7 @@ class MarketplaceTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'marketplace/index.html')
-        self.assertContains(response, 'Products connected to the cultural village journey.')
+        self.assertContains(response, 'Goods from the cultural huts.')
         self.assertContains(response, 'Clay Serving Bowl')
         self.assertContains(response, 'Woven Palmyrah Basket')
         self.assertContains(response, 'All products')
@@ -61,7 +61,7 @@ class MarketplaceTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'marketplace/cart.html')
-        self.assertContains(response, 'Review selected cultural products.')
+        self.assertContains(response, 'Your basket.')
         self.assertContains(response, 'Continue to Checkout')
 
     def test_checkout_redirects_to_cart_when_cart_is_empty(self):

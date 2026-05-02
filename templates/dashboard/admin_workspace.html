@@ -1,18 +1,166 @@
 {% extends "base.html" %}
 
-{% block title %}Developer Admin Workspace | AerUla{% endblock %}
+{% block title %}Admin control center | AerUla{% endblock %}
 
 {% block content %}
 <section class="dashboard-hero">
     <div class="container">
         <div class="dashboard-heading">
             <div>
-                <p class="eyebrow">Developer admin workspace</p>
-                <h1>Full platform control for trusted admins.</h1>
-                <p>Review approvals, content, users, vendors, marketplace items, booking requests, and platform activity.</p>
+                <p class="eyebrow">Admin</p>
+                <h1>Control center &amp; analytics.</h1>
+                <p>Approve vendor experiences and product listings, tune what public visitors can open, and skim site-wide numbers. Django Admin remains available for deep edits.</p>
             </div>
-            <a class="btn btn-dark" href="/admin/">Open Django Admin</a>
+            <a class="btn btn-outline-dark" href="/admin/">Database admin</a>
         </div>
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Analytics</p>
+            <h2>Whole-site snapshot.</h2>
+        </div>
+        <div class="dashboard-grid">
+            <article class="summary-card">
+                <span class="summary-label">Registered users</span>
+                <strong>{{ analytics.registered_users }}</strong>
+                <p>Active accounts in the auth database.</p>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Hut completions</span>
+                <strong>{{ analytics.hut_completions }}</strong>
+                <p>Simulation rows marked complete across all users.</p>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Experiences live</span>
+                <strong>{{ analytics.published_experiences }}</strong>
+                <p>{{ analytics.pending_experiences }} still awaiting approval.</p>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Marketplace products live</span>
+                <strong>{{ analytics.published_products }}</strong>
+                <p>{{ analytics.pending_products }} not yet listed publicly.</p>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Booking requests</span>
+                <strong>{{ analytics.pending_booking_requests }} pending</strong>
+                <p>{{ analytics.booking_requests_total }} total recorded.</p>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Orders</span>
+                <strong>{{ analytics.orders_total }}</strong>
+                <p>Marketplace orders captured in AerUla.</p>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Active huts</span>
+                <strong>{{ analytics.active_huts }}</strong>
+                <p>Content huts marked active in the village.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="dashboard-section dashboard-section-light">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Public site</p>
+            <h2>Choose what visitors see.</h2>
+        </div>
+        <p class="auth-muted mb-4">Turn areas off to hide them from guests and signed-in learners. Operators (staff and Developer/Admin groups) can still open everything for testing.</p>
+        <form method="post" class="auth-card">
+            {% csrf_token %}
+            <input type="hidden" name="admin_action" value="save_visibility">
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="vis-village" name="public_show_virtual_village" {% if viewer_site.public_show_virtual_village %}checked{% endif %}>
+                <label class="form-check-label" for="vis-village">Virtual village map &amp; hut pages</label>
+            </div>
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="vis-market" name="public_show_marketplace" {% if viewer_site.public_show_marketplace %}checked{% endif %}>
+                <label class="form-check-label" for="vis-market">Marketplace (browse, cart &amp; checkout)</label>
+            </div>
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="vis-book" name="public_show_experience_bookings" {% if viewer_site.public_show_experience_bookings %}checked{% endif %}>
+                <label class="form-check-label" for="vis-book">Published experience bookings</label>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="vis-guide" name="public_show_cultural_guide" {% if viewer_site.public_show_cultural_guide %}checked{% endif %}>
+                <label class="form-check-label" for="vis-guide">AI cultural guide page &amp; navbar chat</label>
+            </div>
+            <button type="submit" class="btn btn-dark">Save visibility</button>
+        </form>
+    </div>
+</section>
+
+<section class="dashboard-section">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Approvals</p>
+            <h2>Experiences waiting for you.</h2>
+        </div>
+        {% if pending_experiences %}
+            <div class="table-responsive auth-card p-0 overflow-hidden">
+                <table class="table table-striped mb-0 align-middle">
+                    <thead class="table-light"><tr><th>Hut</th><th>Title</th><th>Host</th><th>Vendor</th><th></th></tr></thead>
+                    <tbody>
+                        {% for exp in pending_experiences %}
+                            <tr>
+                                <td>{{ exp.hut.name }}</td>
+                                <td>{{ exp.title }}</td>
+                                <td>{{ exp.host }}</td>
+                                <td>{% if exp.provider %}{{ exp.provider.email }}{% else %}—{% endif %}</td>
+                                <td class="text-end">
+                                    <form method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="admin_action" value="publish_experience">
+                                        <input type="hidden" name="experience_id" value="{{ exp.pk }}">
+                                        <button type="submit" class="btn btn-sm btn-dark">Approve &amp; publish</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="auth-muted mb-0">No experiences pending approval.</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="dashboard-section dashboard-section-light">
+    <div class="container">
+        <div class="section-heading">
+            <p class="eyebrow">Approvals</p>
+            <h2>Unpublished products.</h2>
+        </div>
+        {% if pending_products %}
+            <div class="table-responsive auth-card p-0 overflow-hidden">
+                <table class="table table-striped mb-0 align-middle">
+                    <thead class="table-light"><tr><th>Hut</th><th>Product</th><th>Artisan</th><th></th></tr></thead>
+                    <tbody>
+                        {% for prod in pending_products %}
+                            <tr>
+                                <td>{{ prod.hut.name }}</td>
+                                <td>{{ prod.name }}</td>
+                                <td>{{ prod.artisan }}</td>
+                                <td class="text-end">
+                                    <form method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="admin_action" value="publish_product">
+                                        <input type="hidden" name="product_id" value="{{ prod.pk }}">
+                                        <button type="submit" class="btn btn-sm btn-dark">List publicly</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="auth-muted mb-0">No products waiting to be listed.</p>
+        {% endif %}
     </div>
 </section>
 
@@ -23,7 +171,7 @@
                 <article class="summary-card">
                     <span class="summary-label">{{ label }}</span>
                     <strong>{{ value }}</strong>
-                    <p>These queues summarize current admin-managed content and request records.</p>
+                    <p>Quick queue view for admin stand-ups.</p>
                 </article>
             {% endfor %}
         </div>

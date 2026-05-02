@@ -1,11 +1,17 @@
 from django.http import Http404
 from django.shortcuts import render
 
+from core.visibility import guard_viewer_surface
+
 from .forms import BookingRequestForm
 from .models import BookingRequest, Experience
 
 
 def index(request):
+    blocked = guard_viewer_surface(request, 'public_show_experience_bookings')
+    if blocked is not None:
+        return blocked
+
     experiences = Experience.objects.filter(is_published=True).select_related('hut')
     return render(
         request,
@@ -18,6 +24,10 @@ def index(request):
 
 
 def detail(request, slug):
+    blocked = guard_viewer_surface(request, 'public_show_experience_bookings')
+    if blocked is not None:
+        return blocked
+
     try:
         experience = Experience.objects.select_related('hut').get(slug=slug, is_published=True)
     except Experience.DoesNotExist:
@@ -33,6 +43,10 @@ def detail(request, slug):
 
 
 def request_booking(request, slug):
+    blocked = guard_viewer_surface(request, 'public_show_experience_bookings')
+    if blocked is not None:
+        return blocked
+
     try:
         experience = Experience.objects.select_related('hut').get(slug=slug, is_published=True)
     except Experience.DoesNotExist:

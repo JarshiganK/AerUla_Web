@@ -6,12 +6,17 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
+from core.visibility import guard_viewer_surface
 from village.models import Hut
 
 from .models import UserProgress
 
 
 def index(request):
+    blocked = guard_viewer_surface(request, 'public_show_virtual_village')
+    if blocked is not None:
+        return blocked
+
     first_available = Hut.objects.filter(status=Hut.STATUS_AVAILABLE, is_active=True).first()
     if first_available is None:
         raise Http404('Simulation not found')
@@ -19,6 +24,10 @@ def index(request):
 
 
 def preview(request, slug):
+    blocked = guard_viewer_surface(request, 'public_show_virtual_village')
+    if blocked is not None:
+        return blocked
+
     try:
         hut = Hut.objects.get(slug=slug, is_active=True)
     except Hut.DoesNotExist:
@@ -41,6 +50,10 @@ def preview(request, slug):
 
 @require_POST
 def complete(request, slug):
+    blocked = guard_viewer_surface(request, 'public_show_virtual_village')
+    if blocked is not None:
+        return JsonResponse({'error': 'Virtual village is not available right now.'}, status=403)
+
     try:
         hut = Hut.objects.get(slug=slug, is_active=True)
     except Hut.DoesNotExist:
@@ -106,9 +119,9 @@ def complete(request, slug):
             'score': score,
             'completed': simulation_completed,
             'message': (
-                '360 simulation verified. Your badge has been recorded.'
+                'Visit complete—your hut progress is saved.'
                 if simulation_completed
-                else 'Keep watching, looking around, and inspecting the required points.'
+                else 'Keep watching, rotating the scene, and opening each hotspot.'
             ),
         }
     )

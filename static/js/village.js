@@ -92,7 +92,7 @@ function initPanoramaSimulation() {
 
     const updateProgress = () => {
         const coverage = Math.min(visitedAngles.size * 10, 360);
-        progress.textContent = `Watch time: ${Math.floor(watchedSeconds)}s. View coverage: ${coverage} degrees. Hotspots: ${visitedHotspots.size}/${hotspotButtons.length}.`;
+        progress.textContent = `${Math.floor(watchedSeconds)}s watched · ${coverage}° explored · ${visitedHotspots.size}/${hotspotButtons.length} landmarks`;
         return coverage;
     };
 
@@ -293,19 +293,19 @@ function initPanoramaSimulation() {
     video.addEventListener('loadeddata', () => {
         videoReady = true;
         videoUnavailable = false;
-        setStatus('Local 360 video loaded. Drag while it plays to explore.');
+        setStatus('Video ready—drag while it plays to look around.');
     });
 
     video.addEventListener('error', () => {
         videoUnavailable = true;
-        setStatus('Generated 360 hut scene is active. Add the local MP4 to use filmed footage.');
+        setStatus('Illustrative hut panorama loaded. Tap play, then drag to explore.');
     });
 
     playButton.addEventListener('click', () => {
         if (videoUnavailable) {
             watchedSeconds += 5;
-            playButton.textContent = 'Explore Generated 360';
-            setStatus('Generated 360 hut scene is active. Drag left or right to explore the full scene.');
+            playButton.textContent = 'Explore scene';
+            setStatus('Explore the panorama—drag across the hut scene.');
             updateProgress();
             return;
         }
@@ -319,7 +319,7 @@ function initPanoramaSimulation() {
                 .catch(() => {
                     videoUnavailable = true;
                     watchedSeconds += 5;
-                    setStatus('Generated 360 hut scene is active. Add the MP4 source to enable filmed playback.');
+                    setStatus('Illustrative panorama active—drag to explore and use the hotspots.');
                     updateProgress();
                 });
             return;
@@ -350,9 +350,9 @@ function initPanoramaSimulation() {
         const completeUrl = simulation.dataset.completeUrl;
 
         verifyButton.disabled = true;
-        verifyButton.textContent = 'Verifying...';
+        verifyButton.textContent = 'Saving...';
         result.hidden = false;
-        result.textContent = 'Checking the 360 visit progress against the hut activity.';
+        result.textContent = 'Checking your hut visit.';
         result.classList.remove('is-success', 'is-warning');
 
         fetch(completeUrl, {
@@ -370,25 +370,23 @@ function initPanoramaSimulation() {
             .then((response) => response.json().then((data) => ({ ok: response.ok, data })))
             .then(({ ok, data }) => {
                 if (!ok) {
-                    throw new Error(data.error || 'The simulation could not be verified.');
+                    throw new Error(data.error || 'We could not save your visit.');
                 }
 
                 score.textContent = `${data.score}%`;
                 feedback.textContent = data.message;
-                result.textContent = data.completed
-                    ? '360 simulation verified. Your badge has been recorded.'
-                    : `Need ${durationRequired}s watched, ${coverageRequired} degrees viewed, and every hotspot inspected.`;
+                result.textContent = data.message;
                 result.classList.toggle('is-success', data.completed);
                 result.classList.toggle('is-warning', !data.completed);
             })
             .catch((error) => {
-                feedback.textContent = 'The simulation could not be verified.';
+                feedback.textContent = 'Visit could not be saved.';
                 result.textContent = error.message;
                 result.classList.add('is-warning');
             })
             .finally(() => {
                 verifyButton.disabled = false;
-                verifyButton.textContent = 'Verify 360 Visit';
+                verifyButton.textContent = 'Mark visit complete';
             });
     });
 
@@ -402,8 +400,8 @@ function initPanoramaSimulation() {
         hotspotButtons.forEach((button) => button.classList.remove('is-visited'));
         simulation.querySelectorAll('[data-hotspot-check]').forEach((item) => item.classList.remove('is-visited'));
         score.textContent = '0%';
-        feedback.textContent = 'Watch, look around, and inspect the required points in the scene.';
-        setStatus('Drag to look around. Use the hotspots to inspect the scene.');
+        feedback.textContent = 'Play the clip, explore the scene, and open each landmark.';
+        setStatus('Drag to look around. Tap the hotspots along the rim.');
         updateProgress();
         clearResult();
     });

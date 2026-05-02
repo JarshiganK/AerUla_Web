@@ -2,6 +2,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse
 
+from core.visibility import guard_viewer_surface
 from marketplace.models import Product
 from simulations.models import SimulationStep, UserProgress
 
@@ -9,6 +10,10 @@ from .models import Hut
 
 
 def index(request):
+    blocked = guard_viewer_surface(request, 'public_show_virtual_village')
+    if blocked is not None:
+        return blocked
+
     huts = [_with_url(hut) for hut in Hut.objects.filter(is_active=True)]
     available_count = sum(hut.status == Hut.STATUS_AVAILABLE for hut in huts)
     context = {
@@ -21,6 +26,10 @@ def index(request):
 
 
 def detail(request, slug):
+    blocked = guard_viewer_surface(request, 'public_show_virtual_village')
+    if blocked is not None:
+        return blocked
+
     try:
         hut = Hut.objects.get(slug=slug, is_active=True)
     except Hut.DoesNotExist:

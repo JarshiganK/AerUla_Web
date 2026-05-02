@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Cultural Passport | AerUla{% endblock %}
+{% block title %}Cultural Journal | AerUla{% endblock %}
 
 {% block content %}
 <section class="passport-hero">
     <div class="container">
         <div class="catalog-heading">
             <div>
-                <p class="eyebrow">Cultural Passport</p>
-                <h1>Track hut completion, badges, and next steps.</h1>
-                <p>Completed badges are based on server-verified simulation visits.</p>
+                <p class="eyebrow">Cultural Journal</p>
+                <h1>Badges earned as you explore.</h1>
+                <p>Each hut adds a milestone badge here when you finish its activity.</p>
             </div>
             <div class="catalog-summary-card">
                 <span>Completed huts</span>
                 <strong>{{ completed_count }}/{{ total_count }}</strong>
-                <p>Badges unlock when both activity steps are complete.</p>
+                <p>Complete the hut activities to collect every badge.</p>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
 <section class="passport-section">
     <div class="container">
         <div class="passport-grid">
-            {% for hut in passport_huts %}
+            {% for hut in journal_huts %}
                 <article class="passport-card">
                     <div class="hut-card-header">
                         <span class="hut-status hut-status-{{ hut.hut.status }}">{{ hut.hut.status|title }}</span>

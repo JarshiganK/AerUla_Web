@@ -2,6 +2,7 @@ from django.http import Http404
 from django.shortcuts import redirect, render
 from django.utils.crypto import get_random_string
 
+from core.visibility import guard_viewer_surface
 from village.models import Hut
 
 from .cart import CART_SESSION_KEY, add_product_to_session_cart
@@ -11,6 +12,10 @@ from .models import Order, OrderItem
 
 
 def index(request):
+    blocked = guard_viewer_surface(request, 'public_show_marketplace')
+    if blocked is not None:
+        return blocked
+
     selected_hut = request.GET.get('hut', '')
     products = Product.objects.filter(is_published=True).select_related('hut')
 
@@ -27,6 +32,10 @@ def index(request):
 
 
 def detail(request, slug):
+    blocked = guard_viewer_surface(request, 'public_show_marketplace')
+    if blocked is not None:
+        return blocked
+
     try:
         product = Product.objects.select_related('hut').get(slug=slug, is_published=True)
     except Product.DoesNotExist:
@@ -47,6 +56,10 @@ def detail(request, slug):
 
 
 def add_to_cart(request, slug):
+    blocked = guard_viewer_surface(request, 'public_show_marketplace')
+    if blocked is not None:
+        return blocked
+
     try:
         product = Product.objects.get(slug=slug, is_published=True)
     except Product.DoesNotExist:
@@ -59,6 +72,10 @@ def add_to_cart(request, slug):
 
 
 def cart(request):
+    blocked = guard_viewer_surface(request, 'public_show_marketplace')
+    if blocked is not None:
+        return blocked
+
     cart_items, cart_total = _cart_items(request)
     return render(
         request,
@@ -72,6 +89,10 @@ def cart(request):
 
 
 def checkout(request):
+    blocked = guard_viewer_surface(request, 'public_show_marketplace')
+    if blocked is not None:
+        return blocked
+
     cart_items, cart_total = _cart_items(request)
     if not cart_items:
         return redirect('marketplace:cart')

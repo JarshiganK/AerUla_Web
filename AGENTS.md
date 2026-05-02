@@ -4,7 +4,7 @@ Guidance for coding agents working on AerUla Web.
 
 ## Project Context
 
-**AerUla is an AI-powered digital cultural village and experience marketplace that helps tourists, diaspora users, students, and cultural learners explore authentic Sri Lankan traditions through interactive simulation, AI guidance, cultural passport progression, and real-world experience booking.**
+**AerUla is an AI-powered digital cultural village and experience marketplace that helps tourists, diaspora users, students, and cultural learners explore authentic Sri Lankan traditions through interactive simulation, AI guidance, cultural journal (badge) progression, and real-world experience booking.**
 
 The MVP uses:
 
@@ -25,7 +25,7 @@ The planned deployment split is:
 1. **Digital-first cultural village**: A browser-based interactive map of cultural huts users can explore.
 2. **AI cultural guide**: An embedded AI assistant that explains traditions, answers culture questions, and personalizes the experience.
 3. **Interactive heritage huts**: Each hut contains a story, cultural context, and mini simulations.
-4. **Cultural passport and badge progression**: Users earn digital badges as they complete huts, track progress, and unlock recommendations.
+4. **Cultural journal and badge progression**: Users earn digital badges as they complete huts, track progress in a personal journal, and unlock recommendations.
 5. **Marketplace for real experiences and artisan products**: Connected to completed huts, showing bookable experiences and buyable products from local artisans.
 6. **Admin-controlled cultural content management**: Hosts, admins, and content managers can manage huts, experiences, products, and user approvals.
 7. **Simple, professional, trust-building UI**: Warm, calm, visually clear design that feels premium and cultural, not touristy.
@@ -34,7 +34,7 @@ The planned deployment split is:
 Read `prd.md` and `DESIGN_SYSTEM.md` before making product or architecture decisions. Keep the MVP focused on:
 - 2D browser simulation
 - Interactive cultural learning via huts
-- Badge/passport progression and motivation
+- Badge/journal progression and motivation
 - Real-world experience booking
 - Artisan marketplace
 - Admin content management
@@ -50,16 +50,17 @@ Read `prd.md` and `DESIGN_SYSTEM.md` before making product or architecture decis
 
 ## Expected Pages and Modules
 
-- **Landing page**: Hero, AerUla pitch, hut gallery, AI guide preview, passport preview, real-world marketplace preview.
+- **Landing page**: Hero, AerUla pitch, hut gallery, AI guide preview, journal preview, real-world marketplace preview.
 - **Authentication pages**: Login, signup, password reset, email verification.
 - **User dashboard**: Profile, earned badges, progress, upcoming bookings, recommendations.
 - **Virtual village map**: Interactive 2D map, hut cards, locked/available states, image previews.
 - **Hut detail/simulation page**: Cultural story, mini interactive simulation, AI guide prompt area, badge unlock, related real-world experience card.
 - **AI cultural guide page or embedded widget**: Calm interface, cultural context explanation, image/story support, tourist/student/scholar depth levels.
-- **Cultural passport/profile page**: Earned and locked badges, completed huts, scores, share/certificate preview, next recommended hut.
+- **Cultural journal page**: Earned and locked badges, completed huts, scores, share/certificate preview, next recommended hut.
 - **Marketplace page**: Product grid, experience cards, hut/category filter, bookings/purchase flow.
 - **Experience booking page**: Host info, schedule, price, description, booking confirmation.
 - **Admin dashboard**: Content cards (total huts, active experiences, items, bookings, users), pending approvals, quick action links.
+- **In-app admin control center** (`/dashboard/admin-workspace/` for staff / Developer / Admin): live analytics, “what visitors see” toggles (village, marketplace, bookings, cultural guide), and one-click publish for pending vendor experiences and unpublished products. Django Admin remains for low-level records.
 - **Admin content management pages**: Hut editor, experience editor, product editor, user management, booking management.
 
 When changing architecture, deployment flow, app boundaries, testing policy, security posture, or frontend/backend responsibilities, update this `AGENTS.md` file in the same change. Do not let implementation drift away from these instructions.
@@ -191,7 +192,7 @@ Before any AWS launch, add and verify:
 - Keep app boundaries clear:
   - `accounts`: users, roles, host profiles, auth-related forms.
   - `village`: huts, cultural content, map structure, media references.
-  - `simulations`: activity configs, progress validation, scores, badges, passport.
+  - `simulations`: activity configs, progress validation, scores, badges, journal.
   - `bookings`: availability, reservations, booking status.
   - `marketplace`: products, carts, orders, reviews.
   - `dashboard`: role-specific screens and summaries.
@@ -253,7 +254,7 @@ AerUla is simulation-heavy, so performance is a product requirement.
 - Avoid blocking the main thread with expensive calculations. If complex logic is introduced later, consider Web Workers.
 - Preserve accessibility: simulations need keyboard-friendly alternatives or fallback controls where practical.
 - Server endpoints that save progress, bookings, and orders must be efficient and avoid unnecessary queries.
-- Watch database query count for dashboard, marketplace, and passport pages; use `select_related`, `prefetch_related`, pagination, and indexes where appropriate.
+- Watch database query count for dashboard, marketplace, and journal pages; use `select_related`, `prefetch_related`, pagination, and indexes where appropriate.
 
 ## Testing and Acceptance
 
@@ -285,7 +286,7 @@ Minimum acceptance before a PR or push:
 - UI changes are checked at mobile and desktop widths.
 - `AGENTS.md` is updated when the change affects architecture, deployment, testing, performance, security, or project standards.
 
-When a frontend test stack is added, include appropriate unit/component tests and end-to-end coverage for critical user journeys. Critical journeys include registration/login, entering the virtual village, completing a hut simulation, earning a badge, viewing the passport, browsing marketplace products, adding to cart, and booking an experience.
+When a frontend test stack is added, include appropriate unit/component tests and end-to-end coverage for critical user journeys. Critical journeys include registration/login, entering the virtual village, completing a hut simulation, earning a badge, viewing the cultural journal, browsing marketplace products, adding to cart, and booking an experience.
 
 Recommended future testing tools:
 

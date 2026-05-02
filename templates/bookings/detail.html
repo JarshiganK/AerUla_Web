@@ -27,10 +27,10 @@
                 </dl>
             </article>
             <aside class="booking-request-panel">
-                <span class="summary-label">Request preview</span>
+                <span class="summary-label">Next step</span>
                 <strong>{{ experience.status_label }}</strong>
-                <p>Request dates, guest count, and notes are validated before being saved for host review.</p>
-                <a class="btn btn-dark w-100" href="{% url 'bookings:request' experience.slug %}">Request Booking Preview</a>
+                <p>Send your preferred date, group size, and a short note—the host reviews every request.</p>
+                <a class="btn btn-dark w-100" href="{% url 'bookings:request' experience.slug %}">Request a booking</a>
             </aside>
         </div>
     </div>

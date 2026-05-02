@@ -11,11 +11,11 @@
                 {% if order %}
                     <p class="eyebrow">Order placed</p>
                     <h1>{{ order.reference }}</h1>
-                    <p>Your order has been recorded for marketplace follow-up.</p>
+                    <p>Thank you—we will confirm your order shortly.</p>
                 {% else %}
                     <p class="eyebrow">Checkout</p>
                     <h1>Place your order.</h1>
-                    <p>Confirm customer details and create an order record for {{ cart_total }}.</p>
+                    <p>Confirm your details to place this order for {{ cart_total }}.</p>
                     <form class="booking-request-form" method="post">
                         {% csrf_token %}
                         <label>
@@ -35,7 +35,7 @@
             <aside class="booking-request-panel">
                 <span class="summary-label">Total</span>
                 <strong>{% if order %}{{ order.formatted_total }}{% else %}{{ cart_total }}{% endif %}</strong>
-                <p>{% if order %}Status: {{ order.get_status_display }}.{% else %}Payment integration can be connected after order capture.{% endif %}</p>
+                <p>{% if order %}Status: {{ order.get_status_display }}.{% else %}Payment and delivery steps can be confirmed after your order is received.{% endif %}</p>
                 <a class="btn btn-dark w-100" href="{% url 'dashboard:index' %}">Return to Dashboard</a>
             </aside>
         </div>

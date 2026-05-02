@@ -42,13 +42,13 @@ test.describe('AerUla public experience', () => {
     await expect(page.getByRole('link', { name: 'Browse Experiences' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Open Pottery Hut' })).toBeVisible();
     await expect(page.getByText('Three role pillar')).toHaveCount(0);
-    await expect(page.getByText('Digital cultural village for Sri Lankan heritage learning.')).toBeVisible();
-    await expect(page.getByText('Built for learners, hosts, artisans, and admins.')).toBeVisible();
+    await expect(page.getByText('Sri Lankan heritage you can explore with care.')).toBeVisible();
+    await expect(page.getByText(/for travellers, hosts, and artisans/)).toBeVisible();
 
-    await page.getByLabel('Open cultural guide chatbot').click();
-    await expect(page.getByRole('heading', { name: 'Chat with AerUla' })).toBeVisible();
+    await page.getByLabel('Open cultural guide').click();
+    await expect(page.getByRole('heading', { name: 'Cultural guide' })).toBeVisible();
 
-    const messageBox = page.getByLabel('Ask about a hut, product, or tradition');
+    const messageBox = page.getByLabel('Your question');
     await messageBox.fill('What does the pottery hut teach?');
     await page.getByRole('button', { name: 'Send' }).click();
 
@@ -67,13 +67,13 @@ test.describe('AerUla public experience', () => {
   test('guide modal does not invent hut matches for unrelated text', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByLabel('Open cultural guide chatbot').click();
-    const messageBox = page.getByLabel('Ask about a hut, product, or tradition');
+    await page.getByLabel('Open cultural guide').click();
+    const messageBox = page.getByLabel('Your question');
     await messageBox.fill('Jarshigan');
     await page.getByRole('button', { name: 'Send' }).click();
 
     const latestAnswer = page.locator('[data-guide-transcript] .guide-chat-row.is-assistant').last();
-    await expect(latestAnswer).toContainText('could not find an AerUla knowledge-base match');
+    await expect(latestAnswer).toContainText("couldn't find that in AerUla's curated guides yet");
     await expect(latestAnswer).not.toContainText('Pottery Hut is the closest match');
     await expect(page.locator('[data-guide-source-count]')).toContainText('0 matched');
   });
@@ -81,8 +81,8 @@ test.describe('AerUla public experience', () => {
   test('guide modal keeps booking follow-ups on the matching experience', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByLabel('Open cultural guide chatbot').click();
-    const messageBox = page.getByLabel('Ask about a hut, product, or tradition');
+    await page.getByLabel('Open cultural guide').click();
+    const messageBox = page.getByLabel('Your question');
     await messageBox.fill('book pottery');
     await page.getByRole('button', { name: 'Send' }).click();
 
@@ -103,8 +103,8 @@ test.describe('AerUla public experience', () => {
   test('guide modal can add a clear product to cart and open checkout', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByLabel('Open cultural guide chatbot').click();
-    const messageBox = page.getByLabel('Ask about a hut, product, or tradition');
+    await page.getByLabel('Open cultural guide').click();
+    const messageBox = page.getByLabel('Your question');
     await messageBox.fill('add Clay Serving Bowl to cart');
     await page.getByRole('button', { name: 'Send' }).click();
 
@@ -121,7 +121,7 @@ test.describe('AerUla public experience', () => {
   test('village map links to a hut, simulation preview, and guide page', async ({ page }) => {
     await page.goto('/village/');
 
-    await expect(page.getByRole('heading', { name: 'Choose a cultural hut and continue your journey.' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Choose a hut and continue your journey.' })).toBeVisible();
     await page.getByRole('button', { name: /Palmyrah Available/ }).click();
     await expect(page.locator('[data-hut-detail-name]')).toContainText('Palmyrah Craft Hut');
 
@@ -129,18 +129,18 @@ test.describe('AerUla public experience', () => {
     await expect(page).toHaveURL(/\/village\/palmyrah\/$/);
     await expect(page.getByRole('heading', { name: 'Palmyrah Craft Hut' })).toBeVisible();
 
-    await page.getByRole('link', { name: 'Start Simulation Preview' }).click();
+    await page.getByRole('link', { name: 'Start activity' }).click();
     await expect(page).toHaveURL(/\/simulations\/palmyrah\/$/);
     await expect(page.getByRole('heading', { name: /Match leaf strips/ })).toBeVisible();
 
     await page.goto('/guide/?q=palmyrah');
-    await expect(page.getByRole('heading', { name: "Chat with AerUla's cultural guide." })).toBeVisible();
+    await expect(page.getByRole('heading', { name: "Ask AerUla's cultural guide." })).toBeVisible();
     await expect(page.getByText('Palmyrah Craft Hut').first()).toBeVisible();
   });
 
   test('marketplace filtering, cart, checkout, and booking requests work', async ({ page }) => {
     await page.goto('/marketplace/');
-    await expect(page.getByRole('heading', { name: 'Products connected to the cultural village journey.' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Goods from the cultural huts.' })).toBeVisible();
     const firstProductCard = page.locator('.product-card').filter({ hasText: 'Clay Serving Bowl' }).first();
     await expect(firstProductCard.getByRole('link', { name: 'Add to Cart' })).toBeVisible();
     await expect(firstProductCard.getByRole('link', { name: 'Buy Now' })).toBeVisible();
@@ -166,7 +166,7 @@ test.describe('AerUla public experience', () => {
     await page.getByLabel('Guests').fill('2');
     await page.getByLabel('Notes for host').fill('Prefer a morning workshop.');
     await page.getByRole('button', { name: 'Submit Request' }).click();
-    await expect(page.getByText('Request received')).toBeVisible();
+    await expect(page.getByText('Thank you')).toBeVisible();
   });
 });
 
@@ -184,10 +184,10 @@ test.describe('AerUla authenticated journey', () => {
     await page.getByRole('button', { name: 'Login' }).click();
 
     await expect(page).toHaveURL(/\/dashboard\/$/);
-    await expect(page.getByRole('link', { name: 'View Passport' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'View Journal' })).toBeVisible();
   });
 
-  test('verified user can complete a hut simulation and see passport progress', async ({ page }) => {
+  test('verified user can complete a hut simulation and see journal progress', async ({ page }) => {
     await signUpAndVerify(page);
 
     await page.goto('/simulations/pottery/');
@@ -206,8 +206,8 @@ test.describe('AerUla authenticated journey', () => {
     expect(response.ok()).toBeTruthy();
     expect((await response.json()).completed).toBeTruthy();
 
-    await page.goto('/dashboard/passport/');
-    await expect(page).toHaveURL(/\/dashboard\/passport\/$/);
+    await page.goto('/dashboard/journal/');
+    await expect(page).toHaveURL(/\/dashboard\/journal\/$/);
     await expect(page.getByText('1/5')).toBeVisible();
     await expect(page.locator('.passport-card').filter({ hasText: 'Pottery Hut' })).toContainText('100');
   });
@@ -234,8 +234,8 @@ test.describe('AerUla authenticated journey', () => {
     await page.getByRole('button', { name: 'Submit for Review' }).click();
 
     await expect(page).toHaveURL(/\/dashboard\/vendor\/$/);
-    await expect(page.getByText('Your experience was submitted for admin review.')).toBeVisible();
+    await expect(page.getByText(/Submitted for admin approval/)).toBeVisible();
     await expect(page.getByText('Playwright Clay Session')).toBeVisible();
-    await expect(page.getByText('waiting for admin review')).toBeVisible();
+    await expect(page.getByText(/awaiting approval/)).toBeVisible();
   });
 });

@@ -28,7 +28,7 @@ class SignupTests(TestCase):
         self.assertIn('Verify your AerUla account', mail.outbox[0].subject)
         self.assertIn('/accounts/verify/', mail.outbox[0].body)
         verification_response = self.client.get(reverse('accounts:verification_sent'))
-        self.assertContains(verification_response, 'Local development verification link')
+        self.assertContains(verification_response, 'Local verification link (development only)')
 
     def test_signup_rejects_duplicate_email(self):
         User.objects.create_user(
@@ -108,7 +108,7 @@ class ResendVerificationTests(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn('/accounts/verify/', mail.outbox[0].body)
         verification_response = self.client.get(reverse('accounts:verification_sent'))
-        self.assertContains(verification_response, 'Local development verification link')
+        self.assertContains(verification_response, 'Local verification link (development only)')
 
     def test_resend_verification_does_not_send_for_active_account(self):
         User.objects.create_user(

@@ -10,7 +10,7 @@ class BookingPageTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'bookings/index.html')
-        self.assertContains(response, 'Reserve cultural experiences connected to the huts.')
+        self.assertContains(response, 'Book experiences rooted in each hut.')
         self.assertContains(response, 'Pottery Workshop Visit')
         self.assertContains(response, 'Palmyrah Weaving Session')
 
@@ -21,7 +21,7 @@ class BookingPageTests(TestCase):
         self.assertTemplateUsed(response, 'bookings/detail.html')
         self.assertContains(response, 'Pottery Workshop Visit')
         self.assertContains(response, 'Kopay Pottery Collective')
-        self.assertContains(response, 'Request Booking Preview')
+        self.assertContains(response, 'Request a booking')
         self.assertContains(response, reverse('bookings:request', kwargs={'slug': 'pottery-workshop'}))
 
     def test_booking_request_page_renders_form(self):
@@ -41,7 +41,7 @@ class BookingPageTests(TestCase):
         })
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Request received')
+        self.assertContains(response, 'Thank you')
         self.assertEqual(BookingRequest.objects.count(), 1)
         self.assertEqual(BookingRequest.objects.get().guests, 2)
 

@@ -9,9 +9,11 @@
             <div>
                 <p class="eyebrow">Dashboard</p>
                 <h1>Welcome back, {{ user.first_name|default:user.username }}.</h1>
-                <p>Continue your AerUla journey from cultural discovery to badges, bookings, and marketplace connections.</p>
+                <p>{% if viewer_site.public_show_virtual_village %}Continue in the village, record badges in your journal{% if viewer_site.public_show_marketplace %}, and explore the marketplace{% endif %}.{% else %}Record badges in your journal and check back when new areas open.{% endif %}</p>
             </div>
-            <a class="btn btn-dark" href="{% url 'village:index' %}">Enter Virtual Village</a>
+            {% if viewer_site.public_show_virtual_village %}
+                <a class="btn btn-dark" href="{% url 'village:index' %}">Enter Virtual Village</a>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -20,15 +22,15 @@
     <div class="container">
         <div class="dashboard-grid">
             <article class="summary-card">
-                <span class="summary-label">Passport progress</span>
+                <span class="summary-label">Journal progress</span>
                 <strong>0 / 5 huts</strong>
-                <p>Progress updates after verified simulation completion.</p>
-                <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:passport' %}">View Passport</a>
+                <p>Progress updates when you complete hut activities.</p>
+                <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:journal' %}">View Journal</a>
             </article>
             <article class="summary-card">
                 <span class="summary-label">Badges earned</span>
                 <strong>0</strong>
-                <p>Badges unlock after verified simulation visits.</p>
+                <p>Badges appear as you finish each hut activity.</p>
             </article>
             <article class="summary-card">
                 <span class="summary-label">Bookings</span>
@@ -43,18 +45,29 @@
     <div class="container">
         <div class="section-heading">
             <p class="eyebrow">Next steps</p>
-            <h2>Pick up the journey.</h2>
+            <h2>Where to go next.</h2>
         </div>
         <div class="row g-4">
             {% for step in journey_steps %}
-                <div class="col-md-4">
-                    <article class="feature-card dashboard-action-card">
-                        <span class="feature-number">{{ step.label }}</span>
-                        <h3>{{ step.title }}</h3>
-                        <p>{{ step.description }}</p>
-                        <a class="btn btn-outline-dark btn-sm mt-3" href="{% url step.url_name %}">{{ step.action }}</a>
-                    </article>
-                </div>
+                {% if step.url_name == 'village:index' and viewer_site.public_show_virtual_village %}
+                    <div class="col-md-4">
+                        <article class="feature-card dashboard-action-card">
+                            <span class="feature-number">{{ step.label }}</span>
+                            <h3>{{ step.title }}</h3>
+                            <p>{{ step.description }}</p>
+                            <a class="btn btn-outline-dark btn-sm mt-3" href="{% url step.url_name %}">{{ step.action }}</a>
+                        </article>
+                    </div>
+                {% elif step.url_name == 'marketplace:index' and viewer_site.public_show_marketplace %}
+                    <div class="col-md-4">
+                        <article class="feature-card dashboard-action-card">
+                            <span class="feature-number">{{ step.label }}</span>
+                            <h3>{{ step.title }}</h3>
+                            <p>{{ step.description }}</p>
+                            <a class="btn btn-outline-dark btn-sm mt-3" href="{% url step.url_name %}">{{ step.action }}</a>
+                        </article>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     </div>
@@ -65,23 +78,23 @@
     <div class="container">
         <div class="section-heading">
             <p class="eyebrow">Management</p>
-            <h2>Role workspace.</h2>
+            <h2>Your workspaces.</h2>
         </div>
         <div class="dashboard-grid">
             {% if is_vendor %}
                 <article class="summary-card">
                     <span class="summary-label">Vendor tools</span>
                     <strong>Experiences</strong>
-                    <p>Add cultural experiences you provide and track booking requests after admin review.</p>
+                    <p>List experiences you host and track booking requests after approval.</p>
                     <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:vendor' %}">Manage Experiences</a>
                 </article>
             {% endif %}
             {% if is_developer %}
                 <article class="summary-card">
-                    <span class="summary-label">Developer admin tools</span>
-                    <strong>Full control</strong>
-                    <p>Review users, vendors, huts, products, bookings, and platform content.</p>
-                    <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:admin_workspace' %}">Open Admin Workspace</a>
+                    <span class="summary-label">Admin tools</span>
+                    <strong>Staff overview</strong>
+                    <p>Review content, vendors, products, bookings, and members.</p>
+                    <a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'dashboard:admin_workspace' %}">Open admin control center</a>
                 </article>
             {% endif %}
         </div>

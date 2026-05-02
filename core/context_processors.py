@@ -1,3 +1,6 @@
+from accounts.roles import is_developer
+
+from .models import SiteViewerSettings
 from .services import build_chat_messages, build_quick_prompt_links
 
 
@@ -11,4 +14,6 @@ def cultural_guide(request):
         'guide_chat_messages': build_chat_messages(history),
         'guide_quick_prompts': build_quick_prompt_links(),
         'guide_latest_sources': latest_sources,
+        'viewer_site': SiteViewerSettings.get_solo(),
+        'is_platform_operator': request.user.is_authenticated and is_developer(request.user),
     }

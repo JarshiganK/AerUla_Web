@@ -25,7 +25,7 @@
         <div class="hut-experience-layout">
             <article class="hut-story-panel">
                 <p class="eyebrow">Story</p>
-                <h2>See the real reference, then try the activity.</h2>
+                <h2>Start with context, then try the activity.</h2>
                 <p>{{ hut.story }}</p>
             </article>
 
@@ -34,15 +34,15 @@
                 <strong>{% if hut.status == "available" %}Ready to start{% else %}Story preview{% endif %}</strong>
                 <p>
                     {% if hut.status == "available" %}
-                        This hut is open for the MVP learning path.
+                        This hut is open on your journey.
                     {% else %}
-                        This hut is visible now and will unlock after earlier activities are connected to saved progress.
+                        Preview the story now—it unlocks fully after earlier huts on the path.
                     {% endif %}
                 </p>
                 <div class="badge-card badge-card-inline" aria-label="Badge preview">
                     <span>Badge</span>
                     <strong>{{ hut.badge }}</strong>
-                    <p>Finish the verified simulation to add it to the passport.</p>
+                    <p>Complete the hut activity to record this badge in your journal.</p>
                 </div>
             </aside>
         </div>
@@ -81,19 +81,18 @@
         <div class="next-step-panel">
             <div>
                 <p class="eyebrow">After completion</p>
-                <h2>Continue through products and bookings.</h2>
+                <h2>Continue to the marketplace.</h2>
                 <p>
                     {% if related_products %}
-                        Related marketplace items for this hut include
-                        {% for product in related_products %}{{ product.name }}{% if not forloop.last %}, {% endif %}{% endfor %}.
+                        From this hut: {% for product in related_products %}{{ product.name }}{% if not forloop.last %}, {% endif %}{% endfor %}.
                     {% else %}
-                        Related marketplace items will appear here after products are published for this hut.
+                        Related crafts and goods will appear here when listed for this hut.
                     {% endif %}
                 </p>
             </div>
             <div class="hut-detail-actions">
-                <a class="btn btn-dark" href="{% url 'simulations:preview' hut.slug %}">Start Simulation Preview</a>
-                <a class="btn btn-outline-dark" href="{% url 'marketplace:index' %}">Browse Related Products</a>
+                <a class="btn btn-dark" href="{% url 'simulations:preview' hut.slug %}">Start activity</a>
+                <a class="btn btn-outline-dark" href="{% url 'marketplace:index' %}">Browse marketplace</a>
             </div>
         </div>
 

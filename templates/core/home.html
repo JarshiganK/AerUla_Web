@@ -9,10 +9,16 @@
             <div class="col-lg-6">
                 <p class="eyebrow" style="color: #F2B84B;">Discover authentic traditions</p>
                 <h1 class="hero-title" style="font-size: clamp(2.5rem, 6vw, 3.5rem); font-weight: 700; line-height: 1.2; margin-bottom: 1.5rem;">Explore Sri Lanka beyond the surface.</h1>
-                <p class="hero-copy" style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem; opacity: 0.95;">Step into immersive cultural huts. Learn from an AI guide. Earn your cultural passport. Connect with real local experiences.</p>
+                <p class="hero-copy" style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem; opacity: 0.95;">Step into immersive cultural huts. Learn from an AI guide. Build your cultural journal. Connect with real local experiences.</p>
                 <div class="hero-actions">
-                    <a class="btn btn-light btn-lg" href="{% url 'village:index' %}" style="background-color: #F2B84B; color: #061A40; border: none; font-weight: 600;">Explore the Village</a>
-                    <a class="btn btn-outline-light btn-lg" href="{% url 'marketplace:index' %}">Browse Experiences</a>
+                    {% if viewer_site.public_show_virtual_village %}
+                        <a class="btn btn-light btn-lg" href="{% url 'village:index' %}" style="background-color: #F2B84B; color: #061A40; border: none; font-weight: 600;">Explore the Village</a>
+                    {% endif %}
+                    {% if viewer_site.public_show_experience_bookings %}
+                        <a class="btn btn-outline-light btn-lg" href="{% url 'bookings:index' %}">Browse experiences</a>
+                    {% elif viewer_site.public_show_marketplace %}
+                        <a class="btn btn-outline-light btn-lg" href="{% url 'marketplace:index' %}">Browse crafts</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-6">
@@ -20,8 +26,8 @@
                     <p style="font-size: 3rem; margin: 0; font-weight: 700;">5</p>
                     <p style="font-size: 0.95rem; margin-top: 0.5rem;">Interactive Cultural Huts</p>
                     <hr style="border: none; border-top: 2px solid #D9A86C; margin: 1.5rem 0;">
-                    <p style="font-size: 3rem; margin: 0; font-weight: 700;">Always on</p>
-                    <p style="font-size: 0.95rem; margin-top: 0.5rem;">AI Cultural Guide</p>
+                    <p style="font-size: 3rem; margin: 0; font-weight: 700;">{% if viewer_site.public_show_cultural_guide %}Always on{% else %}—{% endif %}</p>
+                    <p style="font-size: 0.95rem; margin-top: 0.5rem;">{% if viewer_site.public_show_cultural_guide %}AI cultural guide{% else %}Guide paused{% endif %}</p>
                     <hr style="border: none; border-top: 2px solid #D9A86C; margin: 1.5rem 0;">
                     <p style="font-size: 3rem; margin: 0; font-weight: 700;">100+</p>
                     <p style="font-size: 0.95rem; margin-top: 0.5rem;">Local Experiences & Products</p>
@@ -56,13 +62,14 @@
                 <article class="feature-card" style="background: white; padding: 2rem; border-radius: 12px; border-left: 4px solid #2E7D5B; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
                     <span class="feature-number" style="color: #2E7D5B; font-size: 2.5rem; font-weight: 700;">3</span>
                     <h3 style="color: #061A40; margin-top: 1rem;">Earn & Connect</h3>
-                    <p style="color: #6B7280;">Collect badges in your cultural passport and book real experiences with local artisans and hosts.</p>
+                    <p style="color: #6B7280;">Collect badges in your cultural journal and book real experiences with local artisans and hosts.</p>
                 </article>
             </div>
         </div>
     </div>
 </section>
 
+{% if viewer_site.public_show_cultural_guide %}
 <section style="padding: 4rem 0;">
     <div class="container">
         <div class="row align-items-center g-5">
@@ -87,20 +94,28 @@
                     </div>
                     <p style="color: #061A40; margin-bottom: 1.5rem;">"Jaffna pottery is a 2,000-year-old tradition. The clay comes from nearby lagoons. Each pattern tells a story of harvest seasons and family lineage."</p>
                     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                        <button class="btn btn-sm" type="button" data-guide-open data-guide-prompt="What makes Jaffna pottery special?" style="background: #083B8A; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Tell me more</button>
-                        <a class="btn btn-sm" href="{% url 'bookings:index' %}" style="background: transparent; color: #083B8A; border: 1px solid #083B8A; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Book an experience</a>
+                        {% if viewer_site.public_show_cultural_guide %}
+                            <button class="btn btn-sm" type="button" data-guide-open data-guide-prompt="What makes Jaffna pottery special?" style="background: #083B8A; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Tell me more</button>
+                        {% endif %}
+                        {% if viewer_site.public_show_experience_bookings %}
+                            <a class="btn btn-sm" href="{% url 'bookings:index' %}" style="background: transparent; color: #083B8A; border: 1px solid #083B8A; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Book an experience</a>
+                        {% endif %}
                     </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
-                        {% for prompt in guide_prompt_links %}
-                            <button type="button" data-guide-open data-guide-prompt="{{ prompt.label }}" style="display: inline-flex; align-items: center; padding: 0.45rem 0.75rem; border-radius: 999px; border: 1px solid #D9A86C; color: #083B8A; text-decoration: none; font-size: 0.85rem; background: #FAF7F0;">{{ prompt.label }}</button>
-                        {% endfor %}
-                    </div>
+                    {% if viewer_site.public_show_cultural_guide %}
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                            {% for prompt in guide_prompt_links %}
+                                <button type="button" data-guide-open data-guide-prompt="{{ prompt.label }}" style="display: inline-flex; align-items: center; padding: 0.45rem 0.75rem; border-radius: 999px; border: 1px solid #D9A86C; color: #083B8A; text-decoration: none; font-size: 0.85rem; background: #FAF7F0;">{{ prompt.label }}</button>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if viewer_site.public_show_virtual_village %}
 <section style="background-color: #FAF7F0; padding: 4rem 0;">
     <div class="container">
         <div class="section-heading" style="text-align: center; margin-bottom: 2rem;">
@@ -129,8 +144,11 @@
 <section style="background: linear-gradient(135deg, #083B8A 0%, #061A40 100%); color: white; padding: 4rem 0; text-align: center; border-radius: 12px; margin: 4rem auto; max-width: 1200px;">
     <div class="container">
         <h2 style="font-size: 2rem; margin-bottom: 1rem;">Ready to explore?</h2>
-        <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.95;">Step into the village, meet an AI guide, and connect with authentic Sri Lankan heritage.</p>
-        <a class="btn btn-light btn-lg" href="{% url 'village:index' %}" style="background-color: #F2B84B; color: #061A40; border: none; font-weight: 600; text-decoration: none; display: inline-block;">Start Your Journey</a>
+        <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.95;">Step into the village, meet the cultural guide, and connect with authentic Sri Lankan heritage.</p>
+        {% if viewer_site.public_show_virtual_village %}
+            <a class="btn btn-light btn-lg" href="{% url 'village:index' %}" style="background-color: #F2B84B; color: #061A40; border: none; font-weight: 600; text-decoration: none; display: inline-block;">Start your journey</a>
+        {% endif %}
     </div>
 </section>
+{% endif %}
 {% endblock %}

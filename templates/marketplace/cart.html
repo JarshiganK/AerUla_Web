@@ -9,8 +9,8 @@
         <div class="catalog-heading">
             <div>
                 <p class="eyebrow">Cart</p>
-                <h1>Review selected cultural products.</h1>
-                <p>Review products added during this session before placing an order.</p>
+                <h1>Your basket.</h1>
+                <p>Review items before you check out.</p>
             </div>
             <div class="catalog-summary-card">
                 <span>Items</span>
@@ -43,9 +43,9 @@
                 {% endfor %}
             </div>
             <aside class="booking-request-panel">
-                <span class="summary-label">Order preview</span>
+                <span class="summary-label">Order summary</span>
                 <strong>{{ cart_total }}</strong>
-                <p>Checkout validates customer details and creates a database order record.</p>
+                <p>Next, enter contact details—we will confirm by email.</p>
                 {% if cart_items %}
                     <a class="btn btn-dark w-100" href="{% url 'marketplace:checkout' %}">Continue to Checkout</a>
                 {% else %}

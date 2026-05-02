@@ -9,7 +9,7 @@
             <div>
                 <p class="eyebrow">Vendor workspace</p>
                 <h1>Manage the cultural experiences you provide.</h1>
-                <p>Add real experiences, keep them ready for admin review, and track requests connected to your listings.</p>
+                <p>Submit listings for review, then track enquiries from travellers.</p>
             </div>
             <a class="btn btn-dark" href="{% url 'dashboard:vendor_experience_create' %}">Add Experience</a>
         </div>
@@ -23,7 +23,7 @@
                 <article class="summary-card">
                     <span class="summary-label">{{ label }}</span>
                     <strong>{{ value }}</strong>
-                    <p>These counts come from the current admin-managed catalogue and booking request data.</p>
+                    <p>Snapshot of listings and enquiries on your account.</p>
                 </article>
             {% endfor %}
         </div>
@@ -33,8 +33,8 @@
 <section class="dashboard-section dashboard-section-light">
     <div class="container">
         <div class="section-heading">
-            <p class="eyebrow">My listings</p>
-            <h2>Submitted experiences.</h2>
+            <p class="eyebrow">Experiences</p>
+            <h2>Your listings and enquiries.</h2>
         </div>
         {% if vendor_experiences %}
             <div class="dashboard-grid">
@@ -43,14 +43,14 @@
                         <span class="summary-label">{{ experience.hut.name }}</span>
                         <strong>{{ experience.title }}</strong>
                         <p>{{ experience.summary }}</p>
-                        <p><strong>Status:</strong> {{ experience.status_label }}{% if not experience.is_published %} - waiting for admin review{% endif %}</p>
+                        <p><strong>Status:</strong> {{ experience.status_label }}{% if not experience.is_published %} — awaiting approval{% endif %}</p>
                     </article>
                 {% endfor %}
             </div>
         {% else %}
             <article class="empty-state">
                 <h3>No experiences submitted yet.</h3>
-                <p>Create your first cultural experience so a developer admin can review and publish it.</p>
+                <p>Add your first experience so AerUla staff can review and publish it.</p>
                 <a class="btn btn-dark" href="{% url 'dashboard:vendor_experience_create' %}">Add Experience</a>
             </article>
         {% endif %}

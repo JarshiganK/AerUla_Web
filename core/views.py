@@ -6,6 +6,7 @@ from marketplace.cart import add_product_to_session_cart
 from village.models import Hut
 
 from .services import answer_guide_question, build_ai_guide, build_chat_messages, resolve_cart_request
+from .visibility import guard_viewer_surface
 
 
 def home(request):
@@ -23,6 +24,10 @@ def home(request):
 
 
 def guide(request):
+    blocked = guard_viewer_surface(request, 'public_show_cultural_guide')
+    if blocked is not None:
+        return blocked
+
     if request.method == 'POST':
         query = request.POST.get('message', '').strip()
         if query:
@@ -52,6 +57,10 @@ def guide(request):
 def guide_chat_api(request):
     if request.method != 'POST':
         return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+    blocked = guard_viewer_surface(request, 'public_show_cultural_guide')
+    if blocked is not None:
+        return JsonResponse({'error': 'Cultural guide is not available right now.'}, status=403)
 
     action = request.POST.get('action', '').strip()
     if action == 'clear':
