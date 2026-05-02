@@ -1,133 +1,178 @@
 {% extends "base.html" %}
 
-{% block title %}AerUla Virtual Village{% endblock %}
+{% block title %}AerUla — Explore Sri Lankan Heritage{% endblock %}
 
 {% block content %}
-<section class="hero-section">
+<section class="hero-section" style="background-color: #083B8A; color: white; padding: 6rem 0;">
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
-                <p class="eyebrow">Cultural learning meets village commerce</p>
-                <h1 class="hero-title">Explore Sri Lankan heritage through a virtual village.</h1>
-                <p class="hero-copy">Step into image-led huts, short simulations, badges, bookings, and traditional products from one guided village path.</p>
+                <p class="eyebrow" style="color: #F2B84B;">Discover authentic traditions</p>
+                <h1 class="hero-title" style="font-size: clamp(2.5rem, 6vw, 3.5rem); font-weight: 700; line-height: 1.2; margin-bottom: 1.5rem;">Explore Sri Lanka beyond the surface.</h1>
+                <p class="hero-copy" style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem; opacity: 0.95;">Step into immersive cultural huts. Learn from an AI guide. Earn your cultural passport. Connect with real local experiences.</p>
                 <div class="hero-actions">
-                    <a class="btn btn-dark btn-lg" href="{% url 'village:index' %}">Enter Virtual Village</a>
-                    <a class="btn btn-light btn-lg" href="{% url 'marketplace:index' %}">Browse Marketplace</a>
-                </div>
-                <div class="metric-strip" aria-label="AerUla MVP modules">
-                    <div><strong>5</strong><span>Cultural huts</span></div>
-                    <div><strong>2D</strong><span>Web simulation</span></div>
-                    <div><strong>MVP</strong><span>Learn to market</span></div>
+                    <a class="btn btn-light btn-lg" href="{% url 'village:index' %}" style="background-color: #F2B84B; color: #061A40; border: none; font-weight: 600;">Explore the Village</a>
+                    <a class="btn btn-outline-light btn-lg" href="{% url 'marketplace:index' %}">Browse Experiences</a>
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="hero-photo-stack" aria-label="Real cultural references from the AerUla village journey">
-                    <figure class="hero-photo-card hero-photo-card-large">
-                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tradtional_Sri_Lankan_Pottery.jpg?width=1200" alt="Traditional Sri Lankan pottery vessel with red and white clay decoration.">
-                        <figcaption>Pottery craft reference</figcaption>
-                    </figure>
-                    <figure class="hero-photo-card hero-photo-card-small">
-                        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Palmyra_Product_Shop-Jaffna-1.jpg?width=900" alt="Palmyrah leaf products displayed in a Jaffna shop.">
-                        <figcaption>Jaffna palmyrah craft</figcaption>
-                    </figure>
-                    <div class="hero-photo-note">
-                        <strong>Images first</strong>
-                        <span>Huts, products, and simulations start from real cultural references.</span>
-                    </div>
+                <div style="background: linear-gradient(135deg, #FAF7F0 0%, #D9A86C 100%); border-radius: 12px; padding: 2rem; text-align: center; color: #061A40;">
+                    <p style="font-size: 3rem; margin: 0; font-weight: 700;">5</p>
+                    <p style="font-size: 0.95rem; margin-top: 0.5rem;">Interactive Cultural Huts</p>
+                    <hr style="border: none; border-top: 2px solid #D9A86C; margin: 1.5rem 0;">
+                    <p style="font-size: 3rem; margin: 0; font-weight: 700;">∞</p>
+                    <p style="font-size: 0.95rem; margin-top: 0.5rem;">AI Cultural Guide</p>
+                    <hr style="border: none; border-top: 2px solid #D9A86C; margin: 1.5rem 0;">
+                    <p style="font-size: 3rem; margin: 0; font-weight: 700;">100+</p>
+                    <p style="font-size: 0.95rem; margin-top: 0.5rem;">Local Experiences & Products</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="section-band">
+<section class="section-band" style="background-color: #FAF7F0; padding: 4rem 0;">
     <div class="container">
-        <div class="section-heading">
-            <p class="eyebrow">How the MVP works</p>
-            <h2>One visual journey from hut to badge to product.</h2>
+        <div class="section-heading" style="text-align: center; margin-bottom: 3rem;">
+            <p class="eyebrow" style="color: #083B8A;">How AerUla works</p>
+            <h2 style="color: #061A40; font-size: 2rem;">One journey from discovery to impact</h2>
         </div>
         <div class="row g-4">
             <div class="col-md-4">
-                <article class="feature-card">
-                    <span class="feature-number">01</span>
-                    <h3>Discover</h3>
-                    <p>Choose a photo-led hut from the 2D cultural map.</p>
+                <article class="feature-card" style="background: white; padding: 2rem; border-radius: 12px; border-left: 4px solid #083B8A; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <span class="feature-number" style="color: #083B8A; font-size: 2.5rem; font-weight: 700;">1</span>
+                    <h3 style="color: #061A40; margin-top: 1rem;">Explore Huts</h3>
+                    <p style="color: #6B7280;">Discover 5 interactive cultural huts on the village map, each rooted in authentic Sri Lankan traditions.</p>
                 </article>
             </div>
             <div class="col-md-4">
-                <article class="feature-card">
-                    <span class="feature-number">02</span>
-                    <h3>Interact</h3>
-                    <p>Use quick browser activities and quiz checkpoints.</p>
+                <article class="feature-card" style="background: white; padding: 2rem; border-radius: 12px; border-left: 4px solid #D9A86C; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <span class="feature-number" style="color: #D9A86C; font-size: 2.5rem; font-weight: 700;">2</span>
+                    <h3 style="color: #061A40; margin-top: 1rem;">Learn & Simulate</h3>
+                    <p style="color: #6B7280;">Complete quick interactive simulations, answer quizzes, and unlock your understanding of each tradition.</p>
                 </article>
             </div>
             <div class="col-md-4">
-                <article class="feature-card">
-                    <span class="feature-number">03</span>
-                    <h3>Connect</h3>
-                    <p>Unlock badges, bookings, and matching products.</p>
+                <article class="feature-card" style="background: white; padding: 2rem; border-radius: 12px; border-left: 4px solid #2E7D5B; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <span class="feature-number" style="color: #2E7D5B; font-size: 2.5rem; font-weight: 700;">3</span>
+                    <h3 style="color: #061A40; margin-top: 1rem;">Earn & Connect</h3>
+                    <p style="color: #6B7280;">Collect badges in your cultural passport and book real experiences with local artisans and hosts.</p>
                 </article>
             </div>
         </div>
     </div>
 </section>
 
-<section class="container py-5">
-    <div class="section-heading">
-        <p class="eyebrow">Real cultural references</p>
-        <h2>Every hut uses a relevant cultural image.</h2>
-    </div>
-    <div class="home-hut-gallery">
-        {% for hut in featured_huts %}
-            <article class="photo-hut-card">
-                <img src="{{ hut.image_url }}" alt="{{ hut.image_alt }}" loading="lazy">
-                <div>
-                    <span class="hut-status hut-status-{{ hut.status }}">{{ hut.status|title }}</span>
-                    <h3>{{ hut.name }}</h3>
-                    <a href="{{ hut.image_source_url }}" rel="noopener" target="_blank">{{ hut.image_credit }}</a>
+<section style="padding: 4rem 0;">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <p class="eyebrow" style="color: #083B8A;">AI-Powered Cultural Learning</p>
+                <h2 style="color: #061A40; font-size: 2rem; margin-bottom: 1.5rem;">Ask the Cultural Guide</h2>
+                <p style="color: #6B7280; line-height: 1.6; margin-bottom: 1.5rem;">AerUla's embedded AI guide answers your questions about each tradition. Ask what a craft means, how it connects to Jaffna culture, or book a real experience.</p>
+                <ul style="list-style: none; padding: 0; color: #6B7280;">
+                    <li style="margin-bottom: 1rem; display: flex; gap: 1rem;"><span style="color: #2E7D5B; font-weight: 700;">✓</span> Instant cultural context on any hut</li>
+                    <li style="margin-bottom: 1rem; display: flex; gap: 1rem;"><span style="color: #2E7D5B; font-weight: 700;">✓</span> Tailored for tourists, students, and scholars</li>
+                    <li style="margin-bottom: 1rem; display: flex; gap: 1rem;"><span style="color: #2E7D5B; font-weight: 700;">✓</span> Connect traditions to real bookable experiences</li>
+                </ul>
+            </div>
+            <div class="col-lg-6">
+                <div style="background: white; border: 2px solid #E5E7EB; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                    <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem;">
+                        <div style="width: 32px; height: 32px; background: #083B8A; border-radius: 50%; flex-shrink: 0;"></div>
+                        <div>
+                            <p style="font-weight: 600; color: #061A40; margin: 0;">Cultural Guide</p>
+                            <p style="font-size: 0.85rem; color: #6B7280; margin: 0.25rem 0 0;">Just now</p>
+                        </div>
+                    </div>
+                    <p style="color: #061A40; margin-bottom: 1.5rem;">"Jaffna pottery is a 2,000-year-old tradition. The clay comes from nearby lagoons. Each pattern tells a story of harvest seasons and family lineage."</p>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button class="btn btn-sm" type="button" data-guide-open data-guide-prompt="What makes Jaffna pottery special?" style="background: #083B8A; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Tell me more</button>
+                        <a class="btn btn-sm" href="{% url 'bookings:index' %}" style="background: transparent; color: #083B8A; border: 1px solid #083B8A; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Book an experience</a>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                        {% for prompt in guide_prompt_links %}
+                            <button type="button" data-guide-open data-guide-prompt="{{ prompt.label }}" style="display: inline-flex; align-items: center; padding: 0.45rem 0.75rem; border-radius: 999px; border: 1px solid #D9A86C; color: #083B8A; text-decoration: none; font-size: 0.85rem; background: #FAF7F0;">{{ prompt.label }}</button>
+                        {% endfor %}
+                    </div>
                 </div>
-            </article>
-        {% endfor %}
+            </div>
+        </div>
     </div>
 </section>
 
-<section class="container py-5">
-    <div class="row g-4 align-items-stretch">
-        <div class="col-lg-5">
-            <div class="editorial-panel">
-                <p class="eyebrow">Designed for trust</p>
-                <h2>More visual, less text, still fast on phones.</h2>
-                <p>The interface keeps users in images, simulations, and clear actions.</p>
-            </div>
+<section style="background-color: #FAF7F0; padding: 4rem 0;">
+    <div class="container">
+        <div class="section-heading" style="text-align: center; margin-bottom: 2rem;">
+            <p class="eyebrow" style="color: #083B8A;">Authentic cultural references</p>
+            <h2 style="color: #061A40;">Every hut starts with real images</h2>
         </div>
-        <div class="col-lg-7">
-            <div class="row g-3">
-                <div class="col-sm-6">
-                    <div class="compact-tile">
-                        <h3>Passport progress</h3>
-                        <p>Show badges and next huts visually.</p>
+        <div class="home-hut-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+            {% for hut in featured_huts %}
+                <article class="photo-hut-card" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s;">
+                    <img src="{{ hut.image_url }}" alt="{{ hut.image_alt }}" loading="lazy" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <p style="color: #2E7D5B; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin: 0 0 0.5rem;">{{ hut.status|title }}</p>
+                        <h3 style="color: #061A40; margin: 0 0 0.5rem; font-size: 1.25rem;">{{ hut.name }}</h3>
+                        <p style="color: #6B7280; font-size: 0.9rem; margin: 0;"><a href="{{ hut.image_source_url }}" rel="noopener" target="_blank" style="color: #083B8A; text-decoration: none;">{{ hut.image_credit }}</a></p>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="compact-tile">
-                        <h3>Host products</h3>
-                        <p>Match products to each hut image.</p>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="compact-tile">
-                        <h3>Admin control</h3>
-                        <p>Keep approvals and catalogue content clear.</p>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="compact-tile">
-                        <h3>Fast simulations</h3>
-                        <p>Use lightweight SVG, Canvas, and JS.</p>
-                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section style="padding: 4rem 0;">
+    <div class="container">
+        <div class="row g-4 align-items-stretch">
+            <div class="col-lg-5">
+                <div style="padding: 2rem; border-left: 4px solid #083B8A;">
+                    <p class="eyebrow" style="color: #083B8A;">Three role pillar</p>
+                    <h2 style="color: #061A40; font-size: 2rem;">Designed for learners, creators, and hosts</h2>
+                    <p style="color: #6B7280; line-height: 1.6;">From exploring heritage, to building real tourism, to managing cultural products.</p>
                 </div>
             </div>
+            <div class="col-lg-7">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB;">
+                            <p style="color: #083B8A; font-weight: 700; margin: 0 0 0.5rem;">🎓 Learners</p>
+                            <h4 style="color: #061A40; margin: 0 0 0.75rem; font-size: 1rem;">Cultural Passport</h4>
+                            <p style="color: #6B7280; font-size: 0.9rem; margin: 0;">Collect badges, track your journey, unlock new experiences.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB;">
+                            <p style="color: #2E7D5B; font-weight: 700; margin: 0 0 0.5rem;">🛍️ Products</p>
+                            <h4 style="color: #061A40; margin: 0 0 0.75rem; font-size: 1rem;">Artisan Marketplace</h4>
+                            <p style="color: #6B7280; font-size: 0.9rem; margin: 0;">Support local creators. Browse, purchase, and book real experiences.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB;">
+                            <p style="color: #D9A86C; font-weight: 700; margin: 0 0 0.5rem;">👤 Hosts</p>
+                            <h4 style="color: #061A40; margin: 0 0 0.75rem; font-size: 1rem;">Host Dashboard</h4>
+                            <p style="color: #6B7280; font-size: 0.9rem; margin: 0;">List products, manage bookings, reach cultural learners worldwide.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #E5E7EB;">
+                            <p style="color: #F2B84B; font-weight: 700; margin: 0 0 0.5rem;">⚙️ Admins</p>
+                            <h4 style="color: #061A40; margin: 0 0 0.75rem; font-size: 1rem;">Admin Console</h4>
+                            <p style="color: #6B7280; font-size: 0.9rem; margin: 0;">Manage content, approve listings, track analytics and growth.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+</section>
+
+<section style="background: linear-gradient(135deg, #083B8A 0%, #061A40 100%); color: white; padding: 4rem 0; text-align: center; border-radius: 12px; margin: 4rem auto; max-width: 1200px;">
+    <div class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 1rem;">Ready to explore?</h2>
+        <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.95;">Step into the village, meet an AI guide, and connect with authentic Sri Lankan heritage.</p>
+        <a class="btn btn-light btn-lg" href="{% url 'village:index' %}" style="background-color: #F2B84B; color: #061A40; border: none; font-weight: 600; text-decoration: none; display: inline-block;">Start Your Journey</a>
     </div>
 </section>
 {% endblock %}

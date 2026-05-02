@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}AI Cultural Guide | AerUla{% endblock %}
+
+{% block content %}
+<section class="catalog-hero guide-hero">
+    <div class="container">
+        <div class="catalog-heading">
+            <div>
+                <p class="eyebrow">AI Cultural Guide</p>
+                <h1>Chat with AerUla's cultural guide.</h1>
+                <p>Ask about huts, traditions, products, or the next experience, and get answers grounded in the village knowledge base.</p>
+            </div>
+            <div class="catalog-summary-card">
+                <span>Guide mode</span>
+                <strong>RAG</strong>
+                <p>Retrieval-augmented chat sourced from AerUla content.</p>
+            </div>
+        </div>
+
+        <form method="get" action="{% url 'core:guide' %}" class="guide-search-panel">
+            <label class="form-label" for="guide-query">Ask about a hut, product, or tradition</label>
+            <div class="guide-search-row">
+                <input id="guide-query" name="q" type="search" class="form-control form-control-lg" value="{{ query }}" placeholder="e.g. What makes Jaffna pottery special?">
+                <button class="btn btn-dark btn-lg" type="submit">Ask the guide</button>
+            </div>
+        </form>
+
+        <div class="guide-prompt-strip" aria-label="Quick guide prompts">
+            {% for prompt in quick_prompts %}
+                <a href="{{ prompt.url }}">{{ prompt.label }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="catalog-section">
+    <div class="container">
+        <div class="guide-chat-layout">
+            <article class="guide-answer-panel">
+                <div class="guide-answer-header">
+                    <div>
+                        <p class="eyebrow">Chat</p>
+                        <h2>Continue the conversation</h2>
+                    </div>
+                    <span class="guide-answer-badge">Grounded response</span>
+                </div>
+
+                <div class="guide-chat-stream" aria-label="Conversation history">
+                    {% for message in chat_messages %}
+                        <div class="guide-chat-row is-{{ message.role }}">
+                            <div class="guide-chat-bubble">
+                                <span>{{ message.role|title }}</span>
+                                <p>{{ message.text }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <form method="post" action="{% url 'core:guide' %}" class="guide-search-panel guide-compose-panel">
+                    {% csrf_token %}
+                    <label class="form-label" for="guide-message">Ask about a hut, product, or tradition</label>
+                    <div class="guide-search-row">
+                        <input id="guide-message" name="message" type="search" class="form-control form-control-lg" value="{{ current_message }}" placeholder="e.g. What makes Jaffna pottery special?">
+                        <button class="btn btn-dark btn-lg" type="submit">Send</button>
+                    </div>
+                </form>
+
+                <div class="guide-answer-hints">
+                    <div>
+                        <span>Try asking about</span>
+                        <strong>huts, products, traditions, or bookable experiences</strong>
+                    </div>
+                    <a href="{% url 'core:guide' %}?clear=1">Clear chat</a>
+                </div>
+            </article>
+
+            <aside class="guide-source-panel">
+                <div class="guide-source-header">
+                    <p class="eyebrow">Sources</p>
+                    <span>{{ sources|length }} matched</span>
+                </div>
+                {% if sources %}
+                    <div class="guide-source-list">
+                        {% for source in sources %}
+                            <article class="guide-source-card">
+                                <span>{{ source.source_label }}</span>
+                                <h3><a href="{{ source.url }}">{{ source.title }}</a></h3>
+                                <p>{{ source.summary }}</p>
+                                <small>
+                                    <strong>{{ source.badge }}</strong>
+                                    <span>•</span>
+                                    {{ source.extra }}
+                                </small>
+                                <a class="guide-source-link" href="{{ source.url }}">Open source</a>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No source matches yet. Try a different hut name or tradition.</p>
+                {% endif %}
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -22,6 +22,9 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item"><a class="nav-link" href="{% url 'village:index' %}">Virtual Village</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'marketplace:index' %}">Marketplace</a></li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-outline-dark nav-cta" type="button" data-guide-open>Ask Guide</button>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:index' %}">Dashboard</a></li>
                     {% if user.is_authenticated %}
                         <li class="nav-item ms-lg-2">
@@ -50,9 +53,92 @@
         {% block content %}{% endblock %}
     </main>
 
+    <button class="guide-launch-fab" type="button" data-guide-open aria-label="Open cultural guide chatbot">
+        Ask Guide
+    </button>
+
+    <div class="modal fade guide-chat-modal" id="guideChatModal" tabindex="-1" aria-labelledby="guideChatModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content guide-chat-shell">
+                <div class="modal-header guide-chat-header">
+                    <div>
+                        <p class="eyebrow mb-1">AI Cultural Guide</p>
+                        <h2 id="guideChatModalLabel" class="guide-chat-title">Chat with AerUla</h2>
+                        <p class="guide-chat-subtitle mb-0">Ask about huts, traditions, products, or the next experience.</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body guide-chat-body">
+                    <div class="guide-chat-grid">
+                        <section class="guide-chat-panel">
+                            <div class="guide-chat-stream" data-guide-transcript>
+                                {% for message in guide_chat_messages %}
+                                    <div class="guide-chat-row is-{{ message.role }}">
+                                        <div class="guide-chat-bubble">
+                                            <span>{{ message.role|title }}</span>
+                                            <p>{{ message.text }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <form class="guide-search-panel guide-compose-panel" data-guide-form action="{% url 'core:guide_chat_api' %}" method="post">
+                                {% csrf_token %}
+                                <label class="form-label" for="guide-message-input">Ask about a hut, product, or tradition</label>
+                                <div class="guide-search-row">
+                                    <input id="guide-message-input" name="message" type="search" class="form-control form-control-lg" placeholder="e.g. What makes Jaffna pottery special?" data-guide-input>
+                                    <button class="btn btn-dark btn-lg" type="submit" data-guide-send>Send</button>
+                                </div>
+                                <div class="guide-answer-hints guide-answer-hints-modal">
+                                    <div>
+                                        <span>Ask about</span>
+                                        <strong>huts, products, traditions, or bookable experiences</strong>
+                                    </div>
+                                    <button class="btn btn-link p-0 guide-clear-link" type="button" data-guide-clear>Clear chat</button>
+                                </div>
+                            </form>
+
+                            <div class="guide-prompt-strip guide-prompt-strip-modal" aria-label="Quick guide prompts">
+                                {% for prompt in guide_quick_prompts %}
+                                    <button type="button" class="guide-prompt-chip" data-guide-prompt="{{ prompt.label|escape }}">{{ prompt.label }}</button>
+                                {% endfor %}
+                            </div>
+                        </section>
+
+                        <aside class="guide-source-panel guide-source-panel-modal">
+                            <div class="guide-source-header">
+                                <p class="eyebrow">Latest sources</p>
+                                <span data-guide-source-count>{{ guide_latest_sources|length }} matched</span>
+                            </div>
+                            <div class="guide-source-list" data-guide-sources>
+                                {% if guide_latest_sources %}
+                                    {% for source in guide_latest_sources %}
+                                        <article class="guide-source-card">
+                                            <span>{{ source.source_label }}</span>
+                                            <h3><a href="{{ source.url }}">{{ source.title }}</a></h3>
+                                            <p>{{ source.summary }}</p>
+                                            <a class="guide-source-link" href="{{ source.url }}">Open source</a>
+                                        </article>
+                                    {% endfor %}
+                                {% else %}
+                                    <article class="guide-source-card guide-source-card-empty">
+                                        <span>Ready</span>
+                                        <h3>Ask a question to see grounded sources here.</h3>
+                                        <p>Powered by huts, simulations, quiz prompts, and marketplace content.</p>
+                                    </article>
+                                {% endif %}
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     {% block vendor_scripts %}{% endblock %}
     <script src="{% static 'js/village.js' %}"></script>
+    <script src="{% static 'js/guide-chat.js' %}"></script>
     {% block page_scripts %}{% endblock %}
 </body>
 </html>

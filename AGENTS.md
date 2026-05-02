@@ -4,7 +4,9 @@ Guidance for coding agents working on AerUla Web.
 
 ## Project Context
 
-AerUla is a web platform for a browser-based Sri Lankan cultural village simulation. The MVP currently uses:
+**AerUla is an AI-powered digital cultural village and experience marketplace that helps tourists, diaspora users, students, and cultural learners explore authentic Sri Lankan traditions through interactive simulation, AI guidance, cultural passport progression, and real-world experience booking.**
+
+The MVP uses:
 
 - Django backend with PostgreSQL.
 - Django templates with Bootstrap for responsive UI.
@@ -14,11 +16,51 @@ AerUla is a web platform for a browser-based Sri Lankan cultural village simulat
 The planned deployment split is:
 
 - Backend/API/admin: AWS.
-- Frontend web experience: Vercel.
+- Frontend web experience: Vercel (future; currently Django templates).
 - Database: managed PostgreSQL, preferably Amazon RDS.
 - Media/static production assets: S3/CloudFront or a deliberate Vercel/AWS split documented before implementation.
 
-Read `prd.md` before making product or architecture decisions. Keep the MVP focused on 2D browser simulation, learning, badges/passport, marketplace, bookings, and admin workflows.
+## Product Pillars
+
+1. **Digital-first cultural village**: A browser-based interactive map of cultural huts users can explore.
+2. **AI cultural guide**: An embedded AI assistant that explains traditions, answers culture questions, and personalizes the experience.
+3. **Interactive heritage huts**: Each hut contains a story, cultural context, mini simulations, and quizzes.
+4. **Cultural passport and badge progression**: Users earn digital badges as they complete huts, track progress, and unlock recommendations.
+5. **Marketplace for real experiences and artisan products**: Connected to completed huts, showing bookable experiences and buyable products from local artisans.
+6. **Admin-controlled cultural content management**: Hosts, admins, and content managers can manage huts, experiences, products, and user approvals.
+7. **Simple, professional, trust-building UI**: Warm, calm, visually clear design that feels premium and cultural, not touristy.
+8. **Future-ready for physical tourism conversion**: Architecture and data model allow seamless connection to real-world bookings and local host integrations.
+
+Read `prd.md` and `DESIGN_SYSTEM.md` before making product or architecture decisions. Keep the MVP focused on:
+- 2D browser simulation
+- Interactive cultural learning via huts
+- Badge/passport progression and motivation
+- Real-world experience booking
+- Artisan marketplace
+- Admin content management
+- AI guidance (mock or real API-ready architecture)
+
+## User Roles
+
+- **Guest visitor**: Browses landing page, village preview, marketplace without login.
+- **Registered user / tourist**: Logs in, completes huts, earns badges, books experiences, buys products.
+- **Student / learner**: Guided path through cultural huts, track progress, educational focus.
+- **Artisan / local host**: Manages own experiences and products, receives bookings, earns revenue.
+- **Admin**: Full content management, approvals, user management, analytics, community moderation.
+
+## Expected Pages and Modules
+
+- **Landing page**: Hero, AerUla pitch, hut gallery, AI guide preview, passport preview, real-world marketplace preview.
+- **Authentication pages**: Login, signup, password reset, email verification.
+- **User dashboard**: Profile, earned badges, progress, upcoming bookings, recommendations.
+- **Virtual village map**: Interactive 2D map, hut cards, locked/available states, image previews.
+- **Hut detail/simulation page**: Cultural story, mini interactive simulation, quiz, AI guide prompt area, badge unlock, related real-world experience card.
+- **AI cultural guide page or embedded widget**: Calm interface, cultural context explanation, image/story support, tourist/student/scholar depth levels.
+- **Cultural passport/profile page**: Earned and locked badges, completed huts, scores, share/certificate preview, next recommended hut.
+- **Marketplace page**: Product grid, experience cards, hut/category filter, bookings/purchase flow.
+- **Experience booking page**: Host info, schedule, price, description, booking confirmation.
+- **Admin dashboard**: Content cards (total huts, active experiences, items, bookings, users), pending approvals, quick action links.
+- **Admin content management pages**: Hut editor, experience editor, product editor, user management, booking management.
 
 When changing architecture, deployment flow, app boundaries, testing policy, security posture, or frontend/backend responsibilities, update this `AGENTS.md` file in the same change. Do not let implementation drift away from these instructions.
 
@@ -69,6 +111,8 @@ If migrations are added, also run:
 - File uploads must validate content type, size, extension, and storage destination.
 - Avoid raw SQL. If raw SQL is required, use parameterized queries only.
 - Keep dependencies pinned in `requirements.txt` and review upgrades before production deployment.
+- Keep `GEMINI_API_KEY` server-side only. Do not expose it in templates, static files, or client-side scripts.
+- The cultural guide should fall back to the local retrieval answer when Gemini is unavailable, misconfigured, or returns an empty response.
 
 ## Deployment Expectations
 
@@ -129,7 +173,7 @@ Before any AWS launch, add and verify:
 - CORS and CSRF settings compatible with the Vercel frontend domain.
 - API versioning or clear endpoint naming if Django serves JSON APIs for the frontend.
 
-## Django Implementation Standards
+## Engineering Standards
 
 - Write clean, professional, maintainable code. Favor simple, explicit implementations over clever abstractions.
 - Keep the codebase as simple and small as possible. Add only the files, dependencies, abstractions, settings, and patterns needed for the current requirement.
@@ -159,6 +203,7 @@ Before any AWS launch, add and verify:
 - Add admin registrations for content that admins must manage.
 - Use transactions for checkout, orders, bookings, score persistence, and badge awarding.
 - Make role checks explicit and test them.
+- AI guide can start as mock responses but architecture should allow easy API integration later.
 
 Expected structure for each Django app as it grows:
 

@@ -1,15 +1,41 @@
 # AerUla Design System
 
-Design guidance for AerUla's web experience. Keep the UI simple, professional, fast, and culturally warm.
+Design guidance for AerUla's web experience. AerUla is an AI-powered digital cultural village for exploring authentic Sri Lankan traditions. The design should feel premium, calm, trustworthy, and culturally warm.
+
+## Brand Direction
+
+AerUla visually combines Sri Lankan/Jaffna cultural warmth with modern digital-product clarity. It should feel:
+
+- **Cultural**: Rooted in authentic Sri Lankan heritage without becoming a tourist poster.
+- **Premium**: Clean, spacious, and intentional. Nothing cheap or cluttered.
+- **Calm**: Warm tones, readable typography, generous whitespace.
+- **Trustworthy**: Professional, consistent, and clear.
+- **Modern**: Digital-first, responsive, fast.
+- **Simple**: One idea per screen; clear user paths.
+
+### Visual Inspiration (Principles Only)
+
+- Google Arts & Culture: cultural, visual, educational, story-driven.
+- Stripe: clean, premium, spacious, product-focused.
+
+### Style to Avoid
+
+- Overcrowded layouts.
+- Too many colors.
+- Tourist-poster clutter.
+- Cheap-looking gradients.
+- Heavy 3D before MVP.
+- Too many animations.
+- Overly playful game UI.
 
 ## Design Direction
 
 AerUla should combine:
 
-- Image-led cultural discovery inspired by editorial museum and archive experiences.
-- Clean product clarity inspired by modern SaaS interfaces.
-- Lightweight simulation-first interaction for mobile and desktop.
-- Short supporting text with real cultural imagery carrying most of the page.
+- **Image-led cultural discovery** inspired by editorial museum and archive experiences.
+- **Clean product clarity** inspired by modern SaaS interfaces.
+- **Lightweight simulation-first interaction** for mobile and desktop.
+- **Short supporting text** with real cultural imagery carrying most of the page.
 
 Do not copy any reference website directly. Use references only for design principles: clarity, spacing, hierarchy, strong content presentation, and polished interaction.
 
@@ -23,54 +49,40 @@ Do not copy any reference website directly. Use references only for design princ
 - Accessible: readable contrast, semantic HTML, visible focus states, and keyboard-friendly controls.
 - Mobile first: design must work well on phones before desktop polish.
 
-## Visual Style
-
-### Personality
-
-- Warm
-- Trustworthy
-- Educational
-- Calm
-- Premium but approachable
-
-### Layout
-
-- Use generous whitespace.
-- Keep page sections full-width with constrained inner content.
-- Avoid nested cards.
-- Use cards only for repeated items, dashboard summaries, products, hut previews, and compact content groups.
-- Prefer clean editorial sections over busy decorative layouts.
-- Prefer image grids, reference photos, and simulation benches over long text blocks.
-
-### Border Radius
-
-- Default radius: `8px`
-- Buttons and pills: `999px`
-- Avoid overly rounded cards unless used for small badges or pills.
-
 ## Color System
 
-Use a restrained palette. Do not let the interface become dominated by one hue.
+### Brand Palette
 
-### Core Colors
+Use this refined heritage-inspired palette:
 
-- Ink: `#111827`
-- Muted text: `#5f6673`
-- Paper: `#fffdf8`
-- Warm background: `#f6efe3`
-- Line: `#e7e3db`
-- Heritage green: `#2f6f4f`
-- Gold accent: `#c8923b`
-- Deep blue accent: `#365b87`
+- **Heritage Blue** (Primary Brand): `#083B8A` — Deep, trustworthy, cultural.
+- **Deep Navy** (Dark Accent): `#061A40` — High contrast for text and strong elements.
+- **Clay Sand** (Warm Accent): `#D9A86C` — Warm, earthy, cultural warmth.
+- **Warm Ivory** (Background): `#FAF7F0` — Soft, readable, professional.
+- **Palmyrah Green** (Secondary): `#2E7D5B` — Growth, learning, progress.
+- **Sunset Gold** (Highlight): `#F2B84B` — Badges, achievements, warmth.
+
+### Functional Colors
+
+- **Charcoal Text**: `#1F2933` — Primary text, maximum contrast.
+- **Muted Gray**: `#6B7280` — Secondary text, descriptions, metadata.
+- **Border Gray**: `#E5E7EB` — Subtle borders, dividers, cards.
+- **Success Green**: `#16A34A` — Positive states, validation.
+- **Error Red**: `#DC2626` — Errors, warnings, destructive actions.
+- **Off-White**: `#FFFFFF` — Cards, button backgrounds, paper surfaces.
 
 ### Usage
 
-- Ink for primary text and dark buttons.
-- Muted text for descriptions and secondary labels.
-- Paper and warm background for page surfaces.
-- Heritage green for cultural/learning state and positive progress.
-- Gold for badges, achievements, and small highlights.
-- Deep blue for secondary accents and informational states.
+- **Heritage Blue** for primary buttons, links, and brand identity.
+- **Deep Navy** for headings, navigation, and dark accents.
+- **Clay Sand** for cultural warmth, background accents, and section dividers.
+- **Palmyrah Green** for learning states, progress, and badges earned.
+- **Sunset Gold** for achievement badges, highlights, and cultural items.
+- **Charcoal** for all body text and primary content.
+- **Muted Gray** for secondary labels, metadata, and descriptions.
+- **Border Gray** for subtle dividers, card borders, and form fields.
+
+Do not let the interface become dominated by one hue. Use Heritage Blue sparingly for navigation and primary actions. Let Warm Ivory dominate as the background. Use Clay Sand and Palmyrah Green as intentional accents.
 
 ## Typography
 
@@ -82,12 +94,12 @@ font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
 
 ### Type Scale
 
-- Hero title: `clamp(2.5rem, 6vw, 5.25rem)`
-- Page heading: `clamp(2rem, 4vw, 3.5rem)`
-- Section heading: `1.75rem` to `2.5rem`
-- Card heading: `1.1rem` to `1.25rem`
-- Body text: `1rem`
-- Small labels: `0.78rem` to `0.875rem`
+- Hero title: `clamp(2.5rem, 6vw, 5.25rem)` — Landing page, emotional, main call to action.
+- Page heading: `clamp(2rem, 4vw, 3.5rem)` — Section headers, main page titles.
+- Section heading: `1.75rem` to `2.5rem` — Sub-sections, card groups.
+- Card heading: `1.1rem` to `1.25rem` — Individual card titles, hut names.
+- Body text: `1rem` — Standard reading, descriptions, content.
+- Small labels: `0.78rem` to `0.875rem` — Metadata, badges, helper text.
 
 ### Rules
 
@@ -95,6 +107,53 @@ font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
 - Do not scale all text with viewport width.
 - Use short headings and clear body copy.
 - Avoid long paragraphs inside cards.
+- Prioritize readability over visual drama.
+
+## UI Language and Tone
+
+AerUla's voice is welcoming, clear, and culturally respectful. Use short, action-oriented language.
+
+### Recommended Actions and Labels
+
+- "Explore the Village"
+- "Enter the Hut"
+- "Start Your Journey"
+- "Continue Learning"
+- "Ask the AI Guide"
+- "Unlock Your Badge"
+- "View Your Passport"
+- "Browse Products"
+- "Book a Real Experience"
+- "Meet Local Hosts"
+- "Share Your Story"
+
+### Tone Examples
+
+**Landing page hero:**
+> Explore Sri Lanka beyond the surface.
+
+**Supporting headline:**
+> Discover authentic traditions through interactive cultural huts, guided by AI, and connect with real local experiences.
+
+**Hut invitation:**
+> Learn pottery from a master craftsperson. Shape clay, understand the tradition, earn your badge.
+
+**Marketplace section:**
+> Meet local artisans. Support authentic cultural products.
+
+**AI Guide prompt:**
+> What would you like to know about this tradition?
+
+**Badge earned:**
+> You've earned the Potter's Badge. Add it to your cultural passport.
+
+### Tone Principles
+
+- Respectful of Sri Lankan culture; not exoticizing or stereotyping.
+- Educational without being condescending.
+- Warm and inviting, not corporate.
+- Action-oriented and clear.
+- Celebrate learner progress and achievement.
 
 ## Components
 

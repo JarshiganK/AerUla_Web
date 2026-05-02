@@ -40,7 +40,10 @@
                             <span>{{ product.hut_name }}</span>
                             <strong>{{ product.formatted_price }}</strong>
                         </div>
-                        <a class="btn btn-outline-dark btn-sm" href="{% url 'marketplace:detail' product.slug %}">View Product</a>
+                        <div class="product-card-actions">
+                            <a class="btn btn-dark btn-sm" href="{% url 'marketplace:add_to_cart' product.slug %}">Add to Cart</a>
+                            <a class="btn btn-outline-dark btn-sm" href="{% url 'marketplace:detail' product.slug %}">View Product</a>
+                        </div>
                     </div>
                 </article>
             {% empty %}
